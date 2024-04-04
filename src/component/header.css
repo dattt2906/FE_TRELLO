@@ -1,0 +1,45 @@
+* {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+.header {
+    justify-content: space-between;
+    background-color: hsla(242, 56.9%, 20%, 0.9);
+    color: white;
+    display: flex;
+    align-items: center;
+    height: 70px
+
+    
+}
+.icon-left{
+    margin-left: 20px;
+    display: flex;
+   align-items: center;
+    gap: 30px;
+
+}
+
+
+.icon-right{
+    margin-right: 130px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.input-search{
+    height: 23px;
+    border-radius: 8px;
+    border: none;
+}
+.icon-question{
+margin-right: 28px;
+}
+.display_name{
+margin-right: 12px;
+}
+
+
+
+
