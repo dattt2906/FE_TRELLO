@@ -9,25 +9,22 @@ const Register=()=>{
     const [username, setUsername]= useState("")
     const [password, setPassword]= useState("")
     const [error, setError]= useState("")
+    const [verifiEmail, setVerifiEmail]=useState("")
     const navigate= useNavigate()
 
-    const handleRegis=()=>{
-        axios.get(`http://localhost:3001/users/find-user-by-name/${username}`,{username}).then(res=>{
-        if(res.data){
-        setError("Ten dang nhap da co nguoi su dung")
-            
+    const handleRegis=async ()=>{
+   await axios.post("http://localhost:3001/auth/regis",{username,password}).then(res=>{
+        if(res.data.regis_token){
+            // axios.post("http://localhost:3001/mailer/send-email")
+            setVerifiEmail("Dang Ki thanh cong. Vui long kiem tra mail de xac nhan")
+            setError("")
+           
         }
-        else{
-            const display_name=username
-            axios.post("http://localhost:3001/users/create-user",{username, password,display_name}).then(res=>{
-                if(res.data){
-                    console.log(res)
-                        navigate("/")
-                }
-    
-                })
-            
-        }
+    }).catch(error=>{
+       console.log(error)
+        setError(error.response.data.message)
+        setVerifiEmail("")
+       
     })
 
     }
@@ -51,6 +48,13 @@ const Register=()=>{
      {error ? 
      <div>
      {error}
+     </div>:null
+     
+     }
+
+     {verifiEmail ? 
+     <div style={{color:"red"}}>
+     {verifiEmail}
      </div>:null
      
      }

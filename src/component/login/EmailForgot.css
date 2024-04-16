@@ -1,0 +1,50 @@
+.forgot-password{
+   text-align: center;
+   margin-top: 20px;
+   font-size: 32px;
+}
+.forgot-password::before{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background-image: url('../../../public/Ha-Lan.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    z-index: -1;
+    opacity: 0.5;
+    top: 0;
+    left: 0;
+}
+
+.input-email input{
+    width: 250px;
+    height: 30px;
+    margin-top: 25px;
+    border-radius: 5px;
+}
+.btn-confirm{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.confirm button{
+    width: 150px;
+    height: 30px;
+    border-radius: 5px;
+    background-color:#0d6efd;
+    color: white;
+}
+.back-login button{
+    width: 150px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: #0d6efd;
+    color: white;
+}
+
+
+
+
