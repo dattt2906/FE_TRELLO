@@ -39,6 +39,41 @@ margin-right: 28px;
 .display_name{
 margin-right: 12px;
 }
+.image-avatar{
+    width: 30px;
+    height: 30px;
+    background-color: aliceblue;
+    border-radius: 50%;
+    position: relative;
+}
+.image-avatar img{
+    width: 30px;
+    height: 30px;
+}
+.modal-settings{
+    position: absolute;
+    width: 100px;
+    height: fit-content;
+    background-color:white;
+    margin-left: 465px;
+    margin-top: 115px;
+    display: none;
+}
+
+.list-setting{
+    list-style-type: none;
+    color: black;
+    
+    padding: 0;
+
+}
+.list-setting li{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.list-setting li:hover{
+    background-color: gray;
+}
 
 
 
