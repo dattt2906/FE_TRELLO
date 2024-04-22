@@ -48,7 +48,7 @@ const Header = () => {
                 <div className="image-avatar"><img src="logo192.png" onClick={showSetting}/></div>
                 <div className="modal-settings">
                     <ul className="list-setting">
-                        <Link to={"/User-Infor"}>
+                        <Link to={"/User-Info"}>
                         <li>Edit info</li>
                         </Link>
                         <Link to={"/"}>

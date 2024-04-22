@@ -6,6 +6,7 @@ import Register from './component/login/register';
 import ForgotPass from './component/login/forgotPass';
 import EmailForgot from './component/login/EmailForgot';
 import UserInfor from './component/user/userInfor';
+import ChangePassWord from './component/changePassword/changepassword';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -23,7 +24,8 @@ root.render(
     <Route path='Register' element={<Register />}></Route>
     <Route path='Retype-password' element={<ForgotPass/>}></Route>
     <Route path='Input-email' element={<EmailForgot/>}></Route>
-    <Route path='User-Infor' element={<UserInfor/>}></Route>
+    <Route path='User-Info' element={<UserInfor/>}></Route>
+    <Route path='Change-password' element={<ChangePassWord/>}></Route>
 
   </Routes>
   
