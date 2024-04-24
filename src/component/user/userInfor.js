@@ -20,32 +20,31 @@ const UserInfor = () => {
     const [sex, setSex] = useState("")
     const [address, setAddress] = useState("")
     const userId = Number(localStorage.getItem("UserId"))
-    const[img,setImg]= useState('')
-    const[avatarImg, setAvartarImg]= useState("")
+    const [img, setImg] = useState(null)
+    const [avatarImg, setAvartarImg] = useState("")
 
 
 
     const changeInfor = () => {
-        const userinfo = { display_name, age, sex, address,avatarImg }
+        const userinfo = { display_name, age, sex, address, avatarImg }
 
         axios.put(`http://localhost:3001/users/update-userinfo/${userId}`, userinfo)
         alert("Cap nhat thong tin user thanh cong")
     }
 
-    const handleUpload=()=>{
+    const handleUpload = () => {
 
-     const imageRef=ref(imageDb, `images/${v4()}`)
-     uploadBytes(imageRef,img).then((snapshot) =>{
+        const imageRef = ref(imageDb, `images/${v4()}`)
+        uploadBytes(imageRef, img).then((snapshot) => {
 
-        getDownloadURL(snapshot.ref).then((img)=>{
-            setAvartarImg(img)
+            getDownloadURL(snapshot.ref).then((img) => {
+                setAvartarImg(img)
+            })
         })
-     })
     }
- 
     useEffect(() => {
 
-        axios.get(`http://localhost:3001/users/find-userinfor-by-userId/${userId}`).then(res => {
+        axios.get(`http://localhost:3001/users/find-userinfo-by-userId/${userId}`).then(res => {
 
             if (res.data) {
                 setUserInfor(res.data)
@@ -59,24 +58,40 @@ const UserInfor = () => {
 
     }, [])
 
+    useEffect(() => {
+        if (img) {
+            handleUpload();
+        }
+    }, [img]);
+
     return (
         <>
 
 
             <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column", gap: 3, marginTop: "70px" }}>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
 
-                    <img style={{ width: "150px", height: "150px", borderRadius: "50%",border:"1px solid black"}} src={avatarImg}></img>
-                    <span style={{ paddingLeft: "20px", fontSize: "40px" }}>{display_name}</span>
+                <Box sx={{ width: '480px' }}>
+
+                    <img style={{ width: "150px", height: "150px", borderRadius: "50%", border: "1px solid black" }} src={avatarImg}></img>
+
                 </Box>
-                <Box>
-                    <input type='file' onChange={(e)=>{setImg(e.target.files[0]);handleUpload()}}></input>
-                    
+                
+                <Box sx={{ width: '480px' }}>
+                    {/* <input type='file' onChange={(e)=>{setImg(e.target.files[0])}}></input>
+                    <button onClick={handleUpload}>Upload</button> */}
+                    <input type='file' onChange={(e) => { setImg(e.target.files[0]) }} style={{ display: "none" }} />
+                    {/* <button onClick={() => { document.querySelector('input[type="file"]').click(); }}>Upload</button> */}
+                    <Button variant="contained" onClick={() => { document.querySelector('input[type="file"]').click(); }}>Upload Photo</Button>
+                </Box>
+                <Box sx={{ width: '480px', marginTop:"50px"}}>
+
+                  <span style={{fontSize:"20px", fontWeight:"bold", fontStyle:"inherit"}}>About you</span>
+
                 </Box>
 
                 <Box component="form"
                     sx={{
-                        '& > :not(style)': { m: 1, width: '400px', marginTop: "100px" },
+                        '& > :not(style)': { m: 1, width: '480px', marginTop: "20px" },
                     }}
                     noValidate
                     autoComplete="off">
@@ -87,7 +102,7 @@ const UserInfor = () => {
                 </Box>
                 <Box component="form"
                     sx={{
-                        '& > :not(style)': { m: 1, width: '400px' },
+                        '& > :not(style)': { m: 1, width: '480px' },
                     }}
                     noValidate
                     autoComplete="off">
@@ -98,7 +113,7 @@ const UserInfor = () => {
                 </Box >
                 <Box component="form"
                     sx={{
-                        '& > :not(style)': { m: 1, width: '400px' },
+                        '& > :not(style)': { m: 1, width: '480px' },
                     }}
                     noValidate
                     autoComplete="off">
@@ -109,7 +124,7 @@ const UserInfor = () => {
                 </Box>
                 <Box component="form"
                     sx={{
-                        '& > :not(style)': { m: 1, width: '400px' },
+                        '& > :not(style)': { m: 1, width: '480px' },
                     }}
                     noValidate
                     autoComplete="off">
@@ -120,7 +135,7 @@ const UserInfor = () => {
 
 
                 </Box>
-                <Box sx={{ display: "flex", justifyContent: "space-between", width: "400px", height: "40px" }}>
+                <Box sx={{ display: "flex", justifyContent: "space-between", width: "480px", height: "40px" }}>
                     <Button variant="contained" onClick={changeInfor}>Save Changes</Button>
                     <Link to={"/Change-password"}>
                         <Button variant="contained">Change password</Button>

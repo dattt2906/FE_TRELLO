@@ -1,9 +1,14 @@
 import { Link } from "react-router-dom";
-import "./forgotPass.css"
+
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from "axios";
 import { data } from "../data";
+import { useNavigate } from "react-router-dom"
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
 
 
@@ -49,7 +54,7 @@ const ForgotPass = () => {
     }
     return (
         <>
-            <div className="Forgot-pass">
+            {/* <div className="Forgot-pass">
                 <h1 className="header-forgot">Retype-Passwork</h1>
                 <div className="new-password">New Password<input className="new-pass" type="password" name="username" onChange={(e) => setNewPassword(e.target.value)}></input></div>
                 <div className="retype-password">Retype Password<input className="retype" type="password" name="password" onChange={(e) => setRetypePassword(e.target.value)}></input> </div>
@@ -73,7 +78,72 @@ const ForgotPass = () => {
 
                 }
 
-            </div>
+            </div> */}
+            <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Fira Sans,Droid Sans,Helvetica Neue,sans-serif" }}>
+                {/* <h1 className="header-login">Trello Login</h1> */}
+
+                {/* <div className="userName-input">UserName <input className="user" type="text" name="username" onChange={(e) => setUsername(e.target.value)}></input></div>
+                <div className="password-input"> Password <input className="pass" type="password" name="password" onChange={(e) => setPassword(e.target.value)}></input> </div> */}
+                {/* <Link to={"/input-email"}>
+                    <div style={{ marginTop: "15px" }}><a href="">Forgot password?</a></div>
+                </Link> */}
+                <Box sx={{ marginTop: "50px", display: "flex", alignItems: "center", gap: 2 }}>
+                    <img src="trelloicon.png" style={{ width: "50px", height: "50px" }}></img>
+                    <span style={{ fontSize: "25px", fontFamily: "var(--font-family-text,'Charlie Text',sans-serif)" }}>Trello</span>
+                </Box>
+                <Box sx={{ marginTop: "40px" }}>
+                    <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Fira Sans, Droid Sans, Helvetica Neue, sans-serif", fontWeight: "bold", fontSize: "20px" }}>Reset your password</span>
+                </Box>
+                <Box
+                    component="form"
+                    sx={{
+                        '& > :not(style)': { m: 1, width: '400px' },
+                        display: "flex", flexDirection: "column", gap: 2, marginTop: "30px"
+                    }}
+                    noValidate
+                    autoComplete="off"
+                >
+                    <TextField type="text" id="outlined-basic" label="New password" variant="outlined"onChange={(e) => setNewPassword(e.target.value)} />
+                    <TextField type="password"id="outlined-basic" label="Retype password" variant="outlined" onChange={(e) => setRetypePassword(e.target.value)}/>
+                </Box>
+
+                {/* <div className="btn"> */}
+                <Box sx={{ width: "fit-content", marginTop: "20px" }}>
+                    {/* <button className="btn-login" onClick={handelLogin}>Login</button>
+                    <Link to={"/register"}>
+                        <button className="btn-register">Register</button>
+                    </Link> */}
+
+
+                    <Button sx={{ width: "400px" }} variant="contained" onClick={handleResetPass}>Confirm</Button>
+
+
+                </Box>
+                <Box
+                    sx={{
+                        width:"400px", display:"flex" ,justifyContent:"center", marginTop:"15px"
+                    }}
+                    >
+                    <Link to={"/"}>Back to log in</Link>
+                   
+                    
+                </Box>
+                {/* </div> */}
+                {error ?
+                    <div>
+                        {error}
+                    </div> : null
+
+                }
+                {updateSuccess ?
+                    <div style={{ color: "red" }}>
+                        {updateSuccess}
+                    </div> : null
+
+                }
+            </Box>
+            
+
         </>
     )
 }

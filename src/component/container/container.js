@@ -1,8 +1,8 @@
 import "./container.css"
-import Sidebar from "./sidebar"
-import Navbar from "./navbar"
-import Content from "./content"
-import Column from "./column"
+import Sidebar from "./sidebar/sidebar"
+import Navbar from "./navbar/navbar"
+import Content from "./content/content"
+import Column from "./content/column"
 import { v4 as uuidv4 } from 'uuid';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -17,8 +17,8 @@ const Container = () => {
                 <Sidebar></Sidebar>
                 <div className="main-content">
                     <Navbar></Navbar>
-                    <Content>
-                    </Content>
+                    {/* <Content>
+                    </Content> */}
                 </div>
             </div>
 

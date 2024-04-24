@@ -1,19 +1,28 @@
 import { useState } from "react"
-import "./login.css"
+import * as React from 'react';
+
 import axios from "axios"
-import { Link } from "react-router-dom"
+
 import { useNavigate } from "react-router-dom"
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import { Link } from "react-router-dom";
 
 
+
+
+const preventDefault = (event)=> event.preventDefault();
 const Login = () => {
 
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
     const handelLogin = () => {
-        axios.post("http://localhost:3001/auth/login", { username, password }).then(res => {
+        axios.post("http://localhost:3001/auth/login", { email, password }).then(res => {
             if (res.data && res.data.Active == 1) {
                 localStorage.setItem("Token_User", JSON.stringify(res.data.access_token));
                 localStorage.setItem("UserId", JSON.stringify(res.data.id));
@@ -32,27 +41,68 @@ const Login = () => {
 
     return (
         <>
-            <div className="login-content">
-                <h1 className="header-login">Trello Login</h1>
-                <div className="userName-input">UserName <input className="user" type="text" name="username" onChange={(e) => setUsername(e.target.value)}></input></div>
-                <div className="password-input"> Password <input className="pass" type="password" name="password" onChange={(e) => setPassword(e.target.value)}></input> </div>
-                <Link to={"/input-email"}>
-                    <div style={{ marginTop: "15px" }}><a href="">Forgot password?</a></div>
-                </Link>
+            {/* <div className="login-content"> */}
+            <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Fira Sans,Droid Sans,Helvetica Neue,sans-serif" }}>
+                {/* <h1 className="header-login">Trello Login</h1> */}
 
-                <div className="btn">
-                    <button className="btn-login" onClick={handelLogin}>Login</button>
+                {/* <div className="userName-input">UserName <input className="user" type="text" name="username" onChange={(e) => setUsername(e.target.value)}></input></div>
+                <div className="password-input"> Password <input className="pass" type="password" name="password" onChange={(e) => setPassword(e.target.value)}></input> </div> */}
+                {/* <Link to={"/input-email"}>
+                    <div style={{ marginTop: "15px" }}><a href="">Forgot password?</a></div>
+                </Link> */}
+                <Box sx={{ marginTop: "50px", display: "flex", alignItems: "center", gap: 2 }}>
+                    <img src="trelloicon.png" style={{ width: "50px", height: "50px" }}></img>
+                    <span style={{ fontSize: "25px", fontFamily: "var(--font-family-text,'Charlie Text',sans-serif)" }}>Trello</span>
+                </Box>
+                <Box sx={{ marginTop: "40px" }}>
+                    <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Fira Sans, Droid Sans, Helvetica Neue, sans-serif", fontWeight: "bold", fontSize: "20px" }}>Log in to continue</span>
+                </Box>
+                <Box
+                    component="form"
+                    sx={{
+                        '& > :not(style)': { m: 1, width: '400px' },
+                        display: "flex", flexDirection: "column", gap: 2, marginTop: "30px"
+                    }}
+                    noValidate
+                    autoComplete="off"
+                >
+                    <TextField type="text" id="outlined-basic" label="Email" variant="outlined"onChange={(e) => setEmail(e.target.value)} />
+                    <TextField type="password"id="outlined-basic" label="Password" variant="outlined" onChange={(e) => setPassword(e.target.value)}/>
+                </Box>
+
+                {/* <div className="btn"> */}
+                <Box sx={{ width: "fit-content", marginTop: "20px" }}>
+                    {/* <button className="btn-login" onClick={handelLogin}>Login</button>
                     <Link to={"/register"}>
                         <button className="btn-register">Register</button>
-                    </Link>
-                </div>
+                    </Link> */}
+
+
+                    <Button sx={{ width: "400px" }} variant="contained" onClick={handelLogin}>Sign in</Button>
+
+
+                </Box>
+                <Box
+                    sx={{
+                        width:"400px", display:"flex" ,justifyContent:"space-between", marginTop:"15px"
+                    }}
+                    >
+                    <Link to={"/Input-email"}>Forget password?</Link>
+                    <Link to={"/register"}>Create an account</Link>
+                    
+                </Box>
+                {/* </div> */}
                 {error ?
                     <div>
                         {error}
                     </div> : null
 
                 }
-            </div>
+            </Box>
+           
+            
+
+            {/* </div> */}
 
 
         </>

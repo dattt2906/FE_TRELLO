@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Column from "./column";
 import "./content.css"
-import { data } from "./data";
+import { data } from "../../data";
 import _, { cloneDeep, includes, map, isEmpty } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import { DndContext, PointerSensor, useSensor, useSensors, DragOverlay, defaultDropAnimation, defaultDropAnimationSideEffects,closestCorners } from '@dnd-kit/core';
 import { SortableContext, defaultAnimateLayoutChanges, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 import { arrayMove } from '@dnd-kit/sortable';
-import { generatePlaceholderCard } from "./untils/formaters";
+import { generatePlaceholderCard } from "../../untils/formaters";
 import axios from "axios";
 
 import Card from "./card";
@@ -33,25 +33,27 @@ const Content = () => {
     const [activeDragItemType, setActiveDragItemType] = useState(null);
     const [activeDragItemData, setActiveDragItemData] = useState(null);
     const [oldColumnWhenDraggingCard, setOldColumnWhenDraggingCard] = useState(null);
-    const userId= Number(localStorage.getItem("UserId"))
+    const boardId= Number(localStorage.getItem("boardId"))
 
 
 
     const pointerSensor = useSensor(PointerSensor, { activationConstraint: { distance: 10 } })  //yeu cau di chuyen chuot 10px thi moi kich hoat event dndCOntext, fix trương hop click bi goi event lam mat chuc nang
     const mySensors = useSensors(pointerSensor)
+    useEffect(() => {
+        getData()
 
-    const getData=()=>{
-
-
-        axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res=>{
+    }, [])
+    const getData= async()=>{
+       await axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`).then(res=>{
         if(res.data){
-            setColumns(res.data.cols)
             
+            setColumns(res.data.cols)
         }
 
 
         })
     }
+
     const setDataColumn=async (column)=>{
 
        await axios.put(`http://localhost:3001/table/update-column-by-id/${column.columnId}`,column).then(res=>{
@@ -66,16 +68,11 @@ const Content = () => {
     }
    
 
-    useEffect(() => {
-        getData()
 
+    // useEffect(() => {
 
-
-    }, [])
-    useEffect(() => {
-
-        // console.log("columns:",columns)
-    }, [columns])
+    //     // console.log("columns:",columns)
+    // }, [columns])
 
     const setColumnDataByColumnId=(column)=>{
 
@@ -94,10 +91,10 @@ const Content = () => {
         setIsAddColumn(false);
         let sort= columns.length 
         console.log("sort:", sort)
-        axios.post("http://localhost:3001/table/create-column" ,{columnName,userId,sort}).then(res=>{
+        axios.post("http://localhost:3001/table/create-column" ,{columnName,boardId,sort}).then(res=>{
             if(res.data){
 
-                axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`,{userId}).then(res=>{
+                axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`,{boardId}).then(res=>{
                     if(res.data){
                         setColumns(res.data.cols)
                         // console.log("colums:", res.data.cols)
@@ -125,7 +122,7 @@ const Content = () => {
         if(columnId){
          await axios.delete(`http://localhost:3001/table/del-column/${columnId}`, {columnId})
 
-       await axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`,{userId}).then(res=>{
+       await axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`,{boardId}).then(res=>{
                     if(res.data){
                         setColumns(res.data.cols)
                         console.log("colums:", res.data.cols)
@@ -413,6 +410,7 @@ setOldColumnWhenDraggingCard(null)
 
                         </DragOverlay> */}
                         {columns && columns.length > 0 && columns.sort((a,b)=>a.sort-b.sort).map((column, index) => {
+                            console.log("columnprint:",column)
                                 
                             return (
                                 <Column
