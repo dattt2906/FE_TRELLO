@@ -26,7 +26,7 @@ const Login = () => {
             if (res.data && res.data.Active == 1) {
                 localStorage.setItem("Token_User", JSON.stringify(res.data.access_token));
                 localStorage.setItem("UserId", JSON.stringify(res.data.id));
-                navigate("Home")
+                navigate("User-workspace")
             }
 
 

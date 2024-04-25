@@ -10,6 +10,7 @@ import Search from "./menus/search";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import ImageAvatars from "./menus/avartar";
+import Create from "./menus/create";
 
 
 import AppsIcon from '@mui/icons-material/Apps';
@@ -46,7 +47,7 @@ const Header = () => {
     
     
     <>
-    <Box sx={{height:"70px", display:"flex", justifyContent:"space-between"}}>
+    <Box sx={{height:"70px", display:"flex", justifyContent:"space-between",}}>
         <Box sx={{display:"flex", alignItems:"center", flexDirection:"row", height:"70px",gap:2,marginLeft:"20px"}}>
         <AppsIcon/>
         <Box sx={{display:"flex", alignItems:"center", gap:2, height:"70px"}}>
@@ -57,6 +58,9 @@ const Header = () => {
         <Recents/>
         <Starred/>
         <Teamplates/>
+        <Create/>
+       
+
         
         </Box>
         <Box sx={{display:"flex", alignItems:"center", gap:2, marginRight:"20px"}}>
@@ -69,6 +73,7 @@ const Header = () => {
 
 
         </Box>
+        
        
 
         
@@ -77,6 +82,7 @@ const Header = () => {
 
 
     </Box>
+    
     
     </>
         // <div className="header">

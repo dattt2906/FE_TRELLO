@@ -20,7 +20,7 @@ const EmailForgot = () => {
                 setEmailCheck("Vui long kiem tra mail de lay lai mat khau")
                 setError("")
             }
-        }).then(error=>{
+        }).catch(error=>{
             setError("Khong tim thay tai khoan email da dang ki")
             setEmailCheck("")
         })

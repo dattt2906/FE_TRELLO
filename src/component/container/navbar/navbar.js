@@ -4,6 +4,7 @@ import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import BoltIcon from '@mui/icons-material/Bolt';
 import BoardName from './boardname';
+
 const Navbar=()=>{
 
     return(
