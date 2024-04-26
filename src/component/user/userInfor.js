@@ -19,7 +19,8 @@ const UserInfor = () => {
     const [age, setAge] = useState("")
     const [sex, setSex] = useState("")
     const [address, setAddress] = useState("")
-    const userId = Number(localStorage.getItem("UserId"))
+    const userIdUrl=window.location.search
+    const userId= Number(userIdUrl.replace("?",""))
     const [img, setImg] = useState(null)
     const [avatarImg, setAvartarImg] = useState("")
 
@@ -137,7 +138,7 @@ const UserInfor = () => {
                 </Box>
                 <Box sx={{ display: "flex", justifyContent: "space-between", width: "480px", height: "40px" }}>
                     <Button variant="contained" onClick={changeInfor}>Save Changes</Button>
-                    <Link to={"/Change-password"}>
+                    <Link to={`/Change-password/user/?${userId}`}>
                         <Button variant="contained">Change password</Button>
                     </Link>
 

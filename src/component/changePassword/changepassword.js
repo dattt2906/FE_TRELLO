@@ -15,8 +15,11 @@ const ChangePassWord = () => {
     const [newPassword, setNewPassword] = useState("")
     const [retypePassword, setRetypePassword] = useState("")
     const [error, setError] = useState("")
-    const userId = Number(localStorage.getItem("UserId"))
+    // const userId = Number(localStorage.getItem("UserId"))
+    const userIdUrl=window.location.search
+  const userId= Number(userIdUrl.replace("?",""))
     const nav= useNavigate()
+    const [avatarImg, setAvatarImg]= useState("")
 
     useEffect(() => {
         axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res => {
@@ -28,6 +31,20 @@ const ChangePassWord = () => {
         })
 
     }, [password])
+
+    useEffect(() => {
+
+        axios.get(`http://localhost:3001/users/find-userinfo-by-userId/${userId}`).then(res => {
+
+            if (res.data) {
+                
+                setAvatarImg(res.data.avatarImg)
+            }
+        })
+
+    }, [])
+
+    
 
 
 
@@ -85,7 +102,7 @@ const ChangePassWord = () => {
             <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
                 <Box sx={{ display: "flex", alignItems: "center", marginTop: "50px" }}>
 
-                    <img style={{ width: "150px", height: "150px", borderRadius: "50%" }} src="london.jpg"></img>
+                    <img style={{ width: "150px", height: "150px", borderRadius: "50%" }} src={avatarImg}></img>
 
                 </Box>
 
@@ -107,7 +124,7 @@ const ChangePassWord = () => {
                     <Box sx={{ display: "flex", justifyContent: "space-between", width: "400px", paddingTop: "50px" }}>
 
                         <Button sx={{ width: "fit-content" }} variant="contained" onClick={changePassword}>Confirm</Button>
-                        <Link to={"/User-Info"}>
+                        <Link to={`/User-Info/?${userId}`}>
                             <Button sx={{ width: "fit-content" }} variant="contained">Back to user proflie</Button>
                         </Link>
 

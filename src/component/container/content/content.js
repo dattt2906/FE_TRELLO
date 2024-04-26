@@ -33,7 +33,12 @@ const Content = () => {
     const [activeDragItemType, setActiveDragItemType] = useState(null);
     const [activeDragItemData, setActiveDragItemData] = useState(null);
     const [oldColumnWhenDraggingCard, setOldColumnWhenDraggingCard] = useState(null);
-    const boardId= Number(localStorage.getItem("boardId"))
+    // const boardId= Number(localStorage.getItem("boardId"))
+    const queryString = window.location.search;
+
+    const params = new URLSearchParams(queryString);
+    const boardId = params.get('boardId');
+  
 
 
 

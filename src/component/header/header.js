@@ -51,7 +51,7 @@ const Header = () => {
         <Box sx={{display:"flex", alignItems:"center", flexDirection:"row", height:"70px",gap:2,marginLeft:"20px"}}>
         <AppsIcon/>
         <Box sx={{display:"flex", alignItems:"center", gap:2, height:"70px"}}>
-        <img style={{width:"30px", height:"30px"}}src="trelloicon.png"></img>
+        <img style={{width:"30px", height:"30px"}} src="trelloicon.png"></img>
         <span style={{ fontSize:"30px", fontWeight:'bold', fontFamily:""}}>Trello</span>
         </Box>
         <Workspaces/>

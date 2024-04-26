@@ -41,7 +41,11 @@ export default function Create() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const [isShowModalAddBoard, setIsShowModalAddBoard] = useState(false)
-    const userId = Number(localStorage.getItem("UserId"))
+    const queryString = window.location.search;
+
+    const params = new URLSearchParams(queryString);
+    const userId = params.get('userId');
+   
     const [workspaces, setWorkspace] = useState([])
     const [workspaceId, setWorkspaceId] = useState(null)
     const [boardname, setBoardname] = useState("")

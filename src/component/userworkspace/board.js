@@ -6,18 +6,22 @@ const Board=(props)=>{
     const{board}= props
     const nav= useNavigate()
     const handleClick=async ()=>{
-       localStorage.setItem("WorkspaceId", board.workspace)
-       localStorage.setItem("boardId", board.boardId)
+    //    localStorage.setItem("WorkspaceId", board.workspace)
+    //    localStorage.setItem("boardId", board.boardId)
        await axios.get(`http://localhost:3001/board/find-board-by-id/${board.boardId}`).then(res=>{
 
-            if(res.data){
-                localStorage.setItem("WorkspaceId", res.data.workspace.workspaceId)
-                localStorage.setItem("boardId", board.boardId)
-            }
+    //    localStorage.setItem("WorkspaceId", res.data.workspace.workspaceId);
+    //    localStorage.setItem("boardId", board.boardId);
+   
+       // Tạo URL với các tham số workspaceId và boardId
+       const url = `/Page/?userId=${res.data.workspace.user.userId}&workspaceId=${res.data.workspace.workspaceId}&boardId=${board.boardId}`;
+   
+       // Chuyển hướng đến URL mới
+       nav(url);
 
         })
 
-       nav("/home")
+       
     }
     return(
 

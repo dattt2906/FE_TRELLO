@@ -3,12 +3,17 @@ import Header from "../header/header";
 import { Box } from "@mui/material";
 import axios from "axios";
 import Workspace from "./workspace";
+import { replace } from "lodash";
 
 const UserWorkspace = () => {
     const [workspaces, setWorkspaces] = useState([])
     // const [boards, setBoards] = useState([])
-    const userId = Number(localStorage.getItem("UserId"))
+    // const userId=Number(localStorage.getItem("UserId"))
+    const queryString = window.location.search;
 
+    const params = new URLSearchParams(queryString);
+    const userId = params.get('userId');
+    
     useEffect(() => {
         axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res => {
 

@@ -21,13 +21,13 @@ root.render(
   <BrowserRouter>
   <Routes>
     <Route path='/' element={<Login />}></Route>
-    <Route path='Home' element={<App />}></Route>
+    <Route path='Page' element={<App />}></Route>
     <Route path='Register' element={<Register />}></Route>
     <Route path='Retype-password' element={<ForgotPass/>}></Route>
     <Route path='Input-email' element={<EmailForgot/>}></Route>
-    <Route path='User-Info' element={<UserInfor/>}></Route>
-    <Route path='Change-password' element={<ChangePassWord/>}></Route>
-    <Route path='User-workspace' element={<UserWorkspace/>}></Route>
+    <Route path='User-Info/' element={<UserInfor/>}></Route>
+    <Route path='Change-password/User/' element={<ChangePassWord/>}></Route>
+    <Route path='Home/Users' element={<UserWorkspace/>}></Route>
 
   </Routes>
   
