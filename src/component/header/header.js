@@ -10,6 +10,7 @@ import Search from "./menus/search";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import ImageAvatars from "./menus/avartar";
+import Create from "./menus/create";
 
 
 import AppsIcon from '@mui/icons-material/Apps';
@@ -50,13 +51,15 @@ const Header = () => {
         <Box sx={{display:"flex", alignItems:"center", flexDirection:"row", height:"70px",gap:2,marginLeft:"20px"}}>
         <AppsIcon/>
         <Box sx={{display:"flex", alignItems:"center", gap:2, height:"70px"}}>
-        <img style={{width:"30px", height:"30px"}}src="trelloicon.png"></img>
+        <img style={{width:"30px", height:"30px"}} src="trelloicon.png"></img>
         <span style={{ fontSize:"30px", fontWeight:'bold', fontFamily:""}}>Trello</span>
         </Box>
         <Workspaces/>
         <Recents/>
         <Starred/>
         <Teamplates/>
+        <Create/>
+        
         
         </Box>
         <Box sx={{display:"flex", alignItems:"center", gap:2, marginRight:"20px"}}>

@@ -13,7 +13,7 @@ import axios from "axios";
 const Column = (props) => {
   const { column, columnDel, setColumnDataByColumnId, getData } = props;
   const cards = column.rows;
-  // console.log("cards:" , cards)
+  console.log("cards:" , cards)
   const [Cards, setCards] = useState(cards);
   // console.log("Cards", Cards)
   const columnId = column.columnId
@@ -126,7 +126,7 @@ const Column = (props) => {
         </div>
         <SortableContext items={Cards?.map(c => c.rowId)} strategy={verticalListSortingStrategy}>
           <div className="list-card">
-            {Cards && Cards.length > 0 && Cards.sort((a,b)=>a.sort-b.sort).map((card, index) => {
+            {Cards && Cards.length > 0 && Cards.sort((a,b)=>(a.sort-b.sort)).map((card, index) => {
               // console.log(card)
               return (
                 <Card

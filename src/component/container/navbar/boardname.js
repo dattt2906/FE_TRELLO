@@ -22,7 +22,11 @@ import axios from 'axios';
 // }
 
 export default function BoardName() {
-    const boardId= Number(localStorage.getItem("boardId"))
+    // const boardId= Number(localStorage.getItem("boardId"))
+    const queryString = window.location.search;
+
+    const params = new URLSearchParams(queryString);
+    const boardId = params.get('boardId');
 const[boardName, setBoardName]=useState("")
 useEffect(()=>{
  axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`).then(res=>{

@@ -18,7 +18,13 @@ import { Link } from 'react-router-dom';
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const UserId= Number(localStorage.getItem("UserId"))
+  // const UserId= Number(localStorage.getItem("UserId"))
+  const queryString = window.location.search;
+
+    const params = new URLSearchParams(queryString);
+    const userId = params.get('userId');
+    const[userInfoId,setUserInfoId]= useState(null)
+    
   const [imgAvatar, setImgAvatar]=useState("")
   const nav=useNavigate()
 
@@ -27,7 +33,7 @@ export default function AccountMenu() {
   };
 
   const handleProfile=()=>{
-      nav("/User-Info")
+    nav(`/User-Info/?${userInfoId}`)
   }
   const handleLogout=()=>{
     localStorage.clear()
@@ -39,8 +45,8 @@ export default function AccountMenu() {
 
   useEffect(()=>{
 
-    axios.get(`http://localhost:3001/users/find-userinfo-by-userId/${UserId}`).then(res=>{
-
+    axios.get(`http://localhost:3001/users/find-userinfo-by-userId/${userId}`).then(res=>{
+      setUserInfoId(res.data.userInforId)
       setImgAvatar(res.data.avatarImg)
     })
 

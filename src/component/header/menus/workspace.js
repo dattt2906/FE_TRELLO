@@ -4,10 +4,18 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Box from '@mui/material/Box';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export default function Workspaces() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const[workspaces, setWorkspaces] = useState([])
+  // const userId= Number(localStorage.getItem("UserId"))
+  const queryString = window.location.search;
+    
+  const params = new URLSearchParams(queryString);
+  const userId = params.get('userId');
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -16,6 +24,16 @@ export default function Workspaces() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res => {
+
+        if (res.data) {
+            setWorkspaces(res.data.workspaces)
+        }
+    })
+
+}, [])
 
   return (
     <Box>
@@ -39,9 +57,9 @@ export default function Workspaces() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+         {workspaces && workspaces.length > 0 && workspaces.map((workspace) => (
+        <MenuItem onClick={handleClose}>{workspace.workspacename}</MenuItem>
+      ))}
       </Menu>
       </Box>
   );

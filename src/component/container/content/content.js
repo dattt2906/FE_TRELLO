@@ -33,16 +33,30 @@ const Content = () => {
     const [activeDragItemType, setActiveDragItemType] = useState(null);
     const [activeDragItemData, setActiveDragItemData] = useState(null);
     const [oldColumnWhenDraggingCard, setOldColumnWhenDraggingCard] = useState(null);
-    const boardId= Number(localStorage.getItem("boardId"))
+    const [boardId, setBoardId]= useState(null)
+    // const boardId= Number(localStorage.getItem("boardId"))
+    // const queryString = window.location.search;
+
+    // const params = new URLSearchParams(queryString);
+    //   setBoardId(params.get('boardId'));
+    useEffect(()=>{
+         const queryString = window.location.search;
+
+    const params = new URLSearchParams(queryString);
+      setBoardId(params.get('boardId'));
+      getData()
+
+    },[boardId])
 
 
 
     const pointerSensor = useSensor(PointerSensor, { activationConstraint: { distance: 10 } })  //yeu cau di chuyen chuot 10px thi moi kich hoat event dndCOntext, fix trương hop click bi goi event lam mat chuc nang
     const mySensors = useSensors(pointerSensor)
-    useEffect(() => {
-        getData()
+    // useEffect(() => {
+    //     getData()
 
-    }, [])
+    // }, [])
+
     const getData= async()=>{
        await axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`).then(res=>{
         if(res.data){
@@ -409,7 +423,7 @@ setOldColumnWhenDraggingCard(null)
 
 
                         </DragOverlay> */}
-                        {columns && columns.length > 0 && columns.sort((a,b)=>a.sort-b.sort).map((column, index) => {
+                        {columns && columns.length > 0 && columns.sort((a,b)=>(a.sort-b.sort)).map((column, index) => {
                             console.log("columnprint:",column)
                                 
                             return (

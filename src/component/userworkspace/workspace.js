@@ -20,7 +20,7 @@ const Workspace = (props) => {
             <Box>
                 {workspace.workspacename}
 
-                <Box sx={{display:"flex" ,gap:2, marginTop:"20px", flexWrap:"wrap"}}>
+                <Box sx={{display:"flex" ,gap:3, marginTop:"20px", flexWrap:"wrap"}}>
 
                     {boards && boards.length > 0 && boards.map((board) => (
                            

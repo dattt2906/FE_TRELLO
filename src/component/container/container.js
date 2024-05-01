@@ -17,8 +17,8 @@ const Container = () => {
                 <Sidebar></Sidebar>
                 <div className="main-content">
                     <Navbar></Navbar>
-                    {/* <Content>
-                    </Content> */}
+                    <Content>
+                    </Content>
                 </div>
             </div>
 
