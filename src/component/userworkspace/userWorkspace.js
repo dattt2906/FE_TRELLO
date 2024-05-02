@@ -31,22 +31,7 @@ const UserWorkspace = () => {
 
             <Box sx={{ display: "flex", marginTop: "50px", justifyContent:"center"}}>
 
-                {/* <Box sx={{ width: "400px", display: "flex", height: "fit-content", backgroundColor: "aliceblue", marginLeft: "200px" }}>
-                    <Box sx={{ fontSize: "24px", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif", marginTop: "20px", marginLeft: "20px", width: "100%" }}>
-
-                        Workspaces
-                        <Box sx={{ marginTop: "50px", display: "flex", flexDirection: "column", gap: 5 }}>
-                            {workspaces && workspaces.length > 0 && workspaces.map((workspace) => (
-
-                                <Box sx={{ width: "100%", height: "50px", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }}>
-                                    {workspace.workspacename}
-                                </Box>
-                            ))}
-                        </Box>
-                    </Box>
-
-                </Box> */}
-                <Box sx={{ overflow:"auto" ,width:"100%", height: "500px", backgroundColor: "violet", marginRight: "300px", marginLeft:"300px" }}>
+                <Box sx={{ overflow:"auto" ,width:"100%", height: "700px", backgroundColor: "violet", marginRight: "300px", marginLeft:"300px" }}>
 
 
                     <Box sx={{fontSize: "24px", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif", marginTop: "20px", marginLeft: "20px", marginBottom:"20px", marginRight:"20px"}}>
@@ -55,27 +40,7 @@ const UserWorkspace = () => {
                         <Box sx={{ marginTop: "50px", display: "flex", flexDirection: "column", gap: 5 }}>
                         {workspaces && workspaces.length > 0 && workspaces.map((workspace) => (
 
-                            // <Box sx={{ width: "100%", height: "fit-content", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}}>
-                            //     {workspace.workspacename} 
-                            //     <Box sx={{marginTop:"10px", display:"flex", gap:2}}>
-                            //     <Box sx={{height:"100px", width:"200px",backgroundColor:"aliceblue", }}>
-
-
-                            //     </Box>
-                            //     <Box sx={{height:"100px", width:"200px",backgroundColor:"aliceblue", }}>
-
-
-                            //     </Box>
-                            //     <Box sx={{height:"100px", width:"200px",backgroundColor:"aliceblue", }}>
-
-
-                            //     </Box>
-                            //     <Box sx={{height:"100px", width:"200px",backgroundColor:"aliceblue", }}>
-
-
-                            //     </Box>
-                            //     </Box>
-                            // </Box>
+                          
                             <Workspace
                             key={workspace.id}
                             workspace={workspace}

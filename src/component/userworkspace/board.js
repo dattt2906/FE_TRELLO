@@ -23,13 +23,14 @@ const Board = (props) => {
     }
     return (
 
-        <>
-            <Box onClick={handleClick} sx={{ height: "100px", width:"212px", backgroundColor: "aliceblue", cursor: "pointer", backgroundImage: "url('anh-ho.jpg')"}}>
+        <>  
+     
+            <Box onClick={handleClick} sx={{ height: "100px", width:"270px", backgroundColor: "aliceblue", cursor: "pointer", backgroundImage: "url('anh-ho.jpg')", marginTop:"20px", marginLeft:"50px", marginBottom:"20px"}}>
 
                 {board.boardname}
 
             </Box>
-        </>
+           </>
     )
 }
 export default Board;

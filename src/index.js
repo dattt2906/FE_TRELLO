@@ -11,6 +11,7 @@ import ChangePassWord from './component/changePassword/changepassword';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import UserWorkspace from './component/userworkspace/userWorkspace';
+import WorkspaceArea from './component/workspace-area/workspace-area';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -36,6 +37,7 @@ root.render(
     <Route path='User-Info/' element={<UserInfor/>}></Route>
     <Route path='Change-password/User/' element={<ChangePassWord/>}></Route>
     <Route path='Home/Users' element={<UserWorkspace/>}></Route>
+    <Route path='WorkspaceArea' element={<WorkspaceArea />}></Route>
 
   </Routes>
   

@@ -105,7 +105,7 @@ export default function Create() {
         axios.post("http://localhost:3001/board/create-board", { boardname, workspaceId }).then(res => {
             if (res.data) {
                 let newBoardId = res.data.boardId; // Đây là giá trị mới bạn muốn thay thế
-                const newUrl = queryString.replace(/(boardId=)\d+/, '$1' + newBoardId);
+                const newUrl =  `/Page/?userId=${userId}&workspaceId=${workspaceId}&boardId=${res.data.boardId}`;
                 
                 nav(newUrl)
                 window.location.reload()
@@ -172,7 +172,7 @@ export default function Create() {
 
                                     </Box>
                                     <Box sx={{marginTop:"20px"}}>
-                                    <JoyButton type='submit' sx={{ width: "270px" }} onClick={handleCreateBoard}>Create</JoyButton>
+                                    <JoyButton type='submit' sx={{ width: "270px" }} >Create</JoyButton>
 
                                     </Box>
 

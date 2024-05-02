@@ -25,6 +25,7 @@ const Sidebar = () => {
     const workspaceId = params.get('workspaceId');
     const [workspacename, setWorkspacename] = useState()
     const [boards, setBoards]= useState([])
+    const [userId, setUserId]= useState(null)
 
     const nav= useNavigate()
    
@@ -36,6 +37,7 @@ const Sidebar = () => {
             if (res.data) {
                 setWorkspacename(res.data.workspacename)
                 setBoards(res.data.boards)
+                setUserId(res.data.user.userId)
             }
 
         })
@@ -45,7 +47,7 @@ const Sidebar = () => {
     }, [])
     const changeBoard=(boardId)=>{
 
-        const newUrl = queryString.replace(/(boardId=)\d+/, '$1' + boardId);
+        const newUrl = `/Page/?userId=${userId}&workspaceId=${workspaceId}&boardId=${boardId}`;
         nav(newUrl)
         window.location.reload()
         
@@ -71,20 +73,6 @@ const Sidebar = () => {
 
     return (
         <>
-
-            {/* <div className="sidebar">
-                <div className="nameWorkSpace"></div>
-                <div className="list-sidebar">
-                    <div><i class="fa fa-bars board-icon" />Board</div>
-                    <div><i class="fa fa-user user-icon" />Member <i className="fa fa-plus icon-add-member"></i></div>
-                    <div><i class="fa fa-gear setting-icon" />Workspace settings <i class="fa fa-chevron-down icon-down-setting"></i></div>
-                    <div>Workspace view</div>
-                    <div><i class="fa fa-table table-icon"></i>Table</div>
-                    <div><i class="fa fa-calendar calendar-icon"></i>Celedar</div>
-                </div>
-
-
-            </div> */}
             <Box sx={{width: "250px", backgroundColor: "hsla(260,80%,94.1%,0.9)", display: "flex", flexDirection: "column", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif" }}>
                 <Box sx={{ marginLeft: "20px", display: "flex", alignItems: "center", width: "230px", height: "80px", fontSize: "30px" }}>
 
@@ -134,7 +122,7 @@ const Sidebar = () => {
                         }}
                     >
                         <FixedSizeList
-                            height={150}
+                            height={250}
                             width={240}
                             itemSize={46}
                             itemCount={boards.length}

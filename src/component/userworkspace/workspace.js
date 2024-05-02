@@ -18,7 +18,9 @@ const Workspace = (props) => {
 
         <>
             <Box>
+                <Box sx={{marginLeft:"50px"}}>
                 {workspace.workspacename}
+                </Box>
 
                 <Box sx={{display:"flex" ,gap:3, marginTop:"20px", flexWrap:"wrap"}}>
 

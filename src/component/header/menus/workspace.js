@@ -6,11 +6,13 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Box from '@mui/material/Box';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function Workspaces() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const[workspaces, setWorkspaces] = useState([])
+  const nav= useNavigate()
   // const userId= Number(localStorage.getItem("UserId"))
   const queryString = window.location.search;
     
@@ -24,6 +26,14 @@ export default function Workspaces() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleChangeWorkspace=(workspaceId)=>{
+
+    const newUrl = `/WorkspaceArea/?userId=${userId}&workspaceId=${workspaceId}`;
+    nav(newUrl)
+    window.location.reload()
+    
+}
 
   useEffect(() => {
     axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res => {
@@ -58,7 +68,7 @@ export default function Workspaces() {
         }}
       >
          {workspaces && workspaces.length > 0 && workspaces.map((workspace) => (
-        <MenuItem onClick={handleClose}>{workspace.workspacename}</MenuItem>
+        <MenuItem onClick={()=>handleChangeWorkspace(workspace.workspaceId)}>{workspace.workspacename}</MenuItem>
       ))}
       </Menu>
       </Box>

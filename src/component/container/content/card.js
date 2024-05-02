@@ -1,10 +1,33 @@
 import "./card.css"
-import { useState,useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import FormControl from '@mui/joy/FormControl';
+import FormLabel from '@mui/joy/FormLabel';
+import Input from '@mui/joy/Input';
+import JoyButton from '@mui/joy/Button';
+import Modal from '@mui/material/Modal';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 800,
+  height: 500,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 const Card=(props)=>{
+  const [anchorEl, setAnchorEl] = React.useState(null);
     const {card, cardDel}=props;
     const [isShowEditCard, setIsShowEditCard]= useState(false);
+    const [openModal, setOpenModal] = React.useState(false);
     const {
       attributes,listeners,setNodeRef,transform,transition, isDragging} = useSortable({
           id:card.rowId,
@@ -19,6 +42,7 @@ const Card=(props)=>{
      
 
     };
+    const handleCloseModal = () =>{ setOpenModal(false);handleClose() }
 
     const[changeContentCard,setChangeContentCard]= useState(card.content);
     useEffect(()=>{
@@ -26,15 +50,64 @@ const Card=(props)=>{
           card.content=changeContentCard;
       }
     },[changeContentCard])
+    const handleOpenModal = () => {
+        
+        
+      setOpenModal(true);
+     
+     
+  }
+  const handleClose = () => {
+    setAnchorEl(null);
+
+
+};
     
     return(
             <>
             <div className="card"
-             ref={setNodeRef}
-             style={dndKitCardStyles}
-             {...attributes}
-             {...listeners}>
-               <input className="change-content" value={changeContentCard} onChange={(e)=>setChangeContentCard(e.target.value)}></input>
+            //  ref={setNodeRef}
+            //  style={dndKitCardStyles}
+            //  {...attributes}
+            //  {...listeners}
+            >
+               <input className="change-content" value={card.content} onClick={handleOpenModal}></input>
+               <Modal
+                        open={openModal}
+                        onClose={handleCloseModal}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style}>
+                            <Typography id="modal-modal-title" variant="h6" component="Box">
+                                <Box>
+                                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                                        <span style={{ textAlign: "center", width: "100%" }}>Card Detail</span>
+                                    </Box>
+                                    <Box sx={{width:"70%", marginTop:"40px", display:"flex", flexDirection:"column", gap:5}}>
+
+                                        <FormControl>
+                                            <FormLabel>Description</FormLabel>
+                                            <Input  sx={{height:"100px", marginTop:"0px"}} />
+
+                                        </FormControl>
+                                        <FormControl>
+                                            <FormLabel>Activity</FormLabel>
+                                            <Input sx={{height:"100px", paddingTop:"10px"}}/>
+
+                                        </FormControl>
+
+                                    </Box>
+                                    <Box sx={{marginTop:"20px"}}>
+                                    <JoyButton type='submit' sx={{ width: "270px" }}>Create</JoyButton>
+
+                                    </Box>
+
+                                </Box>
+                            </Typography>
+
+                        </Box>
+                    </Modal>
                <i class="fa fa-pencil icon-edit-card" onClick={()=> setIsShowEditCard(true)}></i>
             </div>
             
