@@ -55,7 +55,7 @@ const WorkspaceArea = () => {
 
 
                         </Box>
-                        <Box sx={{width:"calc(100% - 100px)", height:"fit-content", backgroundColor:"gray",  marginLeft:"50px", marginRight:"50px",display:"flex",flexDirection:" row", gap:1, flexDirection:"row", flexWrap:"wrap",marginTop:"20px", marginLeft:"35px"}}>
+                        <Box sx={{width:"calc(100% - 100px)", height:"fit-content",  marginLeft:"50px", marginRight:"50px",display:"flex",flexDirection:" row", gap:1, flexDirection:"row", flexWrap:"wrap",marginTop:"20px", marginLeft:"35px"}}>
                         {boards && boards.length > 0 && boards.map((board) => (
                            
                            <Board

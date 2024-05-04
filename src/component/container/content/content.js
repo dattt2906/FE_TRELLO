@@ -119,16 +119,6 @@ const Content = () => {
             }
 
         })
-        
-        // const _column = _.cloneDeep(columns);
-        // _column.push({
-        //     id: uuidv4(),
-        //     columnName: columnName,
-        //     cards: []
-        // });
-        // setColumns(_column);
-        // setColumnName("");
-
     }
 
     const columnDel =async (column) => {
@@ -147,10 +137,6 @@ const Content = () => {
 
         }
     
-        // let newColumns = [...columns];
-        // const index = newColumns.findIndex(item => item.id === column.id);
-        // newColumns.splice(index, 1);
-        // setColumns(newColumns);
     }
     const findColumnByCardId = (cardId) => {
 
@@ -393,10 +379,7 @@ setActiveDragItemData(null)
 setOldColumnWhenDraggingCard(null)
 
     }   
-    // console.log(activeDragItemId)
-    // console.log(activeDragItemType)
-    // console.log(activeDragItemData) 
-    // console.log(oldColumnWhenDraggingCard)    
+
         
     
   
@@ -410,7 +393,7 @@ setOldColumnWhenDraggingCard(null)
             onDragEnd={handleOnDragEnd}
         >
 
-            <div className="content">
+            <div className="content" style={{backgroundColor:"aliceblue"}}>
 
             {/* props cua dragoverlays  */}
                 <SortableContext items={columns?.map(c => c.columnId)} strategy={horizontalListSortingStrategy}>

@@ -31,7 +31,7 @@ const UserWorkspace = () => {
 
             <Box sx={{ display: "flex", marginTop: "50px", justifyContent:"center"}}>
 
-                <Box sx={{ overflow:"auto" ,width:"100%", height: "700px", backgroundColor: "violet", marginRight: "300px", marginLeft:"300px" }}>
+                <Box sx={{ overflow:"auto",width:"100%", height: "700px", marginRight: "300px", marginLeft:"300px" }}>
 
 
                     <Box sx={{fontSize: "24px", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif", marginTop: "20px", marginLeft: "20px", marginBottom:"20px", marginRight:"20px"}}>

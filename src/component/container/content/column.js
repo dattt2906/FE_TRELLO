@@ -91,12 +91,7 @@ const Column = (props) => {
 
     }
 
-    // let newCard = [...Cards];
-    // const index = newCard.findIndex(item => item.id === card.id);
-    // newCard.splice(index, 1);
-    // setCards(newCard);
-    // column.cards = newCard
-    // setColumnDataByColumnId(column)
+
 
   }
   //Khi cac gia tri cua column thay doi thi column.title duoc gan cho changTitle
