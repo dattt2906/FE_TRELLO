@@ -37,6 +37,7 @@ const Content = () => {
     const [activeDragItemData, setActiveDragItemData] = useState(null);
     const [oldColumnWhenDraggingCard, setOldColumnWhenDraggingCard] = useState(null);
     const [boardId, setBoardId]= useState(null)
+    const [boardbackground, setBoardBackground]= useState("")
     // const boardId= Number(localStorage.getItem("boardId"))
     // const queryString = window.location.search;
 
@@ -65,6 +66,7 @@ const Content = () => {
         if(res.data){
             
             setColumns(res.data.cols)
+            setBoardBackground(res.data.boardbackground)
         }
 
 
@@ -396,7 +398,7 @@ setOldColumnWhenDraggingCard(null)
             onDragEnd={handleOnDragEnd}
         >
 
-            <div className="content" style={{backgroundColor:"aliceblue"}}>
+            <div className="content" style={{backgroundColor:"aliceblue", backgroundImage:`url(${boardbackground})`}}>
 
             {/* props cua dragoverlays  */}
                 <SortableContext items={columns?.map(c => c.columnId)} strategy={horizontalListSortingStrategy}>

@@ -14,6 +14,9 @@ import ClearIcon from '@mui/icons-material/Clear';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useNavigate } from 'react-router-dom';
+import { v4 } from 'uuid';
+import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
+import { imageDb } from '../../../firebase';
 
 
 
@@ -53,6 +56,8 @@ export default function Create() {
     const [boardname, setBoardname] = useState("")
 
     const [openModal, setOpenModal] = React.useState(false);
+    const [img, setImg] = useState(null)
+    const [boardbackground, setBoardBackground] = useState("")
     const handleOpenModal = () => {
         
         
@@ -60,6 +65,23 @@ export default function Create() {
        
        
     }
+    useEffect(() => {
+        if (img) {
+            handleUpload();
+        }
+    }, [img]);
+    const handleUpload = () => {
+
+        const imageRef = ref(imageDb, `images/${v4()}`)
+        uploadBytes(imageRef, img).then((snapshot) => {
+
+            getDownloadURL(snapshot.ref).then((img) => {
+                setBoardBackground(img)
+                
+            })
+        })
+    }
+
 
 
     const handleCloseModal = () =>{ setOpenModal(false);handleClose() }
@@ -102,7 +124,7 @@ export default function Create() {
         handleClose()
     }
     const handleCreateBoard = () => {
-        axios.post("http://localhost:3001/board/create-board", { boardname, workspaceId }).then(res => {
+        axios.post("http://localhost:3001/board/create-board", { boardname, workspaceId ,boardbackground}).then(res => {
             if (res.data) {
                 let newBoardId = res.data.boardId; // Đây là giá trị mới bạn muốn thay thế
                 const newUrl =  `/Page/?userId=${userId}&workspaceId=${workspaceId}&boardId=${res.data.boardId}`;
@@ -189,12 +211,28 @@ export default function Create() {
 
 
             </Box>
-            <Box sx={{ height: "fit-content", width: "300px", marginTop: "345px", position: "absolute", marginLeft: "770px", backgroundColor: "hsla(260, 80%, 94.1%, 0.9)", display: isShowModalAddBoard ? "block" : "none" ,zIndex:1 }}>
+            <Box sx={{ height: "fit-content", width: "300px", marginTop: "470px", position: "absolute", marginLeft: "770px", backgroundColor: "hsla(260, 80%, 94.1%, 0.9)", display: isShowModalAddBoard ? "block" : "none" ,zIndex:1 }}>
                 <Box sx={{ marginLeft: "15px", marginRight: "15px" }}>
                     <Box sx={{ display: "flex", justifyContent: "center" }}>
                         <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif", fontSize: "17px", width: "250px", textAlign: "center" }}> Create board</span>
 
                         <ClearIcon onClick={(e) => setIsShowModalAddBoard(false)} />
+                    </Box>
+                    {boardbackground ?
+                        <Box sx={{display:"flex", justifyContent:"center", marginTop:"15px"}}>
+                        <img style={{with:"70px", height:"70px"}} src={boardbackground}></img>
+                        </Box>
+                        :
+                        null
+                    }
+                    <Box sx={{marginTop:"30px"}}>
+
+                    <FormControl>
+                            <FormLabel>Background</FormLabel>
+                            <input type='file' onChange={(e) => { setImg(e.target.files[0]) }} style={{ display: "none" }} />
+                            <Button sx={{height:"30px", width:"270px"}}variant="contained" onClick={() => { document.querySelector('input[type="file"]').click(); }}>Upload from computer</Button>
+                        </FormControl>
+
                     </Box>
                     <Box sx={{ marginTop: "15px" }}>
                         <FormControl>

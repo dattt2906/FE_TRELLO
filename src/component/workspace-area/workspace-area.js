@@ -42,7 +42,7 @@ const WorkspaceArea = () => {
 
                     <Sidebar />
 
-                    <Box sx={{ height: "calc(100vh - 70px)", width: "calc(100% - 250px)", backgroundColor: "aliceblue", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif" }}>
+                    <Box sx={{ height: "calc(100vh - 70px)", width: "calc(100% - 250px)", backgroundColor: "white", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif" }}>
                         <Box sx={{ fontSize: "30px", textAlign: "center", marginTop: "20px" }}>
 
 

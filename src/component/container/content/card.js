@@ -18,6 +18,7 @@ import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
 import { imageDb } from "../../../firebase";
 import EditIcon from '@mui/icons-material/Edit';
 import Textarea from '@mui/joy/Textarea';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 
 const style = {
@@ -39,10 +40,14 @@ const Card = (props) => {
   const [isShowEditCard, setIsShowEditCard] = useState(false);
   const [openModal, setOpenModal] = React.useState(false);
   const [showAddImage, setShowAddImage] = useState(false)
-  const [rowDetail, setRowDetail] = useState([])
-  const [img, setImg] = useState(null)
-  const [imageCard, setImageCard] = useState("")
-  const [isHovered, setIsHovered] = useState(false);
+  const [content, setContent] = useState("")
+  const [img, setImg] = useState("")
+  
+  const [description, setDescription]= useState("")
+  const [activity, setActivity]= useState("")
+  const [attachment, setAttachment]= useState("")
+  
+
 
   const {
     attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -73,24 +78,49 @@ const Card = (props) => {
       handleUpload();
     }
   }, [img]);
-  const handleUpload = () => {
+
+  const handleUpload =() => {
 
     const imageRef = ref(imageDb, `images/${v4()}`)
     uploadBytes(imageRef, img).then((snapshot) => {
 
       getDownloadURL(snapshot.ref).then((img) => {
-        setImageCard(img)
-      })
-    })
-  }
-  const handleOpenModal = () => {
+        setAttachment(img)
 
-    axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
-      if (res.data) {
-        setRowDetail(res.data)
-        console.log("data:", res.data)
+      })
+      
+    })
+
+  }
+  useEffect(()=>{
+    if(attachment){
+    axios.put(`http://localhost:3001/table/update-rowDetail/${card.rowId}`,{description,attachment,activity}).then(res=>{
+      if(res.data){
+        console.log("update-rowDetail-success")
       }
     })
+  }
+
+  },[attachment])
+  
+  useEffect(()=>{
+    axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
+      if (res.data) {
+        setContent(res.data.content)
+        setDescription(res.data.description)
+        setActivity(res.data.activity)
+        setAttachment(res.data.attachment)
+        
+      }
+    })
+
+    
+  },[])
+ 
+
+  const handleOpenModal = () => {
+
+   
     setOpenModal(true);
 
 
@@ -106,6 +136,15 @@ const Card = (props) => {
     setShowAddImage(false)
 
   };
+  const changeRowDetail=()=>{
+
+    axios.put(`http://localhost:3001/table/update-rowDetail/${card.rowId}`,{description,attachment,activity}).then(res=>{
+      if(res.data){
+        alert("Cap nhat thong tin card thanh cong")
+      }
+    })
+
+  }
 
   return (
     <>
@@ -116,14 +155,24 @@ const Card = (props) => {
         {...listeners}
       >
         {/* <input className="change-content" value={card.content} onClick={handleOpenModal}></input> */}
-        <Box sx={{width:"230px", minHeight:"48px",height:"fit-content",borderRadius:"10px", border:"none",fontSize:"20px", display:"flex", justifyContent:"center", flexDirection:"column", gap:2.5}} onClick={handleOpenModal}>
-        
-          <Box sx={{marginBottom:"10px", marginLeft:"10px"}}>
-          
-          {card.content}
+        <Box sx={{ width: "230px", minHeight: "48px", height: "fit-content", borderRadius: "10px", border: "none", fontSize: "20px", display: "flex", justifyContent: "center", flexDirection: "column", gap: 2.5 }} onClick={handleOpenModal}>
+          {/* {imageCard ?
+
+            <img style={{ width: "280px", height: "200px" }} src={imageCard}></img>
+            :
+            null
+          } */}
+          {attachment?
+          <img style={{ width: "280px", height: "200px" }} src={attachment}></img>
+            :
+            null
+          }
+          <Box sx={{ marginBottom: "10px", marginLeft: "10px" }}>
+            
+            {card.content}
           </Box>
-          
-          </Box>
+
+        </Box>
         <Modal
           open={openModal}
           onClose={handleCloseModal}
@@ -135,7 +184,7 @@ const Card = (props) => {
               <Box>
                 <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 1 }}>
                   <CreditCardIcon />
-                  <span>{rowDetail.content}</span>
+                  <span>{content}</span>
                 </Box>
                 <Box>
                   <span>In list</span>
@@ -145,20 +194,20 @@ const Card = (props) => {
                   <FormControl>
                     <FormLabel>Description</FormLabel>
                     {showAddImage === true ?
-                      <Box sx={{ position: "absolute", marginTop: "30px", zIndex: 1, marginLeft: "500px" }}>
+                      <Box sx={{ display:"flex",position: "absolute", marginTop: "30px", zIndex: 1, marginLeft: "500px" }}>
 
-                        <input type='file' onChange={(e) => { setImg(e.target.files[0]) }} style={{ display: "none" }} /> 
-                         <Button onClick={() => { document.querySelector('input[type="file"]').click(); }}> <AddPhotoAlternateIcon /></Button>
-
+                        <input type='file' onChange={(e) => { setImg(e.target.files[0]) }} style={{ display: "none" }} />
+                        <Button onClick={() => { document.querySelector('input[type="file"]').click(); }}> <AddPhotoAlternateIcon /></Button>
+                 
 
                       </Box>
                       :
                       <Box></Box>
                     }
 
-                   <Textarea sx={{paddingTop:"30px",width:"100%", minHeight:"100px",height:"fit-content",wordBreak:"break-all"}} onClick={()=> setShowAddImage(true)}></Textarea>
+                    <Textarea sx={{ border:"none",paddingTop: "30px", width: "100%", minHeight: "100px", height: "fit-content", wordBreak: "break-all" }} value={description} onClick={() => setShowAddImage(true)} onChange={(e)=> setDescription(e.target.value)}></Textarea>
                     <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
-                      <Button sx={{ width: "20px", marginTop: "10px" }} variant="contained" disableElevation>
+                      <Button sx={{ width: "20px", marginTop: "10px" }} variant="contained" disableElevation onClick={changeRowDetail}>
                         Save
                       </Button>
                       <Button onClick={cancelInput} sx={{ width: "20px", marginTop: "10px", backgroundColor: "gray" }} variant="contained" disableElevation>
@@ -173,12 +222,11 @@ const Card = (props) => {
                     <span>Attachment</span>
 
                   </Box>
-                  {imageCard ?
-
-                    <img style={{ width: "250px", height: "200px" }} src={imageCard}></img>
+                  
+                    {attachment?
+                    <img style={{ width: "250px", height: "200px" }} src={attachment}></img>
                     :
-                    null
-                  }
+                    null}
 
                   <FormControl>
                     <FormLabel>Activity</FormLabel>
@@ -197,7 +245,7 @@ const Card = (props) => {
           </Box>
         </Modal>
         <i class="fa fa-pencil icon-edit-card" onClick={() => setIsShowEditCard(true)}></i>
-       
+
       </div>
 
       {!isShowEditCard === false ?
