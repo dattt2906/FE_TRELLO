@@ -42,7 +42,7 @@
     }
 
 .button-add-column{
-    margin-top: 5px;
+    margin-top: 10px;
     margin-bottom: 10px;
     margin-left: 10px;
     
@@ -67,6 +67,6 @@
 .icon-cancel{
     margin-left: 18px;
     font-size: 20px;
-    color: var(--ds-text-accent-gray-bolder, #172B4D);
+    color: gray
 }
 

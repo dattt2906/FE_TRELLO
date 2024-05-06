@@ -8,6 +8,11 @@ import { CSS } from "@dnd-kit/utilities";
 import React from "react";
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import axios from "axios";
+import AddIcon from '@mui/icons-material/Add';
+import Box from '@mui/material/Box';
+import Textarea from '@mui/joy/Textarea';
+
+
 
 
 const Column = (props) => {
@@ -141,14 +146,19 @@ const Column = (props) => {
 
 
             {isShowAddCard === false ?
-              <footer onClick={() => setIsShowAddCard(true)}>
-                <i className="fa fa-plus icon-plus-card"></i>
-                Add another card</footer>
+              // <footer onClick={() => setIsShowAddCard(true)}>
+              //   <i className="fa fa-plus icon-plus-card"></i>
+              //   Add another card</footer>
+              <Box sx={{display:"flex", alignItems:"center", gap:1, cursor:"pointer", marginBottom:"15px", marginTop:"15px", marginLeft:"5px"}}onClick={() => setIsShowAddCard(true)}>
+                                    <AddIcon sx={{}}/>
+                                    Add another card
+                                    </Box>
               :
               <div className="content-add-card">
                 <div className="text-area-add-card">
-                  <textarea className="input-value-card" placeholder="Enter the content card" onChange={(e) => setContent(e.target.value)}>
-                  </textarea>
+                  {/* <textarea className="input-value-card" placeholder="Enter the content card" onChange={(e) => setContent(e.target.value)}>
+                  </textarea> */}
+                   <Textarea placeholder="Enter the content card" sx={{width:"280px",height:"50px", marginLeft:"0px", marginTop:"10px", borderRadius:"10px"}}onChange={(e) => setContent(e.target.value)}></Textarea>
                 </div>
                 <div className="button-add">
                   <button className="btn-add" onClick={handleAddCard}>Add card</button>

@@ -76,20 +76,21 @@ footer {
     
 
 .button-add{
-    margin-top: 5px;
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 .icon-cancel-card{
     margin-left: 18px;
     font-size: 20px;
-    color: var(--ds-text-accent-gray-bolder, #172B4D);
+    color: gray
     
 }
 .icon-del-column{
 
-    color:black;
+    color:gray;
     display: none;
     margin-left: 20px;
+
 }
 .column-name:hover{
     .icon-del-column{

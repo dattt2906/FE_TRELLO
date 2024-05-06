@@ -17,6 +17,7 @@ import { v4 } from 'uuid';
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
 import { imageDb } from "../../../firebase";
 import EditIcon from '@mui/icons-material/Edit';
+import Textarea from '@mui/joy/Textarea';
 
 
 const style = {
@@ -41,6 +42,7 @@ const Card = (props) => {
   const [rowDetail, setRowDetail] = useState([])
   const [img, setImg] = useState(null)
   const [imageCard, setImageCard] = useState("")
+  const [isHovered, setIsHovered] = useState(false);
 
   const {
     attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -115,11 +117,9 @@ const Card = (props) => {
       >
         {/* <input className="change-content" value={card.content} onClick={handleOpenModal}></input> */}
         <Box sx={{width:"230px", minHeight:"48px",height:"fit-content",borderRadius:"10px", border:"none",fontSize:"20px", display:"flex", justifyContent:"center", flexDirection:"column", gap:2.5}} onClick={handleOpenModal}>
-          {imageCard?
-          <img style={{width:"280px", height:"300px", borderRadius:"20px"}} src={imageCard}></img>
-          :
-          null}
+        
           <Box sx={{marginBottom:"10px", marginLeft:"10px"}}>
+          
           {card.content}
           </Box>
           
@@ -147,9 +147,8 @@ const Card = (props) => {
                     {showAddImage === true ?
                       <Box sx={{ position: "absolute", marginTop: "30px", zIndex: 1, marginLeft: "500px" }}>
 
-                        <input type='file' onChange={(e) => { setImg(e.target.files[0]) }} style={{ display: "none" }} />
-                        {/* <button onClick={() => { document.querySelector('input[type="file"]').click(); }}>Upload</button> */}
-                        <Button onClick={() => { document.querySelector('input[type="file"]').click(); }}> <AddPhotoAlternateIcon /></Button>
+                        <input type='file' onChange={(e) => { setImg(e.target.files[0]) }} style={{ display: "none" }} /> 
+                         <Button onClick={() => { document.querySelector('input[type="file"]').click(); }}> <AddPhotoAlternateIcon /></Button>
 
 
                       </Box>
@@ -157,7 +156,7 @@ const Card = (props) => {
                       <Box></Box>
                     }
 
-                    <Input sx={{ height: "100px" }} value={rowDetail.description} onClick={() => setShowAddImage(true)}></Input>
+                   <Textarea sx={{paddingTop:"30px",width:"100%", minHeight:"100px",height:"fit-content",wordBreak:"break-all"}} onClick={()=> setShowAddImage(true)}></Textarea>
                     <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
                       <Button sx={{ width: "20px", marginTop: "10px" }} variant="contained" disableElevation>
                         Save
@@ -198,6 +197,7 @@ const Card = (props) => {
           </Box>
         </Modal>
         <i class="fa fa-pencil icon-edit-card" onClick={() => setIsShowEditCard(true)}></i>
+       
       </div>
 
       {!isShowEditCard === false ?

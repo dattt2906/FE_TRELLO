@@ -9,8 +9,11 @@ import { SortableContext, defaultAnimateLayoutChanges, horizontalListSortingStra
 import { arrayMove } from '@dnd-kit/sortable';
 import { generatePlaceholderCard } from "../../untils/formaters";
 import axios from "axios";
+import Box from '@mui/material/Box';
 
 import Card from "./card";
+import AddIcon from '@mui/icons-material/Add';
+import Textarea from '@mui/joy/Textarea';
 
 
 const ACTIVE_DRAG_ITEM_TYPE = {
@@ -387,7 +390,7 @@ setOldColumnWhenDraggingCard(null)
     return (
         <DndContext
             sensors={mySensors}
-            // collisionDetection={closestCorners}
+            collisionDetection={closestCorners}
             onDragStart={handleDragStart}
             onDragOver={handleDragOver}
             onDragEnd={handleOnDragEnd}
@@ -428,15 +431,19 @@ setOldColumnWhenDraggingCard(null)
                             {isAddColumn === false ?
 
                                 <div className="add-new-column" onClick={() => setIsAddColumn(true)}>
-                                    <i className="fa fa-plus icon-add-list"></i>
+                                    {/* <i className="fa fa-plus icon-add-list"></i> */}
+                                    <Box sx={{display:"flex", alignItems:"center", gap:1, cursor:"pointer"}}>
+                                    <AddIcon sx={{}}/>
                                     Add another list
+                                    </Box>
                                 </div>
 
                                 :
                                 <div className="content-add-column">
                                     <div className="text-area-add-column">
-                                        <textarea className="input-value-column" placeholder="Enter the list title" onChange={(e) => setColumnName(e.target.value)}>
-                                        </textarea>
+                                        {/* <textarea className="input-value-column" placeholder="Enter the list title" onChange={(e) => setColumnName(e.target.value)}>
+                                        </textarea> */}
+                                        <Textarea placeholder="Enter the list title" sx={{width:"280px", marginLeft:"10px", marginTop:"10px"}}onChange={(e) => setColumnName(e.target.value)}></Textarea>
                                     </div>
                                     <div className="button-add-column">
                                         <button className="btn-add" onClick={handelAddList}>Add List</button>

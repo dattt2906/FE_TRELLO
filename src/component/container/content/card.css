@@ -20,7 +20,8 @@
 
 .icon-edit-card {
     display: none;
-    margin-left:20px
+    margin-left:20px;
+    color: gray;
 }
 
 .card:hover {
