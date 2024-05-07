@@ -6,14 +6,34 @@ import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Modal from '@mui/material/Modal';
+import Typography from '@mui/material/Typography';
+import FormLabel from '@mui/joy/FormLabel';
+import FormControl from '@mui/joy/FormControl';
+import Input from '@mui/joy/Input';
+import Textarea from '@mui/joy/Textarea';
 
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { useNavigate } from "react-router-dom";
+import AddIcon from '@mui/icons-material/Add';
+import JoyButton from '@mui/joy/Button';
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 800,
+    height: 150,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
 
 
 
@@ -26,6 +46,21 @@ const Sidebar = () => {
     const [workspacename, setWorkspacename] = useState()
     const [boards, setBoards]= useState([])
     const [userId, setUserId]= useState(null)
+    const [openModal, setOpenModal] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const handleOpenModal = () => {
+        
+        
+        setOpenModal(true);
+       
+       
+    }
+    const handleClose = () => {
+        setAnchorEl(null);
+
+
+    };
+    const handleCloseModal = () =>{ setOpenModal(false);handleClose() }
 
     const nav= useNavigate()
    
@@ -73,7 +108,7 @@ const Sidebar = () => {
 
     return (
         <>
-            <Box sx={{width: "250px", backgroundColor: "hsla(260,80%,94.1%,0.9)", display: "flex", flexDirection: "column", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif" }}>
+            <Box sx={{width: "250px", backgroundColor: "hsla(260,80%,94.1%,0.9)", display: "flex", flexDirection: "column", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }}>
                 <Box sx={{ marginLeft: "20px", display: "flex", alignItems: "center", width: "230px", height: "80px", fontSize: "30px" }}>
 
                     {workspacename}
@@ -84,10 +119,39 @@ const Sidebar = () => {
                     <DashboardIcon />
                     <span style={{ fontSize: "15px" }}>Boards</span>
                 </Box>
-                <Box sx={{ marginTop: "30px", marginLeft: "20px", gap: 2, display: "flex", alignItems: "center" }}>
-
+                <Box sx={{ marginTop: "30px", marginLeft: "20px", gap: 2, display: "flex", alignItems: "center", justifyContent:"space-between" }}>
+                    <Box sx={{display: "flex", alignItems: "center",gap: 2}}>
                     <PersonIcon />
                     <span style={{ fontSize: "15px" }}>Members</span>
+                    </Box>
+                    <Box sx={{paddingRight:"10px"}}>
+                    <AddIcon onClick={handleOpenModal} sx={{cursor:"pointer"}}/>
+
+                    </Box>
+
+
+                    <Modal
+                        open={openModal}
+                        onClose={handleCloseModal}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style}>
+                            <Typography id="modal-modal-title" variant="h6" component="Box">
+                                <Box >
+                                    <span>Invite to Workspace</span>
+
+                                    <Textarea sx={{marginTop:"20px"}}placeholder="Email address"/>
+
+                                </Box>
+                            </Typography>
+
+                        </Box>
+                    </Modal>
+
+
+
+
                 </Box>
                 <Box sx={{ marginTop: "30px", marginLeft: "20px", gap: 2, display: "flex", alignItems: "center", fontWeight: "bold" }}>
 

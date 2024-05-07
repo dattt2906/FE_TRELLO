@@ -163,7 +163,7 @@ const Card = (props) => {
             null
           } */}
           {attachment?
-          <img style={{ width: "280px", height: "200px" }} src={attachment}></img>
+          <img style={{ width: "280px", height: "200px" , borderRadius:"10px"}} src={attachment}></img>
             :
             null
           }

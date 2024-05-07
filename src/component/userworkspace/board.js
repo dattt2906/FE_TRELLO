@@ -24,9 +24,9 @@ const Board = (props) => {
 
         <>  
      
-            <Box onClick={handleClick} sx={{ height: "100px", width:"270px", backgroundColor: "aliceblue", backgroundImage:`url(${board.boardbackground})`,backgroundSize: "cover",cursor: "pointer", marginTop:"20px", marginLeft:"50px", marginBottom:"20px"}}>
+            <Box onClick={handleClick} sx={{height: "100px", width:"270px", backgroundColor: "aliceblue", backgroundImage:`url(${board.boardbackground})`,backgroundSize: "cover",cursor: "pointer", marginTop:"20px", marginLeft:"50px", marginBottom:"20px", borderRadius:"10px"}}>
 
-               <span style={{fontWeight:"bold",zIndex:1}}> {board.boardname} </span>
+               <span style={{fontWeight:"bold",color:"white", paddingLeft:"10px"}}> {board.boardname} </span>
 
             </Box>
            </>

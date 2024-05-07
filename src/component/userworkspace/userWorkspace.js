@@ -26,31 +26,36 @@ const UserWorkspace = () => {
 
     return (
         <>
-        <Box sx={{overflowY:"unset"}}>
-            <Header />
+            <Box sx={{ overflowY: "unset" }}>
+                <Header />
 
-            <Box sx={{ display: "flex", marginTop: "50px", justifyContent:"center"}}>
+                <Box sx={{ display: "flex", marginTop: "50px", justifyContent: "center" }}>
 
-                <Box sx={{ overflow:"auto",width:"100%", height: "700px", marginRight: "300px", marginLeft:"300px" }}>
+                    <Box sx={{ overflow: "auto", width: "100%", height: "700px", marginRight: "300px", marginLeft: "300px" }}>
 
 
-                    <Box sx={{fontSize: "24px", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif", marginTop: "20px", marginLeft: "20px", marginBottom:"20px", marginRight:"20px"}}>
+                        <Box sx={{ fontSize: "24px", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif", marginTop: "20px", marginLeft: "20px", marginBottom: "20px", marginRight: "20px" }}>
 
-                        Your workspaces
-                        <Box sx={{ marginTop: "50px", display: "flex", flexDirection: "column", gap: 5 }}>
-                        {workspaces && workspaces.length > 0 && workspaces.map((workspace) => (
+                            Your workspaces
+                            <Box sx={{ marginTop: "50px", display: "flex", flexDirection: "column", gap: 5 }}>
+                                <Box sx={{ height: "100px", width: "270px", cursor: "pointer", backgroundColor: "gray", marginTop: "20px", marginLeft: "50px", marginBottom: "20px", display: "flex", alignItems: "center" }}>
 
-                          
-                            <Workspace
-                            key={workspace.id}
-                            workspace={workspace}
-                            
-                            />
-                        ))}
+                                    <span style={{ color: "white", paddingLeft: "20px" }}> Create new workspace </span>
+
+                                </Box>
+                                {workspaces && workspaces.length > 0 && workspaces.map((workspace) => (
+
+
+                                    <Workspace
+                                        key={workspace.id}
+                                        workspace={workspace}
+
+                                    />
+                                ))}
+                            </Box>
                         </Box>
                     </Box>
                 </Box>
-            </Box>
             </Box>
 
         </>

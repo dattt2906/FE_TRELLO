@@ -398,7 +398,7 @@ setOldColumnWhenDraggingCard(null)
             onDragEnd={handleOnDragEnd}
         >
 
-            <div className="content" style={{backgroundColor:"aliceblue", backgroundImage:`url(${boardbackground})`}}>
+            <div className="content" style={{backgroundColor:"aliceblue", backgroundImage:`url(${boardbackground})`, backgroundSize:"cover"}}>
 
             {/* props cua dragoverlays  */}
                 <SortableContext items={columns?.map(c => c.columnId)} strategy={horizontalListSortingStrategy}>

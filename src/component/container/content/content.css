@@ -4,6 +4,7 @@
     display: flex;
     font-size: 20px;
     overflow-x: auto;
+    overflow-y: hidden;
     
 
 
