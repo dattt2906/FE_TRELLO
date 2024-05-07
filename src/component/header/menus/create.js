@@ -56,7 +56,7 @@ export default function Create() {
     const [boardname, setBoardname] = useState("")
 
     const [openModal, setOpenModal] = React.useState(false);
-    const [img, setImg] = useState(null)
+    const [imgBack, setImgBack] = useState(null)
     const [boardbackground, setBoardBackground] = useState("")
     const handleOpenModal = () => {
         
@@ -66,17 +66,17 @@ export default function Create() {
        
     }
     useEffect(() => {
-        if (img) {
+        if (imgBack) {
             handleUpload();
         }
-    }, [img]);
+    }, [imgBack]);
     const handleUpload = () => {
 
         const imageRef = ref(imageDb, `images/${v4()}`)
-        uploadBytes(imageRef, img).then((snapshot) => {
+        uploadBytes(imageRef, imgBack).then((snapshot) => {
 
-            getDownloadURL(snapshot.ref).then((img) => {
-                setBoardBackground(img)
+            getDownloadURL(snapshot.ref).then((imgBack) => {
+                setBoardBackground(imgBack)
                 
             })
         })
@@ -229,7 +229,7 @@ export default function Create() {
 
                     <FormControl>
                             <FormLabel>Background</FormLabel>
-                            <input type='file' onChange={(e) => { setImg(e.target.files[0]) }} style={{ display: "none" }} />
+                            <input type='file' onChange={(e) => { setImgBack(e.target.files[0]) }} style={{ display: "none" }} />
                             <Button sx={{height:"30px", width:"270px"}}variant="contained" onClick={() => { document.querySelector('input[type="file"]').click(); }}>Upload from computer</Button>
                         </FormControl>
 

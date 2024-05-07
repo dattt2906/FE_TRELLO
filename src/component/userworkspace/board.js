@@ -26,7 +26,7 @@ const Board = (props) => {
      
             <Box onClick={handleClick} sx={{ height: "100px", width:"270px", backgroundColor: "aliceblue", backgroundImage:`url(${board.boardbackground})`,backgroundSize: "cover",cursor: "pointer", marginTop:"20px", marginLeft:"50px", marginBottom:"20px"}}>
 
-                {board.boardname}
+               <span style={{fontWeight:"bold",zIndex:1}}> {board.boardname} </span>
 
             </Box>
            </>

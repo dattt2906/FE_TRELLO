@@ -75,11 +75,11 @@ const Card = (props) => {
   }, [changeContentCard])
   useEffect(() => {
     if (img) {
-      handleUpload();
+      handleUploadImageCard();
     }
   }, [img]);
 
-  const handleUpload =() => {
+  const handleUploadImageCard =() => {
 
     const imageRef = ref(imageDb, `images/${v4()}`)
     uploadBytes(imageRef, img).then((snapshot) => {
@@ -196,8 +196,8 @@ const Card = (props) => {
                     {showAddImage === true ?
                       <Box sx={{ display:"flex",position: "absolute", marginTop: "30px", zIndex: 1, marginLeft: "500px" }}>
 
-                        <input type='file' onChange={(e) => { setImg(e.target.files[0]) }} style={{ display: "none" }} />
-                        <Button onClick={() => { document.querySelector('input[type="file"]').click(); }}> <AddPhotoAlternateIcon /></Button>
+                        <input type='file' className="imageCard"onChange={(e) => { setImg(e.target.files[0]) }} style={{ display: "none" }} />
+                        <Button onClick={() => { document.querySelector('input[type="file"].imageCard').click(); }}> <AddPhotoAlternateIcon /></Button>
                  
 
                       </Box>
