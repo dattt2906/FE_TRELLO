@@ -96,7 +96,6 @@ const Card = (props) => {
     if(attachment){
     axios.put(`http://localhost:3001/table/update-rowDetail/${card.rowId}`,{description,attachment,activity}).then(res=>{
       if(res.data){
-        console.log("update-rowDetail-success")
       }
     })
   }

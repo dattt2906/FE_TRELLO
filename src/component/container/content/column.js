@@ -18,7 +18,7 @@ import Textarea from '@mui/joy/Textarea';
 const Column = (props) => {
   const { column, columnDel, setColumnDataByColumnId, getData } = props;
   const cards = column.rows;
-  console.log("cards:" , cards)
+  
   const [Cards, setCards] = useState(cards);
   // console.log("Cards", Cards)
   const columnId = column.columnId
@@ -47,14 +47,6 @@ const Column = (props) => {
 
 
   const handleAddCard = async () => {
-
-    // const addcard = _.cloneDeep(Cards);
-    // addcard.push({
-    //   id:uuidv4(),
-    //   content: content,
-    //   columnId:column.id
-
-    // });
     let sort= Cards.length
     await axios.post("http://localhost:3001/table/create-row", { content, columnId,sort }).then(res => {
       if (res.data) {

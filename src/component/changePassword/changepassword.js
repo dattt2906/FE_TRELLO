@@ -48,7 +48,7 @@ const ChangePassWord = () => {
 
 
     const changePassword = () => {
-        console.log(oldPassword ,newPassword,retypePassword )
+       
         if(oldPassword!==password){
 
             setError("Mat khau luc dau khong chinh xac ")

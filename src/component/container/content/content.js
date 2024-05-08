@@ -10,10 +10,13 @@ import { arrayMove } from '@dnd-kit/sortable';
 import { generatePlaceholderCard } from "../../untils/formaters";
 import axios from "axios";
 import Box from '@mui/material/Box';
+import io from 'socket.io-client';
+
 
 import Card from "./card";
 import AddIcon from '@mui/icons-material/Add';
 import Textarea from '@mui/joy/Textarea';
+
 
 
 const ACTIVE_DRAG_ITEM_TYPE = {
@@ -38,11 +41,10 @@ const Content = () => {
     const [oldColumnWhenDraggingCard, setOldColumnWhenDraggingCard] = useState(null);
     const [boardId, setBoardId]= useState(null)
     const [boardbackground, setBoardBackground]= useState("")
-    // const boardId= Number(localStorage.getItem("boardId"))
-    // const queryString = window.location.search;
-
-    // const params = new URLSearchParams(queryString);
-    //   setBoardId(params.get('boardId'));
+    const [socket, setSocket] = useState(null);
+    
+ 
+   
     useEffect(()=>{
          const queryString = window.location.search;
 
@@ -51,6 +53,28 @@ const Content = () => {
       getData()
 
     },[boardId])
+
+    // useEffect(() => {
+    //     const newSocket = io("http://localhost:8001" || "");
+    //     setSocket(newSocket);
+    
+    //     return () => {
+    //       newSocket.disconnect();
+    //     };
+    //   }, []);
+
+    useEffect(()=>{
+
+        const socket=io("http://localhost:8001");
+        
+          const message=  {nickname:"jonh-can", message:"test message from server"}
+        
+        socket.emit("text-chat",(message));
+    },[])
+
+    
+
+
 
 
 
@@ -77,7 +101,7 @@ const Content = () => {
 
        await axios.put(`http://localhost:3001/table/update-column-by-id/${column.columnId}`,column).then(res=>{
             if(res.data){
-                console.log("update column active sucessful")
+   
             }
 
 
@@ -90,7 +114,7 @@ const Content = () => {
 
     // useEffect(() => {
 
-    //     // console.log("columns:",columns)
+    
     // }, [columns])
 
     const setColumnDataByColumnId=(column)=>{
@@ -106,17 +130,21 @@ const Content = () => {
 
 
     const handelAddList = () => {
-
+       
+       
+        
         setIsAddColumn(false);
         let sort= columns.length 
-        console.log("sort:", sort)
+        
         axios.post("http://localhost:3001/table/create-column" ,{columnName,boardId,sort}).then(res=>{
             if(res.data){
 
                 axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`,{boardId}).then(res=>{
                     if(res.data){
+                      
                         setColumns(res.data.cols)
-                        // console.log("colums:", res.data.cols)
+                        
+                        
                     }
             
             
@@ -134,7 +162,7 @@ const Content = () => {
        await axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`,{boardId}).then(res=>{
                     if(res.data){
                         setColumns(res.data.cols)
-                        console.log("colums:", res.data.cols)
+                       
                     }
             
             
@@ -152,7 +180,7 @@ const Content = () => {
 
     const handleDragStart = (event) => {
 
-        // console.log('HandleDragStart:', event)
+       
         setActiveDragItemId(event?.active?.id)
         setActiveDragItemType(event?.active?.data?.current?.columnId ? ACTIVE_DRAG_ITEM_TYPE.COLUMN : ACTIVE_DRAG_ITEM_TYPE.CARD)
         setActiveDragItemData(event?.active?.data?.current)
@@ -171,7 +199,7 @@ const Content = () => {
         //khong lam gi neu dang keo column
         if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) return
 
-        // console.log("OnDragOver:",event);
+
         
         //neu keo card thi xu ly them de co the keo tha qua lai giua cac column
         const { active, over } = event
@@ -185,8 +213,7 @@ const Content = () => {
         //tim 2 cai column theo 2 cardId
         const activeColumn = findColumnByCardId(activeDraggingCardId)
         const overColumn = findColumnByCardId(overCardId)
-        // console.log("activeColumn:", activeColumn)
-        // console.log("overColumn:", overColumn)
+       
 
         if (!activeColumn || !overColumn) return
         //keo khac column thi moi chay
@@ -201,7 +228,7 @@ const Content = () => {
                 const modifier = isBelowOverItem ? 1 : 0
                const newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overColumn?.rows?.length + 1
 
-                console.log("newCardIndex:",newCardIndex)
+                
                 activeDraggingCardData.sort= newCardIndex
                 const nextColumns = cloneDeep(prevColumn)
                 const nextActiveColumn = nextColumns.find(column => column.columnId === activeColumn.columnId)
@@ -215,17 +242,17 @@ const Content = () => {
                     
                   
                     nextOverColumn.rows = nextOverColumn.rows.filter(card => card.rowId !== activeDraggingCardId)
-                    console.log("activeDraggingCardDataSort", activeDraggingCardData.sort)
+                  
                     
                     
                     nextOverColumn.rows = nextOverColumn.rows.toSpliced(newCardIndex, 0, activeDraggingCardData)
-                    console.log("nextOverColumn:",nextOverColumn)
+                    
                   
                     
 
                 }
 
-                // console.log("nextcolumns:", nextColumns)
+                
                 return nextColumns
 
 
@@ -240,7 +267,7 @@ const Content = () => {
 
 
     const handleOnDragEnd= async (event)=>{
-        console.log("dragend:", event)
+        
         const{active, over}=event
         if (!active || !over) return;
         
@@ -254,11 +281,10 @@ const Content = () => {
             const overColumn = findColumnByCardId(overCardId)
 
             if (!activeColumn || !overColumn) return
-            // console.log('oldColumnWhenDraggingCard:', oldColumnWhenDraggingCard)
-            // console.log('overColumn:',overColumn)
+       
             if (oldColumnWhenDraggingCard.columnId !== overColumn.columnId) {
                 //keo tha trong 2 column
-                // console.log("keo tha 2 column ")
+               
                 setColumns(prevColumn => {
                     //tim vi tri cua overcard trong column dich(noi card se duoc tha)
                     const overCardIndex = overColumn?.rows?.findIndex(card => card.rowId === overCardId)
@@ -271,12 +297,11 @@ const Content = () => {
                     const nextColumns = cloneDeep(prevColumn)
                     const nextActiveColumn = nextColumns.find(column => column.columnId === oldColumnWhenDraggingCard.columnId)
                     const nextOverColumn = nextColumns.find(column => column.columnId === overColumn.columnId)
-                    // console.log("nextActiveColumn:",nextActiveColumn)
-                    // console.log("nextOverColumn:", nextOverColumn)
+                   
                     if (nextActiveColumn) {
                         //xoa card o bang cu sau khi da keo sang bang moi. ham filter se tra ve mot column thoa man dieu kien
                         nextActiveColumn.rows = nextActiveColumn.rows.filter(card => card.rowId !== activeDraggingCardId)
-                        // console.log("nextActiveColumn:",nextActiveColumn)
+                       
 
 
                         //lam cach nao de ca nhung column moi tao cung co card FE nay chu khong chi la nhung column bi keo het the
@@ -292,14 +317,14 @@ const Content = () => {
                         nextOverColumn.rows = nextOverColumn.rows.filter(card => card.rowId !== activeDraggingCardId)
                         
                         nextOverColumn.rows = nextOverColumn.rows.toSpliced(newCardIndex, 0, activeDraggingCardData)
-                        // console.log(nextOverColumn)
+                        
                         
                         //neu co card duoc keo lai thi xoa nhung cai the co thuoc tinh FE_Placeholder di de du lieu hien thi chinh xac nhu binh thuong
                         // nextOverColumn.cards=nextOverColumn.cards.filter(card =>!card.FE_PlaceholderCard)
     
                     }
                     
-                    // console.log("nextcolumns:", nextColumns)
+                
                     return nextColumns
     
     
@@ -317,13 +342,13 @@ const Content = () => {
                 const newCardIndex = overColumn?.rows?.findIndex(c => c.rowId === overCardId) //lay vi tri moi tu over
 
                 const orderCard = arrayMove(oldColumnWhenDraggingCard?.rows, oldCardIndex, newCardIndex)
-                // console.log("orderCard:",orderCard)
+                
                 setColumns(prevColumn => {
 
                     const nextColumns = cloneDeep(prevColumn)
                     const targetColumn = nextColumns.find(c => c.columnId === overColumn.columnId)
                     targetColumn.rows = orderCard;
-                    // console.log("targetColumn:", targetColumn)
+                  
                     return nextColumns
                 })
                  
@@ -350,7 +375,7 @@ const Content = () => {
 
         else {
         if(active.id !==over.id){
-            // console.log("keo tha hai cot")
+          
         }
         const oldIndex= columns.findIndex(c=>c.columnId===active.id);
 
@@ -363,12 +388,12 @@ const Content = () => {
 
 
        })
-    //    console.log("movecolumn:", moveColumn)
+   
                     
         setColumns(moveColumn)
        await axios.put("http://localhost:3001/table/update-column", moveColumn).then(res=>{
 
-        console.log(res.data)
+        
         })
 
 
@@ -412,7 +437,7 @@ setOldColumnWhenDraggingCard(null)
 
                         </DragOverlay> */}
                         {columns && columns.length > 0 && columns.sort((a,b)=>(a.sort-b.sort)).map((column, index) => {
-                            console.log("columnprint:",column)
+                           
                                 
                             return (
                                 <Column

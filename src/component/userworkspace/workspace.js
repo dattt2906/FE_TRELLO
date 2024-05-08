@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { v4 } from 'uuid';
 import { imageDb } from "../../firebase";
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
+
 const Workspace = (props) => {
     const { workspace } = props
     const Boards = workspace.boards
@@ -128,8 +129,8 @@ const Workspace = (props) => {
 
                     <FormControl>
                             <FormLabel>Background</FormLabel>
-                            <input type='file'className={workspace.workspacename} onChange={(e) => { setImgBack(e.target.files[0]) }} style={{ display: "none" }} />
-                            <Button sx={{height:"30px", width:"270px"}}variant="contained" onClick={() => { document.querySelector(`input[type="file"].${workspace.workspacename}`).click(); }}>Upload from computer</Button>
+                            <input type='file'className={workspace.workspacename.replace(/\s/g, '')} onChange={(e) => { setImgBack(e.target.files[0]) }} style={{ display: "none" }} />
+                            <Button sx={{height:"30px", width:"270px"}}variant="contained" onClick={() => { document.querySelector(`input[type="file"].${workspace.workspacename.replace(/\s/g, '')}`).click(); }}>Upload from computer</Button>
                         </FormControl>
 
                     </Box>
