@@ -54,29 +54,12 @@ const Content = () => {
 
     },[boardId])
 
-    // useEffect(() => {
-    //     const newSocket = io("http://localhost:8001" || "");
-    //     setSocket(newSocket);
-    
-    //     return () => {
-    //       newSocket.disconnect();
-    //     };
-    //   }, []);
-
     useEffect(()=>{
 
         const socket=io("http://localhost:8001");
-        
-          const message=  {nickname:"jonh-can", message:"test message from server"}
-        
-        socket.emit("text-chat",(message));
+        setSocket(socket)
+      
     },[])
-
-    
-
-
-
-
 
     const pointerSensor = useSensor(PointerSensor, { activationConstraint: { distance: 10 } })  //yeu cau di chuyen chuot 10px thi moi kich hoat event dndCOntext, fix trương hop click bi goi event lam mat chuc nang
     const mySensors = useSensors(pointerSensor)
@@ -129,29 +112,31 @@ const Content = () => {
 
 
 
-    const handelAddList = () => {
+    const handelAddList =async () => {
        
-       
-        
         setIsAddColumn(false);
         let sort= columns.length 
+       
         
         axios.post("http://localhost:3001/table/create-column" ,{columnName,boardId,sort}).then(res=>{
             if(res.data){
+                socket.emit("add-column","add")
 
-                axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`,{boardId}).then(res=>{
-                    if(res.data){
-                      
-                        setColumns(res.data.cols)
-                        
-                        
-                    }
-            
-            
+                socket.on("message", (data)=>{
+                    axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`,{boardId}).then(res=>{
+                        if(res.data){
+                            setColumns(res.data.cols)
+                            console.log("server sent:", data)
+        
+                        }
+                
+                
+                        })
                     })
             }
 
         })
+        
     }
 
     const columnDel =async (column) => {

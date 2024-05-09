@@ -11,6 +11,7 @@ import axios from "axios";
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import Textarea from '@mui/joy/Textarea';
+import io from 'socket.io-client';
 
 
 
@@ -22,6 +23,7 @@ const Column = (props) => {
   const [Cards, setCards] = useState(cards);
   // console.log("Cards", Cards)
   const columnId = column.columnId
+  const [socket, setSocket] = useState(null);
 
 
   useEffect(() => {
@@ -29,6 +31,13 @@ const Column = (props) => {
     setCards(cards) //moi khi cards duoc thay doi thi luu cards moi vao vi neu chi thay doi ben column thi cards se khong the biet su thay doi do
 
   }, [cards])
+
+  useEffect(()=>{
+
+    const socket=io("http://localhost:8001");
+    setSocket(socket)
+  
+},[])
 
   const {
     attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -51,15 +60,19 @@ const Column = (props) => {
     await axios.post("http://localhost:3001/table/create-row", { content, columnId,sort }).then(res => {
       if (res.data) {
 
+        socket.emit("add-card","Add Card")
+
+
+        socket.on("message", (data)=>{
+
         axios.get(`http://localhost:3001/table/find-column-by-id/${columnId}`).then(res => {
           if (res.data) {
             setCards(res.data.rows)
             getData()
+            console.log("server sent:", data)
           }
-
-
-
         })
+      })
       }
 
     })
@@ -76,15 +89,20 @@ const Column = (props) => {
 
     const rowId= card.rowId
     if(rowId){
+     
      await axios.delete(`http://localhost:3001/table/del-row/${rowId}`, {rowId})
+    
 
-   await axios.get(`http://localhost:3001/table/find-column-by-id/${columnId}`,{columnId}).then(res=>{
+    
+    await axios.get(`http://localhost:3001/table/find-column-by-id/${columnId}`,{columnId}).then(res=>{
                 if(res.data){
                     setCards(res.data.rows)
+                   
                 }
         
         
                 })
+              
 
     }
 

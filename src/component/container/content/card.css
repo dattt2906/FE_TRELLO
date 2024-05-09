@@ -6,7 +6,8 @@
     background-color: white;
     border-radius: 10px;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
+    justify-content: space-between;
 }
 
 .card .change-content {
@@ -21,6 +22,8 @@
 .icon-edit-card {
     display: none;
     margin-left:20px;
+    margin-top:10px;
+    margin-right: 10px;
     color: gray;
 }
 

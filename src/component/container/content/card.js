@@ -155,12 +155,7 @@ const Card = (props) => {
       >
         {/* <input className="change-content" value={card.content} onClick={handleOpenModal}></input> */}
         <Box sx={{ width: "230px", minHeight: "48px", height: "fit-content", borderRadius: "10px", border: "none", fontSize: "20px", display: "flex", justifyContent: "center", flexDirection: "column", gap: 2.5 }} onClick={handleOpenModal}>
-          {/* {imageCard ?
-
-            <img style={{ width: "280px", height: "200px" }} src={imageCard}></img>
-            :
-            null
-          } */}
+         
           {attachment?
           <img style={{ width: "280px", height: "200px" , borderRadius:"10px"}} src={attachment}></img>
             :
