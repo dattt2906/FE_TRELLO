@@ -97,7 +97,7 @@ const Column = (props) => {
     await axios.get(`http://localhost:3001/table/find-column-by-id/${columnId}`,{columnId}).then(res=>{
                 if(res.data){
                     setCards(res.data.rows)
-                   
+                    
                 }
         
         
@@ -137,7 +137,7 @@ const Column = (props) => {
         <SortableContext items={Cards?.map(c => c.rowId)} strategy={verticalListSortingStrategy}>
           <div className="list-card">
             {Cards && Cards.length > 0 && Cards.sort((a,b)=>(a.sort-b.sort)).map((card, index) => {
-              // console.log(card)
+              // console.log("card:",card)
               return (
                 <Card
                   key={card.rowId}

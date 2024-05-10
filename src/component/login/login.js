@@ -44,13 +44,7 @@ const Login = () => {
         <>
             {/* <div className="login-content"> */}
             <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Fira Sans,Droid Sans,Helvetica Neue,sans-serif" }}>
-                {/* <h1 className="header-login">Trello Login</h1> */}
-
-                {/* <div className="userName-input">UserName <input className="user" type="text" name="username" onChange={(e) => setUsername(e.target.value)}></input></div>
-                <div className="password-input"> Password <input className="pass" type="password" name="password" onChange={(e) => setPassword(e.target.value)}></input> </div> */}
-                {/* <Link to={"/input-email"}>
-                    <div style={{ marginTop: "15px" }}><a href="">Forgot password?</a></div>
-                </Link> */}
+                
                 <Box sx={{ marginTop: "50px", display: "flex", alignItems: "center", gap: 2 }}>
                     <img src="trelloicon.png" style={{ width: "50px", height: "50px" }}></img>
                     <span style={{ fontSize: "25px", fontFamily: "var(--font-family-text,'Charlie Text',sans-serif)" }}>Trello</span>
@@ -73,12 +67,7 @@ const Login = () => {
 
                 {/* <div className="btn"> */}
                 <Box sx={{ width: "fit-content", marginTop: "20px" }}>
-                    {/* <button className="btn-login" onClick={handelLogin}>Login</button>
-                    <Link to={"/register"}>
-                        <button className="btn-register">Register</button>
-                    </Link> */}
-
-
+                   
                     <Button sx={{ width: "400px" }} variant="contained" onClick={handelLogin}>Sign in</Button>
 
 

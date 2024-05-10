@@ -46,6 +46,7 @@ const Card = (props) => {
   const [description, setDescription]= useState("")
   const [activity, setActivity]= useState("")
   const [attachment, setAttachment]= useState("")
+ 
   
 
 
@@ -181,7 +182,7 @@ const Card = (props) => {
                   <span>{content}</span>
                 </Box>
                 <Box>
-                  <span>In list</span>
+                  <span>In list {card.cols.columnName}</span>
                 </Box>
                 <Box sx={{ width: "70%", marginTop: "40px", display: "flex", flexDirection: "column", gap: 5 }}>
 

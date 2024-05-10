@@ -56,8 +56,12 @@ const Content = () => {
 
     useEffect(()=>{
 
-        const socket=io("http://localhost:8001");
+        const socket=io("http://localhost:8001"|| "");
         setSocket(socket)
+        
+        return () => {
+            socket.disconnect()
+          };
       
     },[])
 
@@ -92,13 +96,6 @@ const Content = () => {
 
 
     }
-   
-
-
-    // useEffect(() => {
-
-    
-    // }, [columns])
 
     const setColumnDataByColumnId=(column)=>{
 

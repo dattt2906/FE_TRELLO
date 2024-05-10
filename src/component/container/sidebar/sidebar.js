@@ -87,6 +87,13 @@ const Sidebar = () => {
         window.location.reload()
         
     }
+    const handleDisplayWorkspace=(workspaceId)=>{
+
+        const newUrl = `/WorkspaceArea/?userId=${userId}&workspaceId=${workspaceId}`;
+        nav(newUrl)
+        window.location.reload()
+        
+    }
 
 
     function renderRow(props) {
@@ -114,7 +121,7 @@ const Sidebar = () => {
                     {workspacename}
                 </Box>
                 <Box sx={{height:"calc(100% - 80px)"}}>
-                <Box sx={{ marginTop: "30px", marginLeft: "20px", gap: 2, display: "flex", alignItems: "center" }}>
+                <Box onClick={()=>handleDisplayWorkspace(workspaceId)} sx={{ marginTop: "30px", marginLeft: "20px", gap: 2, display: "flex", alignItems: "center", cursor:"pointer"}}>
 
                     <DashboardIcon />
                     <span style={{ fontSize: "15px" }}>Boards</span>

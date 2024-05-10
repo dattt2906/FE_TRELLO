@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid';
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
 import { imageDb } from '../../../firebase';
+import Textarea from '@mui/joy/Textarea';
 
 
 
@@ -54,10 +55,12 @@ export default function Create() {
     const [workspaces, setWorkspace] = useState([])
     const [workspaceId, setWorkspaceId] = useState(null)
     const [boardname, setBoardname] = useState("")
+    const [workspacename,setWorkspacename]= useState("")
 
     const [openModal, setOpenModal] = React.useState(false);
     const [imgBack, setImgBack] = useState(null)
     const [boardbackground, setBoardBackground] = useState("")
+    const [workspaceDetail, setWorkspaceDetail]= useState("")
     const handleOpenModal = () => {
         
         
@@ -119,6 +122,22 @@ export default function Create() {
 
 
     };
+    const handelCreateWorkspace=()=>{
+        axios.post("http://localhost:3001/workspace/create-workspace", { workspacename, userId ,workspaceDetail}).then(res => {
+            if (res.data) {
+                // let newBoardId = res.data.boardId; // Đây là giá trị mới bạn muốn thay thế
+                const newUrl=`/Home/Users/?userId=${userId}`
+                
+                nav(newUrl)
+                
+
+            }
+        }).catch(error => {
+            console.log("create board failed")
+        })
+
+
+    }
     const handleShowModalAddBoard = () => {
         setIsShowModalAddBoard(true)
         handleClose()
@@ -183,18 +202,18 @@ export default function Create() {
 
                                         <FormControl>
                                             <FormLabel>WorkspaceName</FormLabel>
-                                            <Input placeholder="workspacename" />
+                                            <Input placeholder="workspacename" onChange={(e)=> setWorkspacename(e.target.value)} />
 
                                         </FormControl>
                                         <FormControl>
                                             <FormLabel>WorkspaceDetail</FormLabel>
-                                            <Input sx={{height:"200px"}}/>
-
+                                            {/* <Input sx={{height:"200px"}} onChange={(e)=> setWorkspaceDetail(e.target.value)}/> */}
+                                            <Textarea sx={{height:"200px"}} onChange={(e)=> setWorkspaceDetail(e.target.value)}></Textarea>
                                         </FormControl>
 
                                     </Box>
                                     <Box sx={{marginTop:"20px"}}>
-                                    <JoyButton type='submit' sx={{ width: "270px" }} >Create</JoyButton>
+                                    <JoyButton type='submit' sx={{ width: "270px" }} onClick={handelCreateWorkspace}>Create</JoyButton>
 
                                     </Box>
 
