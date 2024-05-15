@@ -13,6 +13,11 @@ export default function Recents() {
     setAnchorEl(event.currentTarget);
   };
 
+  const queryString = window.location.search;
+    
+  const params = new URLSearchParams(queryString);
+  const userId = params.get('userId');
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -39,9 +44,9 @@ export default function Recents() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        {/* <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleClose}>Logout</MenuItem> */}
       </Menu>
       </Box>
   );

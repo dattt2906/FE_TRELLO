@@ -129,11 +129,13 @@ export default function Create() {
                 const newUrl=`/Home/Users/?userId=${userId}`
                 
                 nav(newUrl)
+                window.location.reload()
+                
                 
 
             }
         }).catch(error => {
-            console.log("create board failed")
+            console.log("create workspace failed")
         })
 
 

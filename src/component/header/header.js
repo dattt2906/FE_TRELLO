@@ -54,7 +54,7 @@ const Header = () => {
         <Logo />
         <Workspaces/>
         <Recents/>
-        <Starred/>
+      
         <Teamplates/>
         <Create/>
         

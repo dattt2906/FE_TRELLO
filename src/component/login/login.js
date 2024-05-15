@@ -43,7 +43,7 @@ const Login = () => {
     return (
         <>
             {/* <div className="login-content"> */}
-            <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Fira Sans,Droid Sans,Helvetica Neue,sans-serif" }}>
+            <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Fira Sans,Droid Sans,Helvetica Neue,sans-serif"}}>
                 
                 <Box sx={{ marginTop: "50px", display: "flex", alignItems: "center", gap: 2 }}>
                     <img src="trelloicon.png" style={{ width: "50px", height: "50px" }}></img>

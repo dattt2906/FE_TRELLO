@@ -14,6 +14,7 @@ import FormLabel from '@mui/joy/FormLabel';
 import FormControl from '@mui/joy/FormControl';
 import Input from '@mui/joy/Input';
 import Textarea from '@mui/joy/Textarea';
+import InfoIcon from '@mui/icons-material/Info';
 
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -72,7 +73,7 @@ const Sidebar = () => {
             if (res.data) {
                 setWorkspacename(res.data.workspacename)
                 setBoards(res.data.boards)
-                setUserId(res.data.user.userId)
+                setUserId(res.data.users[0].userId)
             }
 
         })
@@ -162,8 +163,8 @@ const Sidebar = () => {
                 </Box>
                 <Box sx={{ marginTop: "30px", marginLeft: "20px", gap: 2, display: "flex", alignItems: "center", fontWeight: "bold" }}>
 
-                    <SettingsIcon />
-                    <span style={{ fontSize: "15px" }}>Workspace settings</span>
+                    <InfoIcon />
+                    <span style={{ fontSize: "15px" }}>Workspace Detail</span>
                 </Box>
                 <Box sx={{ marginTop: "40px", marginLeft: "10px", gap: 2, display: "flex", alignItems: "center", fontWeight: "bold" }}>
 

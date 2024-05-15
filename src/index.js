@@ -7,15 +7,19 @@ import ForgotPass from './component/login/forgotPass';
 import EmailForgot from './component/login/EmailForgot';
 import UserInfor from './component/user/userInfor';
 import ChangePassWord from './component/changePassword/changepassword';
+import "./index.css"
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import UserWorkspace from './component/userworkspace/userWorkspace';
 import WorkspaceArea from './component/workspace-area/workspace-area';
+import { Box } from '@mui/material';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+
+  
   // <React.StrictMode>
     // <App />
   // </React.StrictMode>
@@ -42,6 +46,7 @@ root.render(
   </Routes>
   
   </BrowserRouter>
+  
 
 );
 

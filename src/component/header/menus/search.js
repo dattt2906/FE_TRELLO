@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Box } from '@mui/material';
+import { Box, ButtonGroupButtonContext } from '@mui/material';
 
 export default function Search() {
 
@@ -36,15 +36,7 @@ export default function Search() {
         freeSolo
         id="free-solo-2-demo"
         disableClearable
-        options={boards.map((option) => 
-          
-         
-         option.boardname
         
-          
-        
-        
-        )}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -55,6 +47,16 @@ export default function Search() {
             }}
           />
         )}
+        options={boards.map((option) =>
+
+          option.boardname)}
+        // renderOption={(props, option) => (
+          
+        //   <Box {...props}>
+           
+        //    {boards.map((option) => option.boardId)}
+        //   </Box>
+        // )}
       />
     </Stack>
   );

@@ -10,7 +10,7 @@ const Board = (props) => {
         await axios.get(`http://localhost:3001/board/find-board-by-id/${board.boardId}`).then(res => {
 
             if (res.data) {
-                const url = `/Page/?userId=${res.data.workspace.user.userId}&workspaceId=${res.data.workspace.workspaceId}&boardId=${board.boardId}`;
+                const url = `/Page/?userId=${res.data.workspace.users[0].userId}&workspaceId=${res.data.workspace.workspaceId}&boardId=${board.boardId}`;
 
                 // Chuyển hướng đến URL mới
                 nav(url)
