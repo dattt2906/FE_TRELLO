@@ -11,9 +11,12 @@ const WorkspaceArea = () => {
     const [workspacename, setWorkspacename] = useState()
     const [boards, setBoards] = useState([])
     const queryString = window.location.search
+    const [users, setUsers]= useState([])
 
     const params = new URLSearchParams(queryString);
     const workspaceId = params.get('workspaceId');
+    const userId= params.get("userId")
+    let user
     useEffect(() => {
 
         axios.get(`http://localhost:3001/workspace/find-workspace-by-id/${workspaceId}`).then(res => {
@@ -21,16 +24,26 @@ const WorkspaceArea = () => {
             if (res.data) {
                 setWorkspacename(res.data.workspacename)
                 setBoards(res.data.boards)
-
+                setUsers(res.data.users)
+                console.log("users:",res.data.users)
+                
             }
+
+        //     if(users.length >0){
+
+        //      user= users.find(user.userId===userId)
+        //     if(!user){
+        //         axios.post("http://localhost:3001/workspace/add-user-in-workspace", {workspaceId, userId})
+        //     }
+        // }
+
+
 
         })
 
 
 
     }, [])
-
-
 
 
     return (

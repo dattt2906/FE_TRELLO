@@ -5,12 +5,17 @@ import { redirect, useNavigate } from "react-router-dom";
 const Board = (props) => {
     const { board } = props
     const nav = useNavigate()
+    const queryString = window.location.search;
+    
+  const params = new URLSearchParams(queryString);
+  const userId = params.get('userId');
+    
     const handleClick = async () => {
 
         await axios.get(`http://localhost:3001/board/find-board-by-id/${board.boardId}`).then(res => {
 
             if (res.data) {
-                const url = `/Page/?userId=${res.data.workspace.user.userId}&workspaceId=${res.data.workspace.workspaceId}&boardId=${board.boardId}`;
+                const url = `/Page/?userId=${userId}&workspaceId=${res.data.workspace.workspaceId}&boardId=${board.boardId}`;
 
                 // Chuyển hướng đến URL mới
                 nav(url)

@@ -1,6 +1,6 @@
 import "./sidebar.css"
 import 'font-awesome/css/font-awesome.min.css';
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -45,9 +45,11 @@ const Sidebar = () => {
     const workspaceId = params.get('workspaceId');
     const [workspacename, setWorkspacename] = useState()
     const [boards, setBoards]= useState([])
-    const [userId, setUserId]= useState(null)
+    
     const [openModal, setOpenModal] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [email, setEmail]= useState("")
+    const userId= params.get("userId")
     const handleOpenModal = () => {
         
         
@@ -63,6 +65,17 @@ const Sidebar = () => {
     const handleCloseModal = () =>{ setOpenModal(false);handleClose() }
 
     const nav= useNavigate()
+
+    const handleInviteLink=()=>{
+        axios.post("http://localhost:3001/auth/invite-member",{email, workspaceId}).then(res=>{
+                if(res.data){
+                    console.log("invite link success")
+                }
+        })
+
+
+
+    }
    
 
     useEffect(() => {
@@ -72,7 +85,7 @@ const Sidebar = () => {
             if (res.data) {
                 setWorkspacename(res.data.workspacename)
                 setBoards(res.data.boards)
-                setUserId(res.data.user.userId)
+                // setUserId(res.data.user.userId)
             }
 
         })
@@ -116,7 +129,7 @@ const Sidebar = () => {
     return (
         <>
             <Box sx={{width: "250px", backgroundColor: "hsla(260,80%,94.1%,0.9)", display: "flex", flexDirection: "column", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }}>
-                <Box sx={{ marginLeft: "20px", display: "flex", alignItems: "center", width: "230px", height: "80px", fontSize: "30px" }}>
+                <Box sx={{ marginLeft: "20px", display: "flex", alignItems: "center", width: "230px", height: "80px", fontSize: "25px" }}>
 
                     {workspacename}
                 </Box>
@@ -129,7 +142,7 @@ const Sidebar = () => {
                 <Box sx={{ marginTop: "30px", marginLeft: "20px", gap: 2, display: "flex", alignItems: "center", justifyContent:"space-between" }}>
                     <Box sx={{display: "flex", alignItems: "center",gap: 2}}>
                     <PersonIcon />
-                    <span style={{ fontSize: "15px" }}>Members</span>
+                    <span style={{ fontSize: "15px" ,cursor:"pointer"}}>Members</span>
                     </Box>
                     <Box sx={{paddingRight:"10px"}}>
                     <AddIcon onClick={handleOpenModal} sx={{cursor:"pointer"}}/>
@@ -147,9 +160,11 @@ const Sidebar = () => {
                             <Typography id="modal-modal-title" variant="h6" component="Box">
                                 <Box >
                                     <span>Invite to Workspace</span>
+                                    <Box sx={{display:"flex", justifyContent:"space-between", alignItems:"center", marginTop:"20px"}}>
 
-                                    <Textarea sx={{marginTop:"20px"}}placeholder="Email address"/>
-
+                                    <Textarea onChange={(e)=> setEmail(e.target.value)} sx={{ width:"600px"}}placeholder="Email address"/>
+                                    <JoyButton onClick={handleInviteLink}>Send Link Invite</JoyButton>
+                                    </Box>
                                 </Box>
                             </Typography>
 
