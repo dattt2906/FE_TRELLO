@@ -16,7 +16,7 @@ const WorkspaceArea = () => {
     const params = new URLSearchParams(queryString);
     const workspaceId = params.get('workspaceId');
     const userId= params.get("userId")
-    let user
+    
     useEffect(() => {
 
         axios.get(`http://localhost:3001/workspace/find-workspace-by-id/${workspaceId}`).then(res => {
@@ -25,20 +25,21 @@ const WorkspaceArea = () => {
                 setWorkspacename(res.data.workspacename)
                 setBoards(res.data.boards)
                 setUsers(res.data.users)
-                console.log("users:",res.data.users)
-                
+
+                const userExists = res.data.users.some(user => user.userId === userId);
+
+                if (!userExists) {
+                    // Nếu userId không tồn tại, thêm user vào workspace
+                    axios.post("http://localhost:3001/workspace/add-user-in-workspace", { workspaceId, userId })
+                        .then(res => {
+                            console.log("User added:", res.data);
+                        })
+                        .catch(error => {
+                            console.error("Error adding user:", error);
+                        });
+                }
+
             }
-
-        //     if(users.length >0){
-
-        //      user= users.find(user.userId===userId)
-        //     if(!user){
-        //         axios.post("http://localhost:3001/workspace/add-user-in-workspace", {workspaceId, userId})
-        //     }
-        // }
-
-
-
         })
 
 

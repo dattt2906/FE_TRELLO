@@ -17,14 +17,13 @@ import io from 'socket.io-client';
 
 
 const Column = (props) => {
-  const { column, columnDel, setColumnDataByColumnId, getData } = props;
+  const { column, columnDel, setColumnDataByColumnId, getData ,socket, boardId} = props;
   const cards = column.rows;
+ 
   
   const [Cards, setCards] = useState(cards);
   // console.log("Cards", Cards)
   const columnId = column.columnId
-  const [socket, setSocket] = useState(null);
-
 
   useEffect(() => {
 
@@ -32,12 +31,6 @@ const Column = (props) => {
 
   }, [cards])
 
-  useEffect(()=>{
-
-    const socket=io("http://localhost:8001");
-    setSocket(socket)
-  
-},[])
 
   const {
     attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -59,20 +52,13 @@ const Column = (props) => {
     let sort= Cards.length
     await axios.post("http://localhost:3001/table/create-row", { content, columnId,sort }).then(res => {
       if (res.data) {
-
-        socket.emit("add-card","Add Card")
-
-
-        socket.on("message", (data)=>{
-
+        socket.emit("add-card", boardId)
         axios.get(`http://localhost:3001/table/find-column-by-id/${columnId}`).then(res => {
           if (res.data) {
             setCards(res.data.rows)
             getData()
-            console.log("server sent:", data)
           }
         })
-      })
       }
 
     })
