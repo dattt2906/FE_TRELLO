@@ -84,6 +84,35 @@ const Content = () => {
 
         }
         )
+        socket?.on("message-del-column", (data) => {
+
+            console.log(data)
+            getData()
+
+        }
+        )
+        socket?.on("message-del-card", (data) => {
+
+            console.log(data)
+            getData()
+
+        }
+        )
+
+        socket?.on("message-drag-column", (data) => {
+
+            console.log(data)
+            getData()
+
+        }
+        )
+        socket?.on("message-drag-card", (data) => {
+
+            console.log(data)
+            getData()
+
+        }
+        )
        
 
 
@@ -180,6 +209,8 @@ const Content = () => {
         const columnId = column.columnId
         if (columnId) {
             await axios.delete(`http://localhost:3001/table/del-column/${columnId}`, { columnId })
+
+            socket.emit("del-column", boardId)
 
             await axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`, { boardId }).then(res => {
                 if (res.data) {
@@ -380,6 +411,7 @@ const Content = () => {
                     })
 
                     await axios.put("http://localhost:3001/table/update-row", orderCard).then(res => {
+                        socket.emit("drag-card", boardId)
 
                         if (res.data) {
 
@@ -414,6 +446,7 @@ const Content = () => {
 
                 setColumns(moveColumn)
                 await axios.put("http://localhost:3001/table/update-column", moveColumn).then(res => {
+                    socket.emit("drag-column", boardId)
 
 
                 })
@@ -439,7 +472,7 @@ const Content = () => {
     return (
         <DndContext
             sensors={mySensors}
-            collisionDetection={closestCorners}
+            // collisionDetection={closestCorners}
             onDragStart={handleDragStart}
             onDragOver={handleDragOver}
             onDragEnd={handleOnDragEnd}

@@ -77,9 +77,9 @@ const Column = (props) => {
     if(rowId){
      
      await axios.delete(`http://localhost:3001/table/del-row/${rowId}`, {rowId})
-    
 
-    
+     socket.emit("del-card", boardId)
+
     await axios.get(`http://localhost:3001/table/find-column-by-id/${columnId}`,{columnId}).then(res=>{
                 if(res.data){
                     setCards(res.data.rows)

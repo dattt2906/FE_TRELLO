@@ -19,6 +19,14 @@ import { imageDb } from "../../../firebase";
 import EditIcon from '@mui/icons-material/Edit';
 import Textarea from '@mui/joy/Textarea';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import dayjs from "dayjs";
+
 
 
 const style = {
@@ -33,6 +41,10 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+const monthNames = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+];
 
 const Card = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -42,12 +54,17 @@ const Card = (props) => {
   const [showAddImage, setShowAddImage] = useState(false)
   const [content, setContent] = useState("")
   const [img, setImg] = useState("")
-  
-  const [description, setDescription]= useState("")
-  const [activity, setActivity]= useState("")
-  const [attachment, setAttachment]= useState("")
- 
-  
+
+  const [description, setDescription] = useState("")
+  const [activity, setActivity] = useState("")
+  const [attachment, setAttachment] = useState("")
+  const [isShowDatePicker, setIsShowDatePicker]= useState(false)
+  const [value, setValue]= useState(null)
+  const [isShowDueDate, setIsShowDueDate]= useState(false)
+  const [time, setTime]= useState("")
+
+
+
 
 
   const {
@@ -80,7 +97,7 @@ const Card = (props) => {
     }
   }, [img]);
 
-  const handleUploadImageCard =() => {
+  const handleUploadImageCard = () => {
 
     const imageRef = ref(imageDb, `images/${v4()}`)
     uploadBytes(imageRef, img).then((snapshot) => {
@@ -89,38 +106,63 @@ const Card = (props) => {
         setAttachment(img)
 
       })
-      
+
     })
 
   }
-  useEffect(()=>{
-    if(attachment){
-    axios.put(`http://localhost:3001/table/update-rowDetail/${card.rowId}`,{description,attachment,activity}).then(res=>{
-      if(res.data){
-      }
-    })
-  }
 
-  },[attachment])
-  
-  useEffect(()=>{
+  const handleShowDatePicker=()=>{
+    setIsShowDatePicker(true)
+
+  }
+  const confirmDateCard=()=>{
+    setIsShowDatePicker(false)
+    setIsShowDueDate(true)
+    if(dayjs(value.$d).month() - dayjs(Date()).month()  === 0 && dayjs(value.$d).date()-dayjs(Date()).date() ===0){
+      setTime(`today at ${dayjs(value.$d).hour()}:${dayjs(value.$d).minute()} `)
+    }
+    else if(dayjs(value.$d).month() - dayjs(Date()).month()  === 0 && dayjs(value.$d).date()-dayjs(Date()).date() ===1){
+
+      setTime(`tomorrow at ${dayjs(value.$d).hour()}:${dayjs(value.$d).minute()} `)
+    }
+
+    else{
+
+    setTime(`${monthNames[dayjs(value.$d).month()]} ${dayjs(value.$d).date()} at ${dayjs(value.$d).hour()}:${dayjs(value.$d).minute()}`)
+    
+    }
+
+    
+  }
+   
+  useEffect(() => {
+    if (attachment) {
+      axios.put(`http://localhost:3001/table/update-rowDetail/${card.rowId}`, { description, attachment, activity }).then(res => {
+        if (res.data) {
+        }
+      })
+    }
+
+  }, [attachment])
+
+  useEffect(() => {
     axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
       if (res.data) {
         setContent(res.data.content)
         setDescription(res.data.description)
         setActivity(res.data.activity)
         setAttachment(res.data.attachment)
-        
+
       }
     })
 
-    
-  },[])
- 
+
+  }, [])
+
 
   const handleOpenModal = () => {
 
-   
+
     setOpenModal(true);
 
 
@@ -136,10 +178,10 @@ const Card = (props) => {
     setShowAddImage(false)
 
   };
-  const changeRowDetail=()=>{
+  const changeRowDetail = () => {
 
-    axios.put(`http://localhost:3001/table/update-rowDetail/${card.rowId}`,{description,attachment,activity}).then(res=>{
-      if(res.data){
+    axios.put(`http://localhost:3001/table/update-rowDetail/${card.rowId}`, { description, attachment, activity }).then(res => {
+      if (res.data) {
         alert("Cap nhat thong tin card thanh cong")
       }
     })
@@ -156,15 +198,16 @@ const Card = (props) => {
       >
         {/* <input className="change-content" value={card.content} onClick={handleOpenModal}></input> */}
         <Box sx={{ width: "230px", minHeight: "48px", height: "fit-content", borderRadius: "10px", border: "none", fontSize: "20px", display: "flex", justifyContent: "center", flexDirection: "column", gap: 2.5 }} onClick={handleOpenModal}>
-         
-          {attachment?
-          <img style={{ width: "280px", height: "200px" , borderRadius:"10px"}} src={attachment}></img>
+
+          {attachment ?
+            <img style={{ width: "280px", height: "200px", borderRadius: "10px" }} src={attachment}></img>
             :
             null
           }
           <Box sx={{ marginBottom: "10px", marginLeft: "10px" }}>
-            
+
             {card.content}
+
           </Box>
 
         </Box>
@@ -174,33 +217,79 @@ const Card = (props) => {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
+          
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="Box">
               <Box>
-                <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 1 }}>
-                  <CreditCardIcon />
-                  <span>{content}</span>
+                <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 1, justifyContent: "space-between" }}>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <CreditCardIcon />
+                    <span>{content}</span>
+                  </Box>
+                  <Box sx={{ display: "flex", alignItems: "center" ,flexDirection:"column" }}>
+                    <Box  onClick={handleShowDatePicker} sx={{display: "flex", alignItems: "center", gap: 1, cursor: "pointer", marginRight:"100px"}}>
+                    <AccessTimeIcon />
+                    <span>Date</span>
+                    </Box>
+   
+                  </Box>
+                                      
                 </Box>
-                <Box>
+                <Box sx={{display:"flex", flexDirection:"row"}}>
+                <Box sx={{ marginTop: "30px", width:"250px"}}>
                   <span>In list {card.cols.columnName}</span>
                 </Box>
+                {isShowDueDate ?
+                <Box sx={{display:"flex", flexDirection:"column"}}>
+                <Box sx={{marginTop:"30px"}}>
+                  <span>Due date</span>
+
+                 
+                </Box>
+                <Box>
+
+                  <span>{time}</span>
+                </Box>
+
+                </Box>
+                :
+                null
+                }
+                </Box>
+                {isShowDatePicker ?
+                <Box sx={{width:"fit-content", position:"relative", marginLeft:"520px", marginTop:"-70px"}}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DemoContainer components={['DateTimePicker']}>
+                        <DateTimePicker
+                          sx={{ height: '60px' }}
+                          label="Date Card"
+                          value={value}
+                          onChange={(newValue)=>setValue(newValue)}
+                        />
+                      </DemoContainer>
+                    </LocalizationProvider>
+                    <JoyButton onClick={confirmDateCard}>Save</JoyButton>
+                    </Box>
+                    :
+                    null
+                    }
                 <Box sx={{ width: "70%", marginTop: "40px", display: "flex", flexDirection: "column", gap: 5 }}>
 
                   <FormControl>
                     <FormLabel>Description</FormLabel>
                     {showAddImage === true ?
-                      <Box sx={{ display:"flex",position: "absolute", marginTop: "30px", zIndex: 1, marginLeft: "500px" }}>
+                      <Box sx={{ display: "flex", position: "absolute", marginTop: "30px", zIndex: 1, marginLeft: "500px",marginTop:"20px" }}>
 
-                        <input type='file' className="imageCard"onChange={(e) => { setImg(e.target.files[0]) }} style={{ display: "none" }} />
+                        <input type='file' className="imageCard" onChange={(e) => { setImg(e.target.files[0]) }} style={{ display: "none" }} />
                         <Button onClick={() => { document.querySelector('input[type="file"].imageCard').click(); }}> <AddPhotoAlternateIcon /></Button>
-                 
+
 
                       </Box>
                       :
                       <Box></Box>
                     }
 
-                    <Textarea sx={{ border:"none",paddingTop: "30px", width: "100%", minHeight: "100px", height: "fit-content", wordBreak: "break-all" }} value={description} onClick={() => setShowAddImage(true)} onChange={(e)=> setDescription(e.target.value)}></Textarea>
+                    <Textarea sx={{ border: "none", paddingTop: "30px", width: "100%", minHeight: "100px", height: "fit-content", wordBreak: "break-all" }} value={description} onClick={() => setShowAddImage(true)} onChange={(e) => setDescription(e.target.value)}></Textarea>
                     <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
                       <Button sx={{ width: "20px", marginTop: "10px" }} variant="contained" disableElevation onClick={changeRowDetail}>
                         Save
@@ -217,8 +306,8 @@ const Card = (props) => {
                     <span>Attachment</span>
 
                   </Box>
-                  
-                    {attachment?
+
+                  {attachment ?
                     <img style={{ width: "250px", height: "200px" }} src={attachment}></img>
                     :
                     null}
