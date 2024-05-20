@@ -113,6 +113,13 @@ const Content = () => {
 
         }
         )
+        socket?.on("message-add-deadline", (data) => {
+
+            console.log(data)
+            getData()
+
+        }
+        )
        
 
 
@@ -137,6 +144,7 @@ const Content = () => {
 
                 setColumns(res.data.cols)
                 setBoardBackground(res.data.boardbackground)
+                
             }
 
 

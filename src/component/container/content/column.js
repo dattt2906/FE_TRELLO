@@ -129,6 +129,8 @@ const Column = (props) => {
                   key={card.rowId}
                   card={card}
                   cardDel={() => cardDel(card)}
+                  socket={socket}
+                  boardId={boardId}
                 ></Card>
               )
             })
