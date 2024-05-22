@@ -65,7 +65,7 @@ const WorkspaceArea = () => {
 
                         <Box sx={{ fontSize: "30px", marginTop: "70px ", marginLeft: "80px" }}>
 
-                            Boards
+                            Các bảng
 
 
                         </Box>

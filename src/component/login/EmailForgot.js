@@ -62,7 +62,7 @@ const EmailForgot = () => {
                     <span style={{ fontSize: "25px", fontFamily: "var(--font-family-text,'Charlie Text',sans-serif)" }}>Trello</span>
                 </Box>
                 <Box sx={{ marginTop: "40px" }}>
-                    <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Fira Sans, Droid Sans, Helvetica Neue, sans-serif", fontWeight: "bold", fontSize: "20px" }}>Can't log in?</span>
+                    <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Fira Sans, Droid Sans, Helvetica Neue, sans-serif", fontWeight: "bold", fontSize: "20px" }}>Quên mật khẩu?</span>
                 </Box>
                 <Box
                     component="form"
@@ -74,7 +74,7 @@ const EmailForgot = () => {
                     autoComplete="off"
                 >
                    
-                    <TextField type="text"id="outlined-basic" label="Enter email" variant="outlined" onChange={(e) => setEmail(e.target.value)}/>
+                    <TextField type="text"id="outlined-basic" label="Nhập email" variant="outlined" onChange={(e) => setEmail(e.target.value)}/>
                 </Box>
 
                 {/* <div className="btn"> */}
@@ -85,7 +85,7 @@ const EmailForgot = () => {
                     </Link> */}
 
 
-                    <Button sx={{ width: "400px" }} variant="contained" onClick={forgotPassword}>Send recovery link</Button>
+                    <Button sx={{ width: "400px" }} variant="contained" onClick={forgotPassword}>Gửi liên kết xác nhận</Button>
 
 
                 </Box>
@@ -95,7 +95,7 @@ const EmailForgot = () => {
                     }}
                     >
                     
-                    <Link to={"/"}>Return to log in</Link>
+                    <Link to={"/"}>Quay lại đăng nhập</Link>
                     
                 </Box>
                 {/* </div> */}

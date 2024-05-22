@@ -103,8 +103,8 @@ const ForgotPass = () => {
                     noValidate
                     autoComplete="off"
                 >
-                    <TextField type="text" id="outlined-basic" label="New password" variant="outlined"onChange={(e) => setNewPassword(e.target.value)} />
-                    <TextField type="password"id="outlined-basic" label="Retype password" variant="outlined" onChange={(e) => setRetypePassword(e.target.value)}/>
+                    <TextField type="text" id="outlined-basic" label="Mật khẩu mới" variant="outlined"onChange={(e) => setNewPassword(e.target.value)} />
+                    <TextField type="password"id="outlined-basic" label="Nhập lại mật khẩu mới" variant="outlined" onChange={(e) => setRetypePassword(e.target.value)}/>
                 </Box>
 
                 {/* <div className="btn"> */}
@@ -115,7 +115,7 @@ const ForgotPass = () => {
                     </Link> */}
 
 
-                    <Button sx={{ width: "400px" }} variant="contained" onClick={handleResetPass}>Confirm</Button>
+                    <Button sx={{ width: "400px" }} variant="contained" onClick={handleResetPass}>Xác nhận</Button>
 
 
                 </Box>
@@ -124,7 +124,7 @@ const ForgotPass = () => {
                         width:"400px", display:"flex" ,justifyContent:"center", marginTop:"15px"
                     }}
                     >
-                    <Link to={"/"}>Back to log in</Link>
+                    <Link to={"/"}>Quay lại đăng nhập</Link>
                    
                     
                 </Box>

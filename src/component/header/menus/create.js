@@ -233,7 +233,7 @@ export default function Create() {
             <Box sx={{ height: "fit-content", width: "300px", marginTop: "470px", position: "absolute", marginLeft: "770px", backgroundColor: "hsla(260, 80%, 94.1%, 0.9)", display: isShowModalAddBoard ? "block" : "none" ,zIndex:1 }}>
                 <Box sx={{ marginLeft: "15px", marginRight: "15px" }}>
                     <Box sx={{ display: "flex", justifyContent: "center" }}>
-                        <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif", fontSize: "17px", width: "250px", textAlign: "center" }}> Create board</span>
+                        <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif", fontSize: "17px", width: "250px", textAlign: "center" }}>  Tạo bảng</span>
 
                         <ClearIcon onClick={(e) => setIsShowModalAddBoard(false)} />
                     </Box>
@@ -247,23 +247,23 @@ export default function Create() {
                     <Box sx={{marginTop:"30px"}}>
 
                     <FormControl>
-                            <FormLabel>Background</FormLabel>
+                            <FormLabel>Ảnh nền</FormLabel>
                             <input type='file' onChange={(e) => { setImgBack(e.target.files[0]) }} style={{ display: "none" }} />
-                            <Button sx={{height:"30px", width:"270px"}}variant="contained" onClick={() => { document.querySelector('input[type="file"]').click(); }}>Upload from computer</Button>
+                            <Button sx={{height:"30px", width:"270px"}}variant="contained" onClick={() => { document.querySelector('input[type="file"]').click(); }}>Tải lên từ máy tính</Button>
                         </FormControl>
 
                     </Box>
                     <Box sx={{ marginTop: "15px" }}>
                         <FormControl>
-                            <FormLabel>BoardName</FormLabel>
-                            <Input placeholder="Placeholder" onChange={(e) => setBoardname(e.target.value)} />
+                            <FormLabel>Tên bảng</FormLabel>
+                            <Input placeholder="Nhập tên bảng" onChange={(e) => setBoardname(e.target.value)} />
 
                         </FormControl>
                     </Box>
 
                     <Box sx={{ marginTop: "15px" }}>
                         <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">workspace</InputLabel>
+                            <InputLabel id="demo-simple-select-label">Không gian làm việc</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
@@ -278,7 +278,7 @@ export default function Create() {
                         </FormControl>
                     </Box>
                     <Box sx={{ marginTop: "15px", width: "270px", marginRight: "15px", marginBottom: "30px" }}>
-                        <JoyButton type='submit' sx={{ width: "270px" }} onClick={handleCreateBoard}>Create</JoyButton>
+                        <JoyButton type='submit' sx={{ width: "270px" }} onClick={handleCreateBoard}>Tạo</JoyButton>
                     </Box>
 
                 </Box>

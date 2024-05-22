@@ -50,7 +50,7 @@ const Login = () => {
                     <span style={{ fontSize: "25px", fontFamily: "var(--font-family-text,'Charlie Text',sans-serif)" }}>Trello</span>
                 </Box>
                 <Box sx={{ marginTop: "40px" }}>
-                    <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Fira Sans, Droid Sans, Helvetica Neue, sans-serif", fontWeight: "bold", fontSize: "20px" }}>Log in to continue</span>
+                    <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Fira Sans, Droid Sans, Helvetica Neue, sans-serif", fontWeight: "bold", fontSize: "20px" }}>Đăng nhập vào trello</span>
                 </Box>
                 <Box
                     component="form"
@@ -68,7 +68,7 @@ const Login = () => {
                 {/* <div className="btn"> */}
                 <Box sx={{ width: "fit-content", marginTop: "20px" }}>
                    
-                    <Button sx={{ width: "400px" }} variant="contained" onClick={handelLogin}>Sign in</Button>
+                    <Button sx={{ width: "400px" }} variant="contained" onClick={handelLogin}>Đăng Nhập</Button>
 
 
                 </Box>
@@ -77,8 +77,8 @@ const Login = () => {
                         width:"400px", display:"flex" ,justifyContent:"space-between", marginTop:"15px"
                     }}
                     >
-                    <Link to={"/Input-email"}>Forget password?</Link>
-                    <Link to={"/register"}>Create an account</Link>
+                    <Link to={"/Input-email"}>Quên mật khẩu?</Link>
+                    <Link to={"/register"}>Tạo một tài khoản</Link>
                     
                 </Box>
                 {/* </div> */}

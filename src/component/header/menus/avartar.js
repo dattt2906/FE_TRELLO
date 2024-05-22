@@ -104,7 +104,7 @@ export default function AccountMenu() {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem onClick={handleProfile}>
-          <Avatar /> Profile
+          <Avatar /> Hồ sơ
         </MenuItem>
         {/* <MenuItem onClick={handleClose}>
           <Avatar /> My account
@@ -114,7 +114,7 @@ export default function AccountMenu() {
           <ListItemIcon>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
-          Add another account
+          Thêm một tài khoản khác
         </MenuItem>
         {/* <MenuItem onClick={handleClose}>
           <ListItemIcon>
@@ -127,7 +127,7 @@ export default function AccountMenu() {
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
-          Logout
+          Đăng xuất
         </MenuItem>
         </Link>
         

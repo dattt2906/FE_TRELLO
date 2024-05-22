@@ -129,12 +129,12 @@ const Sidebar = () => {
     return (
         <>
             <Box sx={{width: "250px", backgroundColor: "hsla(260,80%,94.1%,0.9)", display: "flex", flexDirection: "column", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }}>
-                <Box sx={{ cursor:"pointer",marginLeft: "20px", display: "flex", alignItems: "center", width: "230px", height: "80px", fontSize: "25px" }}>
+                <Box sx={{ cursor:"pointer",marginLeft: "20px", display: "flex", alignItems: "center", width: "230px", height: "80px", fontSize: "25px",color:"#CBC0C0" }}>
 
                     {workspacename}
                   
                 </Box>
-                <hr style={{ width: '100%', border: '1px solid black',marginTop:"0px" }} />
+                <hr style={{ width: '100%' ,marginTop:"1px"}}/>
                 <Box sx={{height:"calc(100% - 80px)"}}>
                 <Box onClick={()=>handleDisplayWorkspace(workspaceId)} sx={{ marginTop: "30px", marginLeft: "20px", gap: 2, display: "flex", alignItems: "center", cursor:"pointer"}}>
 

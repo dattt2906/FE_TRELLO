@@ -47,7 +47,7 @@ const Register = () => {
                     <span style={{ fontSize: "25px", fontFamily: "var(--font-family-text,'Charlie Text',sans-serif)" }}>Trello</span>
                 </Box>
                 <Box sx={{ marginTop: "40px" }}>
-                    <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Fira Sans, Droid Sans, Helvetica Neue, sans-serif", fontWeight: "bold", fontSize: "20px" }}>Sign up to continue</span>
+                    <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Fira Sans, Droid Sans, Helvetica Neue, sans-serif", fontWeight: "bold", fontSize: "20px" }}>Đăng kí để tiếp tục</span>
                 </Box>
                 <Box
                     component="form"
@@ -66,7 +66,7 @@ const Register = () => {
                 <Box sx={{ width: "fit-content", marginTop: "20px" }}>
   
 
-                    <Button sx={{ width: "400px" }} variant="contained" onClick={handleRegis}>Sign up</Button>
+                    <Button sx={{ width: "400px" }} variant="contained" onClick={handleRegis}>Đăng kí</Button>
 
 
                 </Box>
@@ -76,7 +76,7 @@ const Register = () => {
                     }}
                 >
 
-                    <Link to={"/"}>Already have an trello account? Log in</Link>
+                    <Link to={"/"}>Bạn đã có tài khoản trello? Đăng nhập</Link>
 
                 </Box>
                 {/* </div> */}

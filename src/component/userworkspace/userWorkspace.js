@@ -36,11 +36,11 @@ const UserWorkspace = () => {
 
                         <Box sx={{ fontSize: "24px", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif", marginTop: "20px", marginLeft: "20px", marginBottom: "20px", marginRight: "20px" }}>
 
-                            Your workspaces
+                            Không gian làm việc của bạn
                             <Box sx={{ marginTop: "50px", display: "flex", flexDirection: "column", gap: 5 }}>
                                 <Box sx={{ height: "100px", width: "270px", cursor: "pointer", backgroundColor: "gray", marginTop: "20px", marginLeft: "50px", marginBottom: "20px", display: "flex", alignItems: "center" }}>
 
-                                    <span style={{ color: "white", paddingLeft: "20px" }}> Create new workspace </span>
+                                    <span style={{ color: "white", paddingLeft: "20px" }}> Tạo không gian làm việc </span>
 
                                 </Box>
                                 {workspaces && workspaces.length > 0 && workspaces.map((workspace) => (

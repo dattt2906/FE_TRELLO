@@ -105,7 +105,7 @@ const Workspace = (props) => {
                 <Box sx={{ display: "flex", gap: 3, marginTop: "20px", flexWrap: "wrap" }}>
                     <Box  onClick={handleShowModalAddBoard} sx={{ height: "100px", width: "270px", cursor: "pointer",backgroundColor:"gray", marginTop: "20px", marginLeft: "50px", marginBottom: "20px", display:"flex", alignItems:"center"}}>
 
-                        <span style={{  color: "white", paddingLeft:"40px" }}> Create new board </span>
+                        <span style={{  color: "white", paddingLeft:"40px" }}> Tạo bảng mới </span>
 
                     </Box>
 
@@ -144,7 +144,6 @@ const Workspace = (props) => {
 
                     <Box sx={{ marginTop: "15px" }}>
                         <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">workspace</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"

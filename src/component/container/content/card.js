@@ -30,6 +30,9 @@ import { display } from "@mui/system";
 import { Socket } from "socket.io-client";
 import Checkbox from '@mui/joy/Checkbox';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import ClearIcon from '@mui/icons-material/Clear';
+import Slider from '@mui/material/Slider';
+
 
 
 
@@ -44,8 +47,9 @@ const style = {
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
-  overflow: 'auto',
-  
+  overflowY: 'auto',
+  overflowX: "hidden"
+
 };
 const monthNames = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -73,12 +77,18 @@ const Card = (props) => {
   const [Deadline, setDeadline] = useState(null)
   const [overdue, setOverdue] = useState(false)
   const [duesoon, setDuesoon] = useState(false)
-  const [complete, setComplete]= useState(false)
+  const [complete, setComplete] = useState(false)
   const [showTimeInCard, setShowTimeInCard] = useState(false)
   const [timeCard, setTimeCard] = useState("")
   const [comments, setComments] = useState([])
-  const [contentComment,setContentComment]=useState("")
-  
+  const [contentComment, setContentComment] = useState("")
+  // const [commentChange, setCommentChange]= useState(false)
+  const [showModalAddCheckList, setShowModalAddCheckList] = useState(false)
+  const [todoLists, setTodoLists] = useState([])
+  const [todoListTitle, setTodoListTitle] = useState("")
+  const [todoTitle,setTodoTitle] = useState("")
+
+
   const queryString = window.location.search;
 
   const params = new URLSearchParams(queryString);
@@ -108,6 +118,7 @@ const Card = (props) => {
   const handleCloseModal = () => { setOpenModal(false); handleClose() }
 
   const [changeContentCard, setChangeContentCard] = useState(card.content);
+
   useEffect(() => {
     if (changeContentCard) {
       card.content = changeContentCard;
@@ -134,14 +145,73 @@ const Card = (props) => {
 
   }
 
-  useEffect(() => {
-    axios.get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
-      if (res.data.comments.length > 0) {
-        setComments(res.data.comments)
+  const handleAddTodoList = () => {
+    setShowModalAddCheckList(false)
+    const rowId = card.rowId
+
+    axios.post("http://localhost:3001/todolist/create-todolist", { todoListTitle, rowId }).then(res => {
+
+      if (res.data) {
+
+        axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
+
+          if (res.data) {
+            setTodoLists(res.data.todoLists)
+            updateTodoLists()
+          }
+        })
       }
     })
 
-  }, [comments])
+  }
+
+  const handleAddTodo=(todoListId)=>{
+  
+    axios.post("http://localhost:3001/todolist/create-todo", { todoTitle, todoListId }).then(res => {
+    if(res.data){
+
+        updateTodoLists()
+
+    }
+    })
+
+      
+  }
+
+  const updateComments = () => {
+    axios.get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
+      if (res.data.comments && res.data.comments.length > 0) {
+        setComments(res.data.comments)
+      }
+    })
+  }
+  const updateTodoLists = () => {
+    axios.get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
+      if (res.data.todoLists && res.data.todoLists.length > 0) {
+        setTodoLists(res.data.todoLists)
+      }
+    })
+  }
+
+
+  useEffect(() => {
+    axios.get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
+      if (res.data.comments && res.data.comments.length > 0) {
+        setComments(res.data.comments)
+      }
+    })
+  }, [])
+
+
+
+  useEffect(() => {
+    axios.get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
+      if (res.data.todoLists && res.data.todoLists.length > 0) {
+        setTodoLists(res.data.todoLists)
+      }
+    })
+
+  }, [])
 
   const setFormDate = (date) => {
     {
@@ -224,7 +294,7 @@ const Card = (props) => {
       }
     })
     setFormDate(Deadline.$d)
-  
+
     setDateTimeCard(Deadline.$d)
 
   }
@@ -238,7 +308,7 @@ const Card = (props) => {
     }
 
   }, [attachment])
- 
+
 
   useEffect(() => {
     axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
@@ -252,7 +322,7 @@ const Card = (props) => {
           setIsShowDueDate(true)
           setFormDate(res.data.deadline)
           setDateTimeCard(res.data.deadline)
-          
+
 
         }
 
@@ -291,15 +361,17 @@ const Card = (props) => {
     })
 
   }
-  const handleAddComment = ()=>{
-    const rowId= card.rowId
-    axios.post("http://localhost:3001/comment/create-comment",{userId,contentComment,rowId}).then(res=>{
-      if(res.data){
-        axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res=>{
+  const handleAddComment = () => {
 
-        if(res.data){
-          setComments(res.data.comments)
-        }
+    const rowId = card.rowId
+    axios.post("http://localhost:3001/comment/create-comment", { userId, contentComment, rowId }).then(res => {
+      if (res.data) {
+        axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
+
+          if (res.data) {
+            setComments(res.data.comments)
+            updateComments()
+          }
         })
       }
     })
@@ -360,7 +432,7 @@ const Card = (props) => {
 
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="Box">
-              <Box sx={{overflowY:"no-scroll", height:"600px"}}>
+              <Box sx={{ overflowY: "no-scroll", height: "600px" }}>
                 <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 1, justifyContent: "space-between" }}>
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <CreditCardIcon />
@@ -370,28 +442,28 @@ const Card = (props) => {
                     <Box onClick={handleShowDatePicker} sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer", marginRight: "100px" }}>
                       <AccessTimeIcon />
                       <span>Ngày</span>
-                    </Box> 
+                    </Box>
                   </Box>
 
-                  
+
 
 
                 </Box>
                 <Box sx={{ display: "flex", flexDirection: "row" }}>
-                  <Box sx={{ marginTop: "30px", width: "250px" }}>
+                  <Box sx={{ marginTop: "30px", width: "250px", fontSize: "15px" }}>
                     <span>Trong danh sách {card.cols.columnName}</span>
-                    
+
                   </Box>
                   {isShowDueDate ?
                     <Box sx={{ display: "flex", flexDirection: "column", marginLeft: "0px" }}>
-                      <Box sx={{ marginTop: "30px" }}>
+                      <Box sx={{ marginTop: "30px", fontSize: "15px" }}>
                         <span>Ngày hết hạn</span>
 
 
                       </Box>
-                      <Box sx={{display:"flex", alignItems:"center", gap: 0.5}}>
-                        <Checkbox/>
-                        <span>{time}</span>
+                      <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                        <Checkbox />
+                        <span style={{ fontSize: "15px" }}>{time}</span>
                       </Box>
 
                     </Box>
@@ -399,9 +471,9 @@ const Card = (props) => {
                     null
                   }
                   {overdue ?
-                    <Box sx={{ backgroundColor: "red", color: "white", height: "30px", display: "flex", alignItems: "center", marginTop: "60px", marginLeft: "20px", gap: 0.5 }}>
+                    <Box sx={{ backgroundColor: "red", color: "white", height: "30px", display: "flex", alignItems: "center", marginTop: "50px", marginLeft: "20px", gap: 0.5 }}>
                       <AccessTimeIcon />
-                      <span>Quá hạn</span>
+                      <span style={{ fontSize: "15px" }}>Quá hạn</span>
 
 
 
@@ -410,9 +482,9 @@ const Card = (props) => {
                     :
                     null}
                   {duesoon ?
-                    <Box sx={{ backgroundColor: "#e8e514", color: "white", height: "30px", display: "flex", alignItems: "center", marginTop: "60px", marginLeft: "20px", gap: 1 }}>
+                    <Box sx={{ backgroundColor: "#e8e514", color: "white", height: "30px", display: "flex", alignItems: "center", marginTop: "50px", marginLeft: "20px", gap: 1 }}>
                       <AccessTimeIcon />
-                      <span>Sắp hết hạn</span>
+                      <span style={{ fontSize: "15px" }}>Sắp hết hạn</span>
 
 
 
@@ -420,9 +492,9 @@ const Card = (props) => {
                     :
                     null
                   }
-                   {complete ?
+                  {complete ?
                     <Box sx={{ backgroundColor: "#19DF47", color: "white", height: "30px", display: "flex", alignItems: "center", marginTop: "60px", marginLeft: "20px", gap: 1 }}>
-                      
+
                       <span>Hoàn thành</span>
 
 
@@ -433,7 +505,7 @@ const Card = (props) => {
                   }
                 </Box>
                 {isShowDatePicker ?
-                  <Box sx={{ width: "fit-content", position: "relative", marginLeft: "600px", marginTop: "-70px" }}>
+                  <Box sx={{ width: "fit-content", position: "relative", marginLeft: "620px", marginTop: "-50px" }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DemoContainer components={['DateTimePicker']}>
                         <DateTimePicker
@@ -449,11 +521,41 @@ const Card = (props) => {
                   :
                   null
                 }
-                <Box  sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer", marginTop:"20px", marginLeft:"700px"}}>
-                    <CheckBoxIcon sx={{color:"gray"}}/>
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  <Box onClick={(e) => setShowModalAddCheckList(true)} sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer", marginTop: "20px", marginLeft: "700px", position: "relative" }}>
+                    <CheckBoxIcon sx={{ color: "gray" }} />
                     <span>Việc cần làm</span>
 
+
+                  </Box>
+                  {showModalAddCheckList ?
+                    <Box sx={{ left: "690px", position: "absolute", marginTop: "50px", width: "240px", height: "200px", backgroundColor: "#b5b6f3", zIndex: 1 }}>
+                      <Box sx={{ marginTop: "10px", color: "white", display: "flex", alignItems: "center" }}>
+
+                        <span style={{ textAlign: "center", width: "200px", paddingLeft: "25px" }}> Thêm việc cần làm</span>
+                        <ClearIcon onClick={(e) => setShowModalAddCheckList(false)} sx={{ marginLeft: "10px" }} />
+
+                      </Box>
+                      <Box sx={{ display: "flex", marginLeft: "10px", width: "calc(100% - 20px)", marginRight: "10px" }}>
+                        <Box sx={{ marginTop: "15px" }}>
+                          <FormControl>
+                            <FormLabel>Tiêu đề</FormLabel>
+                            <Input placeholder="Việc cần làm" onChange={(e) => setTodoListTitle(e.target.value)} />
+
+                          </FormControl>
+                          <Box sx={{ marginTop: "20px" }}>
+                            <JoyButton type='submit' sx={{ width: "70px" }} onClick={handleAddTodoList}>Thêm</JoyButton>
+
+                          </Box>
+                        </Box>
+
+                      </Box>
                     </Box>
+                    :
+                    null
+                  }
+                </Box>
+
                 <Box sx={{ width: "70%", marginTop: "40px", display: "flex", flexDirection: "column", gap: 5 }}>
 
                   <FormControl>
@@ -482,49 +584,102 @@ const Card = (props) => {
 
                   </FormControl>
 
-                  <Box>
 
-                    <span>Đính kèm</span>
-
-                  </Box>
 
                   {attachment ?
-                    <img style={{ width: "250px", height: "200px" }} src={attachment}></img>
+
+                    <Box sx={{ display: "flex", flexDirection: "column" }}>
+
+                      <span>Đính kèm</span>
+                      <img style={{ width: "250px", height: "200px" }} src={attachment}></img>
+
+                    </Box>
                     :
                     null}
+
+                  {todoLists && todoLists.length > 0 && todoLists.map((todolist) => (
+                    <Box>
+                      <Box sx={{display:"flex", justifyContent:"space-between"}}>
+                      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                        <CheckBoxIcon sx={{ color: "gray" }} />
+                        {todolist.todoListTitle}
+                      </Box>
+
+                      <Box>
+
+                      <Button sx={{ width: "20px", marginTop: "10px", marginBottom: "10px", backgroundColor: "gray" }} variant="contained" disableElevation>
+                          Xóa
+                        </Button>
+
+                        </Box>
+
+                      </Box>
+                      <Box>
+                        <span style={{ fontSize: "15px" }}>0%</span>
+                        <Slider defaultValue={50} aria-label="Default" valueLabelDisplay="auto" value={70} />
+                      </Box>
+                      {todolist && todolist.todos.map((todo) => (
+
+                        <Box sx={{ display: "flex", justifyContent:"space-between",alignItems:"center"}}>
+                          <Box sx={{display:"flex",alignItems: "center", gap: 1,marginBottom: "10px"}}>
+                          <Checkbox />{todo.todoTitle}
+                          </Box>
+                          <Box>
+                              <ClearIcon sx={{color:"gray"}}/>
+                            </Box>
+                        </Box>
+                      ))}
+
+                      <Textarea placeholder="Thêm một mục" onChange={(e)=>setTodoTitle(e.target.value)}></Textarea>
+                      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                        <Button sx={{ width: "20px", marginTop: "10px", marginBottom: "10px" }} variant="contained" disableElevation onClick={()=>handleAddTodo(todolist.todoListId)}>
+                          Thêm
+                        </Button>
+                        <Button sx={{ width: "20px", marginTop: "10px", marginBottom: "10px", backgroundColor: "gray" }} variant="contained" disableElevation>
+                          Hủy
+                        </Button>
+                      </Box>
+
+
+
+
+
+                    </Box>
+
+                  ))}
                   <Box>
                     <FormControl>
                       <FormLabel>Hoạt động</FormLabel>
                       <Box>
-                      {/* <img style={{height:"40px", width:"40px", borderRadius:"50%"}} src={card.comments.user.}></img> */}
-                      <Textarea placeholder="Write a commnet..." sx={{ border: "none", width: "100%", minHeight: "30px", height: "fit-content", wordBreak: "break-all" }} onChange={(e)=> setContentComment(e.target.value)} ></Textarea>
+                        {/* <img style={{height:"40px", width:"40px", borderRadius:"50%"}} src={card.comments.user.}></img> */}
+                        <Textarea placeholder="Write a commnet..." sx={{ border: "none", width: "100%", minHeight: "30px", height: "fit-content", wordBreak: "break-all" }} onChange={(e) => setContentComment(e.target.value)} ></Textarea>
                       </Box>
-                      <Button sx={{ width: "20px", marginTop: "10px" }} onClick={handleAddComment}  variant="contained" disableElevation>
+                      <Button sx={{ width: "20px", marginTop: "10px", marginBottom: "10px" }} onClick={handleAddComment} variant="contained" disableElevation>
                         Lưu
                       </Button>
                       {comments && comments.length > 0 && comments.map((comment) => (
-                       
-                       
-
-                       <Box sx={{marginTop:"15px",marginBottom:"15px", display:"flex", gap:2}}>
-                        <Box>
-                        
-                         <img style={{height:"40px", width:"40px", borderRadius:"50%"}} src={comment.user.userInfors.avatarImg}></img>
-                         </Box>
-                         <Box sx={{flex:1}}>
-                          <Box sx={{display:"flex", flexDirection:"column"}}>
-                          <span>{comment.user.userInfors.display_name}</span>
-                          <Box sx={{border:"1px solid gray",borderRadius:"10px",padding:"10px",fontSize:"15px"}}>
-                         <span>{comment.contentComment}</span>
-                         </Box>
-                         </Box>
-
-                         </Box>
-
-                       </Box>
 
 
-                     ))}
+
+                        <Box sx={{ marginTop: "15px", marginBottom: "25px", display: "flex", gap: 2 }}>
+                          <Box>
+
+                            <img style={{ height: "40px", width: "40px", borderRadius: "50%" }} src={comment.user.userInfors.avatarImg}></img>
+                          </Box>
+                          <Box sx={{ flex: 1 }}>
+                            <Box sx={{ display: "flex", flexDirection: "column" }}>
+                              <span>{comment.user.userInfors.display_name}</span>
+                              <Box sx={{ border: "1px solid gray", borderRadius: "10px", padding: "10px", fontSize: "15px" }}>
+                                <span>{comment.contentComment}</span>
+                              </Box>
+                            </Box>
+
+                          </Box>
+
+                        </Box>
+
+
+                      ))}
                     </FormControl>
                   </Box>
 
