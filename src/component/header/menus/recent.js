@@ -27,7 +27,7 @@ export default function Recents() {
         onClick={handleClick}
         sx={{color:"black", fontFamily:"-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif", fontSize:"17px"}}
       >
-        Recents
+        Gần đây
         <KeyboardArrowDownIcon/>
       </Button>
       <Menu

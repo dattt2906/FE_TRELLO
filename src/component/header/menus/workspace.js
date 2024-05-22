@@ -55,7 +55,7 @@ export default function Workspaces() {
         onClick={handleClick}
         sx={{color:"black", fontFamily:"-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif", fontSize:"17px"}}
       >
-        Workspaces
+        Không gian làm việc
         <KeyboardArrowDownIcon/>
       </Button>
       <Menu

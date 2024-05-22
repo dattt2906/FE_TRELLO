@@ -28,6 +28,8 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import dayjs from "dayjs";
 import { display } from "@mui/system";
 import { Socket } from "socket.io-client";
+import Checkbox from '@mui/joy/Checkbox';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 
 
@@ -36,12 +38,14 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 800,
+  width: 900,
   height: "fit-content",
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+  overflow: 'auto',
+  
 };
 const monthNames = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -52,6 +56,7 @@ const Card = (props) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { card, cardDel, socket, boardId } = props;
+  // console.log(card)
   const [isShowEditCard, setIsShowEditCard] = useState(false);
   const [openModal, setOpenModal] = React.useState(false);
   const [showAddImage, setShowAddImage] = useState(false)
@@ -68,9 +73,16 @@ const Card = (props) => {
   const [Deadline, setDeadline] = useState(null)
   const [overdue, setOverdue] = useState(false)
   const [duesoon, setDuesoon] = useState(false)
+  const [complete, setComplete]= useState(false)
   const [showTimeInCard, setShowTimeInCard] = useState(false)
   const [timeCard, setTimeCard] = useState("")
   const [comments, setComments] = useState([])
+  const [contentComment,setContentComment]=useState("")
+  
+  const queryString = window.location.search;
+
+  const params = new URLSearchParams(queryString);
+  const userId = (params.get('userId'));
 
 
 
@@ -129,13 +141,13 @@ const Card = (props) => {
       }
     })
 
-  }, [])
+  }, [comments])
 
   const setFormDate = (date) => {
     {
 
       if (dayjs(date).month() - dayjs(Date()).month() === 0 && dayjs(date).date() - dayjs(Date()).date() === 0) {
-        setTime(`today at ${dayjs(date).hour()}:${dayjs(date).format("mm")} `)
+        setTime(`Hôm nay lúc ${dayjs(date).hour()}:${dayjs(date).format("mm")} `)
         if (dayjs(date).hour() - dayjs(Date()).hour() > 0) {
           setDuesoon(true)
           setOverdue(false)
@@ -162,7 +174,7 @@ const Card = (props) => {
       else if (dayjs(date).month() - dayjs(Date()).month() === 0 && dayjs(date).date() - dayjs(Date()).date() === 1) {
         setOverdue(false)
         setDuesoon(false)
-        setTime(`tomorrow at ${dayjs(date).hour()}:${dayjs(date).format("mm")} `)
+        setTime(`Ngày mai lúc ${dayjs(date).hour()}:${dayjs(date).format("mm")} `)
       }
       else if (dayjs(date).month() - dayjs(Date()).month() === 0 && dayjs(date).date() - dayjs(Date()).date() > 1) {
         setOverdue(false)
@@ -194,6 +206,7 @@ const Card = (props) => {
 
   }
 
+
   const handleShowDatePicker = () => {
     setIsShowDatePicker(true)
 
@@ -201,6 +214,7 @@ const Card = (props) => {
   const confirmDateCard = async () => {
     setIsShowDatePicker(false)
     setIsShowDueDate(true)
+    setShowTimeInCard(true)
     const deadline = Deadline.$d
 
     await axios.put(`http://localhost:3001/table/update-deadline-by-rowId/${card.rowId}`, { deadline }).then(res => {
@@ -210,6 +224,8 @@ const Card = (props) => {
       }
     })
     setFormDate(Deadline.$d)
+  
+    setDateTimeCard(Deadline.$d)
 
   }
 
@@ -222,13 +238,7 @@ const Card = (props) => {
     }
 
   }, [attachment])
-  useEffect(() => {
-    {
-
-
-
-    }
-  },)
+ 
 
   useEffect(() => {
     axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
@@ -242,6 +252,7 @@ const Card = (props) => {
           setIsShowDueDate(true)
           setFormDate(res.data.deadline)
           setDateTimeCard(res.data.deadline)
+          
 
         }
 
@@ -278,6 +289,22 @@ const Card = (props) => {
         alert("Cap nhat thong tin card thanh cong")
       }
     })
+
+  }
+  const handleAddComment = ()=>{
+    const rowId= card.rowId
+    axios.post("http://localhost:3001/comment/create-comment",{userId,contentComment,rowId}).then(res=>{
+      if(res.data){
+        axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res=>{
+
+        if(res.data){
+          setComments(res.data.comments)
+        }
+        })
+      }
+    })
+
+
 
   }
 
@@ -333,7 +360,7 @@ const Card = (props) => {
 
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="Box">
-              <Box>
+              <Box sx={{overflowY:"no-scroll", height:"600px"}}>
                 <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 1, justifyContent: "space-between" }}>
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <CreditCardIcon />
@@ -342,25 +369,28 @@ const Card = (props) => {
                   <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
                     <Box onClick={handleShowDatePicker} sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer", marginRight: "100px" }}>
                       <AccessTimeIcon />
-                      <span>Date</span>
-                    </Box>
-
+                      <span>Ngày</span>
+                    </Box> 
                   </Box>
+
+                  
+
 
                 </Box>
                 <Box sx={{ display: "flex", flexDirection: "row" }}>
                   <Box sx={{ marginTop: "30px", width: "250px" }}>
-                    <span>In list {card.cols.columnName}</span>
+                    <span>Trong danh sách {card.cols.columnName}</span>
+                    
                   </Box>
                   {isShowDueDate ?
                     <Box sx={{ display: "flex", flexDirection: "column", marginLeft: "0px" }}>
                       <Box sx={{ marginTop: "30px" }}>
-                        <span>Due date</span>
+                        <span>Ngày hết hạn</span>
 
 
                       </Box>
-                      <Box>
-
+                      <Box sx={{display:"flex", alignItems:"center", gap: 0.5}}>
+                        <Checkbox/>
                         <span>{time}</span>
                       </Box>
 
@@ -371,7 +401,7 @@ const Card = (props) => {
                   {overdue ?
                     <Box sx={{ backgroundColor: "red", color: "white", height: "30px", display: "flex", alignItems: "center", marginTop: "60px", marginLeft: "20px", gap: 0.5 }}>
                       <AccessTimeIcon />
-                      <span>OverDue</span>
+                      <span>Quá hạn</span>
 
 
 
@@ -382,7 +412,18 @@ const Card = (props) => {
                   {duesoon ?
                     <Box sx={{ backgroundColor: "#e8e514", color: "white", height: "30px", display: "flex", alignItems: "center", marginTop: "60px", marginLeft: "20px", gap: 1 }}>
                       <AccessTimeIcon />
-                      <span>Due Soon</span>
+                      <span>Sắp hết hạn</span>
+
+
+
+                    </Box>
+                    :
+                    null
+                  }
+                   {complete ?
+                    <Box sx={{ backgroundColor: "#19DF47", color: "white", height: "30px", display: "flex", alignItems: "center", marginTop: "60px", marginLeft: "20px", gap: 1 }}>
+                      
+                      <span>Hoàn thành</span>
 
 
 
@@ -392,26 +433,31 @@ const Card = (props) => {
                   }
                 </Box>
                 {isShowDatePicker ?
-                  <Box sx={{ width: "fit-content", position: "relative", marginLeft: "540px", marginTop: "-70px" }}>
+                  <Box sx={{ width: "fit-content", position: "relative", marginLeft: "600px", marginTop: "-70px" }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DemoContainer components={['DateTimePicker']}>
                         <DateTimePicker
                           sx={{ height: '60px' }}
-                          label="Date Card"
+                          label="Ngày hết hạn"
                           value={Deadline}
                           onChange={(newValue) => setDeadline(newValue)}
                         />
                       </DemoContainer>
                     </LocalizationProvider>
-                    <JoyButton onClick={confirmDateCard}>Save</JoyButton>
+                    <JoyButton onClick={confirmDateCard}>Lưu</JoyButton>
                   </Box>
                   :
                   null
                 }
+                <Box  sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer", marginTop:"20px", marginLeft:"700px"}}>
+                    <CheckBoxIcon sx={{color:"gray"}}/>
+                    <span>Việc cần làm</span>
+
+                    </Box>
                 <Box sx={{ width: "70%", marginTop: "40px", display: "flex", flexDirection: "column", gap: 5 }}>
 
                   <FormControl>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>Mô tả</FormLabel>
                     {showAddImage === true ?
                       <Box sx={{ display: "flex", position: "absolute", marginTop: "30px", zIndex: 1, marginLeft: "500px", marginTop: "20px" }}>
 
@@ -427,10 +473,10 @@ const Card = (props) => {
                     <Textarea sx={{ border: "none", paddingTop: "30px", width: "100%", minHeight: "100px", height: "fit-content", wordBreak: "break-all" }} value={description} onClick={() => setShowAddImage(true)} onChange={(e) => setDescription(e.target.value)}></Textarea>
                     <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
                       <Button sx={{ width: "20px", marginTop: "10px" }} variant="contained" disableElevation onClick={changeRowDetail}>
-                        Save
+                        Lưu
                       </Button>
                       <Button onClick={cancelInput} sx={{ width: "20px", marginTop: "10px", backgroundColor: "gray" }} variant="contained" disableElevation>
-                        Cancel
+                        Hủy
                       </Button>
                     </Box>
 
@@ -438,7 +484,7 @@ const Card = (props) => {
 
                   <Box>
 
-                    <span>Attachment</span>
+                    <span>Đính kèm</span>
 
                   </Box>
 
@@ -446,33 +492,21 @@ const Card = (props) => {
                     <img style={{ width: "250px", height: "200px" }} src={attachment}></img>
                     :
                     null}
-                  <Box sx={{ height: "600px" }}>
+                  <Box>
                     <FormControl>
-                      <FormLabel>Activity</FormLabel>
-                      <Textarea sx={{ border: "none", width: "100%", minHeight: "100px", height: "fit-content", wordBreak: "break-all" }}></Textarea>
-                      {/* {comments && comments.length > 0 && comments.map((comment) => (
-                       
-                       
-
-                        <Box sx={{marginTop:"40px", display:"flex",alignItems:"center", gap:2}}>
-                          <img style={{height:"40px", width:"40px", borderRadius:"50%"}} src={comment.user.userInfors.avatarImg}></img>
-
-                          <span>{comment.contentComment}</span>
-
-                        </Box>
-
-
-                      ))} */}
-
-
-                      <Button sx={{ width: "20px", marginTop: "10px" }} variant="contained" disableElevation>
-                        Save
+                      <FormLabel>Hoạt động</FormLabel>
+                      <Box>
+                      {/* <img style={{height:"40px", width:"40px", borderRadius:"50%"}} src={card.comments.user.}></img> */}
+                      <Textarea placeholder="Write a commnet..." sx={{ border: "none", width: "100%", minHeight: "30px", height: "fit-content", wordBreak: "break-all" }} onChange={(e)=> setContentComment(e.target.value)} ></Textarea>
+                      </Box>
+                      <Button sx={{ width: "20px", marginTop: "10px" }} onClick={handleAddComment}  variant="contained" disableElevation>
+                        Lưu
                       </Button>
                       {comments && comments.length > 0 && comments.map((comment) => (
                        
                        
 
-                       <Box sx={{marginTop:"40px", display:"flex", gap:2}}>
+                       <Box sx={{marginTop:"15px",marginBottom:"15px", display:"flex", gap:2}}>
                         <Box>
                         
                          <img style={{height:"40px", width:"40px", borderRadius:"50%"}} src={comment.user.userInfors.avatarImg}></img>
@@ -480,7 +514,9 @@ const Card = (props) => {
                          <Box sx={{flex:1}}>
                           <Box sx={{display:"flex", flexDirection:"column"}}>
                           <span>{comment.user.userInfors.display_name}</span>
+                          <Box sx={{border:"1px solid gray",borderRadius:"10px",padding:"10px",fontSize:"15px"}}>
                          <span>{comment.contentComment}</span>
+                         </Box>
                          </Box>
 
                          </Box>

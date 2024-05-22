@@ -527,7 +527,7 @@ const Content = () => {
                                     {/* <i className="fa fa-plus icon-add-list"></i> */}
                                     <Box sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer" }}>
                                         <AddIcon sx={{}} />
-                                        Add another list
+                                        Thêm một danh sách
                                     </Box>
                                 </div>
 
@@ -536,10 +536,10 @@ const Content = () => {
                                     <div className="text-area-add-column">
                                         {/* <textarea className="input-value-column" placeholder="Enter the list title" onChange={(e) => setColumnName(e.target.value)}>
                                         </textarea> */}
-                                        <Textarea placeholder="Enter the list title" sx={{ width: "280px", marginLeft: "10px", marginTop: "10px" }} onChange={(e) => setColumnName(e.target.value)}></Textarea>
+                                        <Textarea placeholder="Nhập vào tiêu đề" sx={{ width: "280px", marginLeft: "10px", marginTop: "10px" }} onChange={(e) => setColumnName(e.target.value)}></Textarea>
                                     </div>
                                     <div className="button-add-column">
-                                        <button className="btn-add" onClick={handelAddList}>Add List</button>
+                                        <button className="btn-add" onClick={handelAddList}>Thêm</button>
                                         <i className="fa fa-times icon-cancel" onClick={() => setIsAddColumn(false)}></i>
 
                                     </div>

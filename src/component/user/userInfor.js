@@ -70,7 +70,7 @@ const UserInfor = () => {
         <>
 
 
-            <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column", gap: 3, marginTop: "70px" }}>
+            <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column", gap: 3, marginTop: "70px"}}>
 
                 <Box sx={{ width: '480px' }}>
 

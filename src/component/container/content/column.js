@@ -149,17 +149,17 @@ const Column = (props) => {
               //   Add another card</footer>
               <Box sx={{display:"flex", alignItems:"center", gap:1, cursor:"pointer", marginBottom:"15px", marginTop:"15px", marginLeft:"5px"}}onClick={() => setIsShowAddCard(true)}>
                                     <AddIcon sx={{}}/>
-                                    Add another card
+                                    Thêm một thẻ
                                     </Box>
               :
               <div className="content-add-card">
                 <div className="text-area-add-card">
                   {/* <textarea className="input-value-card" placeholder="Enter the content card" onChange={(e) => setContent(e.target.value)}>
                   </textarea> */}
-                   <Textarea placeholder="Enter the content card" sx={{width:"280px",height:"50px", marginLeft:"0px", marginTop:"10px", borderRadius:"10px"}}onChange={(e) => setContent(e.target.value)}></Textarea>
+                   <Textarea placeholder="Nhập vào nội dung thẻ" sx={{width:"280px",height:"50px", marginLeft:"0px", marginTop:"10px", borderRadius:"10px"}}onChange={(e) => setContent(e.target.value)}></Textarea>
                 </div>
                 <div className="button-add">
-                  <button className="btn-add" onClick={handleAddCard}>Add card</button>
+                  <button className="btn-add" onClick={handleAddCard}>Thêm thẻ</button>
                   <i className="fa fa-times icon-cancel-card" onClick={() => setIsShowAddCard(false)}></i>
 
                 </div>

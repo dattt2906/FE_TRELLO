@@ -129,20 +129,22 @@ const Sidebar = () => {
     return (
         <>
             <Box sx={{width: "250px", backgroundColor: "hsla(260,80%,94.1%,0.9)", display: "flex", flexDirection: "column", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }}>
-                <Box sx={{ marginLeft: "20px", display: "flex", alignItems: "center", width: "230px", height: "80px", fontSize: "25px" }}>
+                <Box sx={{ cursor:"pointer",marginLeft: "20px", display: "flex", alignItems: "center", width: "230px", height: "80px", fontSize: "25px" }}>
 
                     {workspacename}
+                  
                 </Box>
+                <hr style={{ width: '100%', border: '1px solid black',marginTop:"0px" }} />
                 <Box sx={{height:"calc(100% - 80px)"}}>
                 <Box onClick={()=>handleDisplayWorkspace(workspaceId)} sx={{ marginTop: "30px", marginLeft: "20px", gap: 2, display: "flex", alignItems: "center", cursor:"pointer"}}>
 
                     <DashboardIcon />
-                    <span style={{ fontSize: "15px" }}>Boards</span>
+                    <span style={{ fontSize: "15px" }}>Bảng</span>
                 </Box>
                 <Box sx={{ marginTop: "30px", marginLeft: "20px", gap: 2, display: "flex", alignItems: "center", justifyContent:"space-between" }}>
                     <Box sx={{display: "flex", alignItems: "center",gap: 2}}>
                     <PersonIcon />
-                    <span style={{ fontSize: "15px" ,cursor:"pointer"}}>Members</span>
+                    <span style={{ fontSize: "15px" ,cursor:"pointer"}}>Thành viên</span>
                     </Box>
                     <Box sx={{paddingRight:"10px"}}>
                     <AddIcon onClick={handleOpenModal} sx={{cursor:"pointer"}}/>
@@ -159,11 +161,11 @@ const Sidebar = () => {
                         <Box sx={style}>
                             <Typography id="modal-modal-title" variant="h6" component="Box">
                                 <Box >
-                                    <span>Invite to Workspace</span>
+                                    <span>Thêm thành viên vào không gian làm việc</span>
                                     <Box sx={{display:"flex", justifyContent:"space-between", alignItems:"center", marginTop:"20px"}}>
 
-                                    <Textarea onChange={(e)=> setEmail(e.target.value)} sx={{ width:"600px"}}placeholder="Email address"/>
-                                    <JoyButton onClick={handleInviteLink}>Send Link Invite</JoyButton>
+                                    <Textarea onChange={(e)=> setEmail(e.target.value)} sx={{ width:"600px"}}placeholder="Địa chỉ email"/>
+                                    <JoyButton onClick={handleInviteLink}>Gửi link mời</JoyButton>
                                     </Box>
                                 </Box>
                             </Typography>
@@ -178,27 +180,12 @@ const Sidebar = () => {
                 <Box sx={{ marginTop: "30px", marginLeft: "20px", gap: 2, display: "flex", alignItems: "center", fontWeight: "bold" }}>
 
                     <SettingsIcon />
-                    <span style={{ fontSize: "15px" }}>Workspace settings</span>
-                </Box>
-                <Box sx={{ marginTop: "40px", marginLeft: "10px", gap: 2, display: "flex", alignItems: "center", fontWeight: "bold" }}>
-
-
-                    <span style={{ fontSize: "15px" }}>Workspace views</span>
-                </Box>
-                <Box sx={{ marginTop: "40px", marginLeft: "20px", gap: 2, display: "flex", alignItems: "center", fontStyle: "italic" }}>
-                    <TableRowsIcon />
-
-                    <span style={{ fontSize: "15px" }}>Table</span>
-                </Box>
-                <Box sx={{ marginTop: "40px", marginLeft: "20px", gap: 2, display: "flex", alignItems: "center", fontStyle: "italic" }}>
-                    <CalendarMonthIcon />
-
-                    <span style={{ fontSize: "15px" }}>Calendar</span>
+                    <span style={{ fontSize: "15px" }}>Thông tin không gian làm việc</span>
                 </Box>
                 <Box sx={{ marginTop: "40px", marginLeft: "10px", gap: 2, display: "flex", alignItems: "center", fontWeight: "bold" }}>
 
                     <Box>
-                    <span style={{ fontSize: "15px" }}>Your boards</span>
+                    <span style={{ fontSize: "15px" }}>Bảng của bạn</span>
 
                     <Box
                         sx={{

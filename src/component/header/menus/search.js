@@ -48,7 +48,7 @@ export default function Search() {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Search input"
+            label="Tìm kiếm"
             InputProps={{
               ...params.InputProps,
               type: 'search',

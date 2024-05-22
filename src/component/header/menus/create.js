@@ -170,7 +170,7 @@ export default function Create() {
                     onClick={handleClick}
                     sx={{ color: "black", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif", fontSize: "17px" }}
                 >
-                    Create
+                    Tạo
 
                 </Button>
 
@@ -183,9 +183,9 @@ export default function Create() {
                         'aria-labelledby': 'basic-button',
                     }}
                 >
-                    <MenuItem onClick={handleShowModalAddBoard} sx={{ marginBottom: "20px" }}> <DashboardIcon sx={{ marginRight: "5px" }} />Board</MenuItem>
+                    <MenuItem onClick={handleShowModalAddBoard} sx={{ marginBottom: "20px" }}> <DashboardIcon sx={{ marginRight: "5px" }} />Bảng</MenuItem>
 
-                    <MenuItem onClick={handleOpenModal}><PeopleOutlineIcon sx={{ marginRight: "5px" }} />Workspace</MenuItem>
+                    <MenuItem onClick={handleOpenModal}><PeopleOutlineIcon sx={{ marginRight: "5px" }} />Không gian làm việc</MenuItem>
                     <Modal
                         open={openModal}
                         onClose={handleCloseModal}
@@ -196,24 +196,24 @@ export default function Create() {
                             <Typography id="modal-modal-title" variant="h6" component="Box">
                                 <Box>
                                     <Box sx={{ display: "flex", alignItems: "center" }}>
-                                        <span style={{ textAlign: "center", width: "100%" }}>Create workspace</span>
+                                        <span style={{ textAlign: "center", width: "100%" }}>Tạo không gian làm việc</span>
                                     </Box>
                                     <Box sx={{width:"70%", marginTop:"40px", display:"flex", flexDirection:"column", gap:5}}>
 
                                         <FormControl>
-                                            <FormLabel>WorkspaceName</FormLabel>
+                                            <FormLabel>Tên không gian làm việc</FormLabel>
                                             <Input placeholder="workspacename" onChange={(e)=> setWorkspacename(e.target.value)} />
 
                                         </FormControl>
                                         <FormControl>
-                                            <FormLabel>WorkspaceDetail</FormLabel>
+                                            <FormLabel>Mô tả</FormLabel>
                                             {/* <Input sx={{height:"200px"}} onChange={(e)=> setWorkspaceDetail(e.target.value)}/> */}
                                             <Textarea sx={{height:"200px"}} onChange={(e)=> setWorkspaceDetail(e.target.value)}></Textarea>
                                         </FormControl>
 
                                     </Box>
                                     <Box sx={{marginTop:"20px"}}>
-                                    <JoyButton type='submit' sx={{ width: "270px" }} onClick={handelCreateWorkspace}>Create</JoyButton>
+                                    <JoyButton type='submit' sx={{ width: "270px" }} onClick={handelCreateWorkspace}>Tạo</JoyButton>
 
                                     </Box>
 
