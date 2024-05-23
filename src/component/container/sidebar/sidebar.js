@@ -129,7 +129,7 @@ const Sidebar = () => {
     return (
         <>
             <Box sx={{width: "250px", backgroundColor: "hsla(260,80%,94.1%,0.9)", display: "flex", flexDirection: "column", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }}>
-                <Box sx={{ cursor:"pointer",marginLeft: "20px", display: "flex", alignItems: "center", width: "230px", height: "80px", fontSize: "25px",color:"#CBC0C0" }}>
+                <Box sx={{ cursor:"pointer",marginLeft: "20px", display: "flex", alignItems: "center", width: "230px", height: "80px", fontSize: "25px",color:"black" }}>
 
                     {workspacename}
                   
@@ -161,7 +161,7 @@ const Sidebar = () => {
                         <Box sx={style}>
                             <Typography id="modal-modal-title" variant="h6" component="Box">
                                 <Box >
-                                    <span>Thêm thành viên vào không gian làm việc</span>
+                                    <span>Thêm thành viên vào dự án</span>
                                     <Box sx={{display:"flex", justifyContent:"space-between", alignItems:"center", marginTop:"20px"}}>
 
                                     <Textarea onChange={(e)=> setEmail(e.target.value)} sx={{ width:"600px"}}placeholder="Địa chỉ email"/>

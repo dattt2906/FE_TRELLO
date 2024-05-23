@@ -87,6 +87,7 @@ const Card = (props) => {
   const [todoLists, setTodoLists] = useState([])
   const [todoListTitle, setTodoListTitle] = useState("")
   const [todoTitle,setTodoTitle] = useState("")
+  const [countChecked, setCountChecked]= useState(0)
 
 
   const queryString = window.location.search;
@@ -144,6 +145,34 @@ const Card = (props) => {
     })
 
   }
+  const handleDelTodoList=async(todoListId)=>{
+
+  await  axios.delete(`http://localhost:3001/todolist/del-todolist-by-id/${todoListId}`)
+     
+      await  axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
+        if (res.data) {
+          setTodoLists(res.data.todoLists)
+          updateTodoLists()
+        }
+  
+      
+    })
+  }
+
+  const handleDelTodo=async(todoId)=>{
+
+    await  axios.delete(`http://localhost:3001/todolist/del-todo-by-id/${todoId}`)
+       
+        await  axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
+          if (res.data) {
+            updateTodoLists()
+          }
+    
+        
+      })
+    }
+
+  
 
   const handleAddTodoList = () => {
     setShowModalAddCheckList(false)
@@ -176,6 +205,14 @@ const Card = (props) => {
     })
 
       
+  }
+  const UpdateTodoCheck=(todoId, Checked)=>{
+    const isChecked = !Checked
+    axios.put(`http://localhost:3001/todolist/update-isChecked-by-todoId/${todoId}`, {isChecked}).then(res=>{
+      updateTodoLists()
+    })
+      
+
   }
 
   const updateComments = () => {
@@ -607,7 +644,7 @@ const Card = (props) => {
 
                       <Box>
 
-                      <Button sx={{ width: "20px", marginTop: "10px", marginBottom: "10px", backgroundColor: "gray" }} variant="contained" disableElevation>
+                      <Button onClick={()=>handleDelTodoList(todolist.todoListId)}sx={{ width: "20px", marginTop: "10px", marginBottom: "10px", backgroundColor: "gray" }} variant="contained" disableElevation>
                           Xóa
                         </Button>
 
@@ -615,16 +652,16 @@ const Card = (props) => {
 
                       </Box>
                       <Box>
-                        <span style={{ fontSize: "15px" }}>0%</span>
-                        <Slider defaultValue={50} aria-label="Default" valueLabelDisplay="auto" value={70} />
+                        {/* <span style={{ fontSize: "15px" }}></span>
+                        <Slider defaultValue={50} aria-label="Default" valueLabelDisplay="auto" value={0} /> */}
                       </Box>
                       {todolist && todolist.todos.map((todo) => (
-
+                        
                         <Box sx={{ display: "flex", justifyContent:"space-between",alignItems:"center"}}>
                           <Box sx={{display:"flex",alignItems: "center", gap: 1,marginBottom: "10px"}}>
-                          <Checkbox />{todo.todoTitle}
+                          <Checkbox checked={todo.isChecked} onChange={()=>UpdateTodoCheck(todo.todoId, todo.isChecked)} />{todo.todoTitle}
                           </Box>
-                          <Box>
+                          <Box onClick={()=> handleDelTodo(todo.todoId)}>
                               <ClearIcon sx={{color:"gray"}}/>
                             </Box>
                         </Box>

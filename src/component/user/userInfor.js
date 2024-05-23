@@ -83,11 +83,11 @@ const UserInfor = () => {
                     <button onClick={handleUpload}>Upload</button> */}
                     <input type='file' onChange={(e) => { setImg(e.target.files[0]) }} style={{ display: "none" }} />
                     {/* <button onClick={() => { document.querySelector('input[type="file"]').click(); }}>Upload</button> */}
-                    <Button variant="contained" onClick={() => { document.querySelector('input[type="file"]').click(); }}>Upload Photo</Button>
+                    <Button variant="contained" onClick={() => { document.querySelector('input[type="file"]').click(); }}>Tải ảnh lên</Button>
                 </Box>
                 <Box sx={{ width: '480px', marginTop:"50px"}}>
 
-                  <span style={{fontSize:"20px", fontWeight:"bold", fontStyle:"inherit"}}>About you</span>
+                  <span style={{fontSize:"20px", fontWeight:"bold", fontStyle:"inherit"}}>Về bạn</span>
 
                 </Box>
 
@@ -99,7 +99,7 @@ const UserInfor = () => {
                     autoComplete="off">
 
 
-                    <TextField id="outlined-basic" label="Displayname" variant="outlined" value={display_name} onChange={(e) => setDisplayName(e.target.value)} />
+                    <TextField id="outlined-basic" label="Tên hiển thị" variant="outlined" value={display_name} onChange={(e) => setDisplayName(e.target.value)} />
 
                 </Box>
                 <Box component="form"
@@ -110,7 +110,7 @@ const UserInfor = () => {
                     autoComplete="off">
 
 
-                    <TextField id="outlined-basic" label="Age" variant="outlined" value={age} onChange={(e) => setAge(e.target.value)} />
+                    <TextField id="outlined-basic" label="Tuổi" variant="outlined" value={age} onChange={(e) => setAge(e.target.value)} />
 
                 </Box >
                 <Box component="form"
@@ -121,7 +121,7 @@ const UserInfor = () => {
                     autoComplete="off">
 
 
-                    <TextField id="outlined-basic" label="Sex" variant="outlined" value={sex} onChange={(e) => setSex(e.target.value)} />
+                    <TextField id="outlined-basic" label="Giới tính" variant="outlined" value={sex} onChange={(e) => setSex(e.target.value)} />
 
                 </Box>
                 <Box component="form"
@@ -132,15 +132,15 @@ const UserInfor = () => {
                     autoComplete="off">
 
 
-                    <TextField id="outlined-basic" label="Address" variant="outlined" value={address} onChange={(e) => setAddress(e.target.value)} />
+                    <TextField id="outlined-basic" label="Địa chỉ" variant="outlined" value={address} onChange={(e) => setAddress(e.target.value)} />
 
 
 
                 </Box>
                 <Box sx={{ display: "flex", justifyContent: "space-between", width: "480px", height: "40px" }}>
-                    <Button variant="contained" onClick={changeInfor}>Save Changes</Button>
+                    <Button variant="contained" onClick={changeInfor}>Lưu thay đổi</Button>
                     <Link to={`/Change-password/user/?${userId}`}>
-                        <Button variant="contained">Change password</Button>
+                        <Button variant="contained">Đổi mật khẩu</Button>
                     </Link>
 
 
