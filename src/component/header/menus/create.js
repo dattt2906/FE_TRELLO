@@ -129,6 +129,7 @@ export default function Create() {
                 const newUrl=`/Home/Users/?userId=${userId}`
                 
                 nav(newUrl)
+                window.location.reload()
                 
 
             }

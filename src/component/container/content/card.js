@@ -32,6 +32,7 @@ import Checkbox from '@mui/joy/Checkbox';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import ClearIcon from '@mui/icons-material/Clear';
 import Slider from '@mui/material/Slider';
+import Todolist from "./todolist";
 
 
 
@@ -90,6 +91,7 @@ const Card = (props) => {
   const [countChecked, setCountChecked]= useState(0)
 
 
+
   const queryString = window.location.search;
 
   const params = new URLSearchParams(queryString);
@@ -145,6 +147,14 @@ const Card = (props) => {
     })
 
   }
+
+function countCheck (todolist){
+
+  if (todolist && todolist.todos) {
+    const checkedCount = todolist.todos.filter(todo => todo.isChecked).length;
+    setCountChecked(checkedCount);
+}
+}
   const handleDelTodoList=async(todoListId)=>{
 
   await  axios.delete(`http://localhost:3001/todolist/del-todolist-by-id/${todoListId}`)
@@ -194,26 +204,7 @@ const Card = (props) => {
 
   }
 
-  const handleAddTodo=(todoListId)=>{
-  
-    axios.post("http://localhost:3001/todolist/create-todo", { todoTitle, todoListId }).then(res => {
-    if(res.data){
 
-        updateTodoLists()
-
-    }
-    })
-
-      
-  }
-  const UpdateTodoCheck=(todoId, Checked)=>{
-    const isChecked = !Checked
-    axios.put(`http://localhost:3001/todolist/update-isChecked-by-todoId/${todoId}`, {isChecked}).then(res=>{
-      updateTodoLists()
-    })
-      
-
-  }
 
   const updateComments = () => {
     axios.get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
@@ -634,56 +625,20 @@ const Card = (props) => {
                     :
                     null}
 
-                  {todoLists && todoLists.length > 0 && todoLists.map((todolist) => (
-                    <Box>
-                      <Box sx={{display:"flex", justifyContent:"space-between"}}>
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                        <CheckBoxIcon sx={{ color: "gray" }} />
-                        {todolist.todoListTitle}
-                      </Box>
+                  {todoLists && todoLists.length > 0 && todoLists.map((todolist) =>
+                  // countCheck(todolist)
 
-                      <Box>
+                  
+                  ( 
 
-                      <Button onClick={()=>handleDelTodoList(todolist.todoListId)}sx={{ width: "20px", marginTop: "10px", marginBottom: "10px", backgroundColor: "gray" }} variant="contained" disableElevation>
-                          Xóa
-                        </Button>
-
-                        </Box>
-
-                      </Box>
-                      <Box>
-                        {/* <span style={{ fontSize: "15px" }}></span>
-                        <Slider defaultValue={50} aria-label="Default" valueLabelDisplay="auto" value={0} /> */}
-                      </Box>
-                      {todolist && todolist.todos.map((todo) => (
-                        
-                        <Box sx={{ display: "flex", justifyContent:"space-between",alignItems:"center"}}>
-                          <Box sx={{display:"flex",alignItems: "center", gap: 1,marginBottom: "10px"}}>
-                          <Checkbox checked={todo.isChecked} onChange={()=>UpdateTodoCheck(todo.todoId, todo.isChecked)} />{todo.todoTitle}
-                          </Box>
-                          <Box onClick={()=> handleDelTodo(todo.todoId)}>
-                              <ClearIcon sx={{color:"gray"}}/>
-                            </Box>
-                        </Box>
-                      ))}
-
-                      <Textarea placeholder="Thêm một mục" onChange={(e)=>setTodoTitle(e.target.value)}></Textarea>
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                        <Button sx={{ width: "20px", marginTop: "10px", marginBottom: "10px" }} variant="contained" disableElevation onClick={()=>handleAddTodo(todolist.todoListId)}>
-                          Thêm
-                        </Button>
-                        <Button sx={{ width: "20px", marginTop: "10px", marginBottom: "10px", backgroundColor: "gray" }} variant="contained" disableElevation>
-                          Hủy
-                        </Button>
-                      </Box>
-
-
-
-
-
-                    </Box>
-
-                  ))}
+                    <Todolist
+                    todolist={todolist}
+                    updateTodoLists ={updateTodoLists}
+                    handleDelTodoList={handleDelTodoList}
+                    handleDelTodo={handleDelTodo}
+                    />
+                    
+                  ))} 
                   <Box>
                     <FormControl>
                       <FormLabel>Hoạt động</FormLabel>
