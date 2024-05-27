@@ -22,6 +22,7 @@ import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { useNavigate } from "react-router-dom";
 import AddIcon from '@mui/icons-material/Add';
 import JoyButton from '@mui/joy/Button';
+import InfoIcon from '@mui/icons-material/Info';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -50,6 +51,7 @@ const Sidebar = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [email, setEmail]= useState("")
     const userId= params.get("userId")
+    
     const handleOpenModal = () => {
         
         
@@ -62,6 +64,12 @@ const Sidebar = () => {
 
 
     };
+    const handleShowMember = ()=>{
+
+        const newUrl = `/Member/?userId=${userId}&workspaceId=${workspaceId}`;
+        nav(newUrl)
+        window.location.reload()
+    }
     const handleCloseModal = () =>{ setOpenModal(false);handleClose() }
 
     const nav= useNavigate()
@@ -129,7 +137,7 @@ const Sidebar = () => {
     return (
         <>
             <Box sx={{width: "250px", backgroundColor: "hsla(260,80%,94.1%,0.9)", display: "flex", flexDirection: "column", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }}>
-                <Box sx={{ cursor:"pointer",marginLeft: "20px", display: "flex", alignItems: "center", width: "230px", height: "80px", fontSize: "25px",color:"black" }}>
+                <Box sx={{ cursor:"pointer",marginLeft: "20px", display: "flex", alignItems: "center", width: "230px", height: "80px", fontSize: "25px",color:"black", fontWeight:"bold" }}>
 
                     {workspacename}
                   
@@ -142,7 +150,7 @@ const Sidebar = () => {
                     <span style={{ fontSize: "15px" }}>Bảng</span>
                 </Box>
                 <Box sx={{ marginTop: "30px", marginLeft: "20px", gap: 2, display: "flex", alignItems: "center", justifyContent:"space-between" }}>
-                    <Box sx={{display: "flex", alignItems: "center",gap: 2}}>
+                    <Box onClick={handleShowMember} sx={{display: "flex", alignItems: "center",gap: 2}}>
                     <PersonIcon />
                     <span style={{ fontSize: "15px" ,cursor:"pointer"}}>Thành viên</span>
                     </Box>
@@ -179,8 +187,8 @@ const Sidebar = () => {
                 </Box>
                 <Box sx={{ marginTop: "30px", marginLeft: "20px", gap: 2, display: "flex", alignItems: "center", fontWeight: "bold" }}>
 
-                    <SettingsIcon />
-                    <span style={{ fontSize: "15px" }}>Thông tin không gian làm việc</span>
+                    <InfoIcon />
+                    <span style={{ fontSize: "15px", cursor:"pointer" }}>Thông tin dự án</span>
                 </Box>
                 <Box sx={{ marginTop: "40px", marginLeft: "10px", gap: 2, display: "flex", alignItems: "center", fontWeight: "bold" }}>
 

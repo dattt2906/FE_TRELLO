@@ -37,6 +37,7 @@ import Todolist from "./todolist";
 
 
 
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -87,8 +88,7 @@ const Card = (props) => {
   const [showModalAddCheckList, setShowModalAddCheckList] = useState(false)
   const [todoLists, setTodoLists] = useState([])
   const [todoListTitle, setTodoListTitle] = useState("")
-  const [todoTitle,setTodoTitle] = useState("")
-  const [countChecked, setCountChecked]= useState(0)
+
 
 
 
@@ -148,13 +148,7 @@ const Card = (props) => {
 
   }
 
-function countCheck (todolist){
 
-  if (todolist && todolist.todos) {
-    const checkedCount = todolist.todos.filter(todo => todo.isChecked).length;
-    setCountChecked(checkedCount);
-}
-}
   const handleDelTodoList=async(todoListId)=>{
 
   await  axios.delete(`http://localhost:3001/todolist/del-todolist-by-id/${todoListId}`)
@@ -206,13 +200,15 @@ function countCheck (todolist){
 
 
 
-  const updateComments = () => {
-    axios.get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
+  const updateComments = async() => {
+  await  axios.get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
       if (res.data.comments && res.data.comments.length > 0) {
         setComments(res.data.comments)
       }
     })
   }
+
+
   const updateTodoLists = () => {
     axios.get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
       if (res.data.todoLists && res.data.todoLists.length > 0) {
@@ -229,6 +225,36 @@ function countCheck (todolist){
       }
     })
   }, [])
+
+  useEffect(()=>{
+
+    socket?.on("message-add-deadline", (data) => {
+        console.log(data)
+        setDateSocket()
+  }
+  
+  )
+  socket?.on("message-add-comment", (data) => {
+    console.log(data)
+    updateComments()
+}
+
+)
+
+  },[socket])
+
+
+  const setDateSocket=async()=>{
+    await axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
+      if (res.data.deadline) {
+        setFormDate(res.data.deadline)
+        setDateTimeCard(res.data.deadline)
+        setShowTimeInCard(true)
+        setIsShowDueDate(true)
+       
+      }}) 
+
+  }
 
 
 
@@ -249,22 +275,22 @@ function countCheck (todolist){
         if (dayjs(date).hour() - dayjs(Date()).hour() > 0) {
           setDuesoon(true)
           setOverdue(false)
-          console.log("cùng ngày giờ đặt lớn hơn")
+          // console.log("cùng ngày giờ đặt lớn hơn")
         }
         else if (dayjs(date).hour() - dayjs(Date()).hour() === 0 && dayjs(date).minute() - dayjs(Date()).minute() > 0) {
           setDuesoon(true)
           setOverdue(false)
-          console.log("cùng ngày cùng giờ  phút đặt lớn hơn")
+          // console.log("cùng ngày cùng giờ  phút đặt lớn hơn")
         }
         else if (dayjs(date).hour() - dayjs(Date()).hour() === 0 && dayjs(date).minute() - dayjs(Date()).minute() < 0) {
           setOverdue(true)
           setDuesoon(false)
-          console.log("cùng ngày cùng giờ  phút đặt nhỏ hơn")
+          // console.log("cùng ngày cùng giờ  phút đặt nhỏ hơn")
         }
         else if (dayjs(date).hour() - dayjs(Date()).hour() < 0) {
           setOverdue(true)
           setDuesoon(false)
-          console.log("cùng ngày giờ nhỏ hơn")
+          // console.log("cùng ngày giờ nhỏ hơn")
         }
 
 
@@ -314,15 +340,14 @@ function countCheck (todolist){
     setIsShowDueDate(true)
     setShowTimeInCard(true)
     const deadline = Deadline.$d
+    
 
     await axios.put(`http://localhost:3001/table/update-deadline-by-rowId/${card.rowId}`, { deadline }).then(res => {
       if (res.data) {
         socket.emit("add-deadline", boardId)
-        console.log(deadline)
       }
     })
     setFormDate(Deadline.$d)
-
     setDateTimeCard(Deadline.$d)
 
   }
@@ -389,16 +414,18 @@ function countCheck (todolist){
     })
 
   }
-  const handleAddComment = () => {
+  const handleAddComment = async () => {
 
     const rowId = card.rowId
     axios.post("http://localhost:3001/comment/create-comment", { userId, contentComment, rowId }).then(res => {
       if (res.data) {
+        socket.emit("add-comment", boardId)
         axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
 
           if (res.data) {
             setComments(res.data.comments)
             updateComments()
+            setContentComment("")
           }
         })
       }
@@ -625,7 +652,7 @@ function countCheck (todolist){
                     :
                     null}
 
-                  {todoLists && todoLists.length > 0 && todoLists.map((todolist) =>
+                  {todoLists && todoLists.length > 0 && todoLists.map((todolist, index) =>
                   // countCheck(todolist)
 
                   
@@ -633,6 +660,7 @@ function countCheck (todolist){
 
                     <Todolist
                     todolist={todolist}
+                    key={index}
                     updateTodoLists ={updateTodoLists}
                     handleDelTodoList={handleDelTodoList}
                     handleDelTodo={handleDelTodo}
@@ -644,7 +672,7 @@ function countCheck (todolist){
                       <FormLabel>Hoạt động</FormLabel>
                       <Box>
                         {/* <img style={{height:"40px", width:"40px", borderRadius:"50%"}} src={card.comments.user.}></img> */}
-                        <Textarea placeholder="Write a commnet..." sx={{ border: "none", width: "100%", minHeight: "30px", height: "fit-content", wordBreak: "break-all" }} onChange={(e) => setContentComment(e.target.value)} ></Textarea>
+                        <Textarea placeholder="Viết một bình luận..." value={contentComment} sx={{ border: "none", width: "100%", minHeight: "30px", height: "fit-content", wordBreak: "break-all" }} onChange={(e) => setContentComment(e.target.value)} ></Textarea>
                       </Box>
                       <Button sx={{ width: "20px", marginTop: "10px", marginBottom: "10px" }} onClick={handleAddComment} variant="contained" disableElevation>
                         Lưu

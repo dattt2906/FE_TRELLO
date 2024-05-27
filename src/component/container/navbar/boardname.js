@@ -4,6 +4,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import FormHelperText from '@mui/material/FormHelperText';
 import { useEffect ,useState} from 'react';
 import axios from 'axios';
+import Textarea from '@mui/joy/Textarea';
 
 
 
@@ -42,7 +43,7 @@ useEffect(()=>{
   return (
     <form noValidate autoComplete="off">
       <FormControl sx={{ width: '25ch' }}>
-        <OutlinedInput value={boardName}/>
+        <Textarea sx={{backgroundColor:"#b5b6f3;", border:"none", color:"white", fontWeight:"bold", fontSize:"20px"}} value={boardName}  spellCheck="false"></Textarea>
         {/* <MyFormHelperText /> */}
       </FormControl>
     </form>

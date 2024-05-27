@@ -3,6 +3,7 @@ import axios from "axios";
 import React,{ useEffect, useState } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 import io, { Socket } from 'socket.io-client';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 
 
@@ -50,10 +51,10 @@ const Board = (props) => {
 
         <>  
      
-            <Box onClick={handleClick} sx={{height: "100px", width:"270px", backgroundColor: "aliceblue", backgroundImage:`url(${board.boardbackground})`,backgroundSize: "cover",cursor: "pointer", marginTop:"20px", marginLeft:"50px", marginBottom:"20px", borderRadius:"10px"}}>
+            <Box onClick={handleClick} sx={{height: "100px", width:"270px", backgroundColor: "aliceblue", backgroundImage:`url(${board.boardbackground})`,backgroundSize: "cover",cursor: "pointer", marginTop:"20px", marginLeft:"50px", marginBottom:"20px", borderRadius:"10px", display:"flex", justifyContent:"space-between"}}>
 
                <span style={{fontWeight:"bold",color:"white", paddingLeft:"10px"}}> {board.boardname} </span>
-
+                <CancelIcon sx={{color:"#544E4E"}}/>
             </Box>
            </>
     )

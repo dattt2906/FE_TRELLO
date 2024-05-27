@@ -24,9 +24,9 @@ export default function ImageAvatars() {
 
   return (
     <Stack direction="row" spacing={2}>
-       {users && users.length > 0 && users.map((user) => (
+       {users && users.length > 0 && users.map((user, index) => (
 
-<Avatar alt="imageUser" src={user.userInfors.avatarImg} />
+<Avatar alt="imageUser" src={user.userInfors.avatarImg} key={index} />
  
 
 

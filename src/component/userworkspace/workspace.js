@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { v4 } from 'uuid';
 import { imageDb } from "../../firebase";
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
+// import JoyButton from '@mui/joy/Button';
 
 const Workspace = (props) => {
     const { workspace } = props
@@ -98,8 +99,9 @@ const Workspace = (props) => {
 
         <>
             <Box>
-                <Box sx={{ marginLeft: "50px" }}>
+                <Box sx={{ marginLeft: "50px", display:"flex" , width:"350px", justifyContent:"space-between"}}>
                     {workspace.workspacename}
+                    <JoyButton sx={{width:"100px", marginLeft:"30px", backgroundColor:"#1976d2"}}> Xóa </JoyButton>
                 </Box>
 
                 <Box sx={{ display: "flex", gap: 3, marginTop: "20px", flexWrap: "wrap" }}>

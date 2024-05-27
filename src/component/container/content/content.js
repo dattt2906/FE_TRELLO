@@ -113,13 +113,13 @@ const Content = () => {
 
         }
         )
-        socket?.on("message-add-deadline", (data) => {
+        // socket?.on("message-add-deadline", (data) => {
 
-            console.log(data)
-            getData()
+        //     console.log(data)
+        //     getData()
 
-        }
-        )
+        // }
+        // )
        
 
 
