@@ -54,7 +54,7 @@ const Board = (props) => {
             <Box onClick={handleClick} sx={{height: "100px", width:"270px", backgroundColor: "aliceblue", backgroundImage:`url(${board.boardbackground})`,backgroundSize: "cover",cursor: "pointer", marginTop:"20px", marginLeft:"50px", marginBottom:"20px", borderRadius:"10px", display:"flex", justifyContent:"space-between"}}>
 
                <span style={{fontWeight:"bold",color:"white", paddingLeft:"10px"}}> {board.boardname} </span>
-                <CancelIcon sx={{color:"#544E4E"}}/>
+                {/* <CancelIcon sx={{color:"#544E4E"}}/> */}
             </Box>
            </>
     )

@@ -114,9 +114,10 @@ const Column = (props) => {
         style={dndKitColumnStyles}
         {...attributes}
         {...listeners}
+        
       >
         <div className="column-name">
-          <input className="change-title" type="text" value={changeColumnTitle} onChange={(e) => setChangeColumnTitle(e.target.value)}>
+          <input style={{cursor:"pointer"}} className="change-title" type="text" value={changeColumnTitle} onChange={(e) => setChangeColumnTitle(e.target.value)}>
           </input>
           <i class="fa fa-trash icon-del-column" onClick={() => columnDel(column)}></i>
         </div>

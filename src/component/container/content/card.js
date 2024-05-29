@@ -38,6 +38,7 @@ import Todolist from "./todolist";
 
 
 
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -620,7 +621,7 @@ const Card = (props) => {
 
                         <input type='file' className="imageCard" onChange={(e) => { setImg(e.target.files[0]) }} style={{ display: "none" }} />
                         <Button onClick={() => { document.querySelector('input[type="file"].imageCard').click(); }}> <AddPhotoAlternateIcon /></Button>
-
+                        
 
                       </Box>
                       :

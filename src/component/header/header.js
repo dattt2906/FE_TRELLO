@@ -19,6 +19,8 @@ import AppsIcon from '@mui/icons-material/Apps';
 import Teamplates from "./menus/teamplate";
 const Header = () => {
     const [displayName, setDisplayName] = useState("");
+    const [isShowModalNoti, setIsShowModalNoti]= useState(false)
+    const [countRead, setCountRead]= useState(0)
   
 
 
@@ -41,12 +43,16 @@ const Header = () => {
             content.style.display = "block";
         }
     }
+    const handleShowModalNoti=()=>{
+
+        setIsShowModalNoti(!isShowModalNoti)
+    }
 
     return (
     
     
     <>
-    <Box sx={{height:"70px", display:"flex", justifyContent:"space-between"}}>
+    <Box sx={{height:"70px", display:"flex", justifyContent:"space-between", backgroundColor:"#F7B0F5"}}>
         <Box sx={{display:"flex", alignItems:"center", flexDirection:"row", height:"70px",gap:2,marginLeft:"20px"}}>
         <AppsIcon/>
         
@@ -62,21 +68,34 @@ const Header = () => {
         <Box sx={{display:"flex", alignItems:"center", gap:2, marginRight:"20px"}}>
 
         <Search/>
-        <NotificationsIcon/>
+        <Box sx={{display:"flex"}}>
+        <NotificationsIcon onClick={handleShowModalNoti} sx={{cursor:"pointer", position:"relative"}}>
+          
+        </NotificationsIcon>
+        <Box sx={{zIndex:1,width:"15px", height:"15px",marginLeft:"-10px",marginTop:"5px", borderRadius:"50%", backgroundColor:"#E50F1E",display:"flex", justifyContent:"center"}}>
+               <span style={{fontSize:"10px", color:"white"}}> {countRead}</span>
+            </Box>
+            </Box>
         <HelpOutlineIcon/>
         <ImageAvatars/>
+        {isShowModalNoti ?
+        <Box sx={{position:"absolute",marginTop:"770px",marginLeft:"80px",backgroundColor:"white", height:"700px", width:"400px",zIndex:1, display:"flex", flexDirection:"column"}}>
+                
+                <span style={{fontSize:"15px", fontWeight:"bold", paddingLeft:"20px", paddingTop:"20px"}}>
+                Thông báo
+                </span>
 
-
-
-        </Box>
-       
-
+                
+                
+            </Box>
+            :
+            null
+            }
         
-    
-
-
-
     </Box>
+            
+    </Box>
+    
     
     </>
        

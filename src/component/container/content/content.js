@@ -43,6 +43,7 @@ const Content = () => {
     const [boardbackground, setBoardBackground] = useState("")
     const [socket, setSocket] = useState(null)
 
+
     useEffect(() => {
         const queryString = window.location.search;
 

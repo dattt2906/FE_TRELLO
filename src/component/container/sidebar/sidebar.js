@@ -68,7 +68,7 @@ const Sidebar = () => {
 
         const newUrl = `/Member/?userId=${userId}&workspaceId=${workspaceId}`;
         nav(newUrl)
-        window.location.reload()
+       
     }
     const handleCloseModal = () =>{ setOpenModal(false);handleClose() }
 
@@ -77,8 +77,11 @@ const Sidebar = () => {
     const handleInviteLink=()=>{
         axios.post("http://localhost:3001/auth/invite-member",{email, workspaceId}).then(res=>{
                 if(res.data){
-                    console.log("invite link success")
+                    <h1>Invite link success</h1>
                 }
+        }).catch(error=>{
+
+            <h1>{error}</h1>
         })
 
 
@@ -105,14 +108,14 @@ const Sidebar = () => {
 
         const newUrl = `/Page/?userId=${userId}&workspaceId=${workspaceId}&boardId=${boardId}`;
         nav(newUrl)
-        window.location.reload()
+        // window.location.reload()
         
     }
     const handleDisplayWorkspace=(workspaceId)=>{
 
         const newUrl = `/WorkspaceArea/?userId=${userId}&workspaceId=${workspaceId}`;
         nav(newUrl)
-        window.location.reload()
+        
         
     }
 
@@ -123,8 +126,8 @@ const Sidebar = () => {
         return (
             <ListItem  style={style} key={index} component="div" disablePadding>
                 
-                <ListItemButton>
-               
+                <ListItemButton sx={{display:"flex", gap:0.7}}>
+                    <img style={{height:"20px", width:"20px"}} src={boards[index].boardbackground}></img>
                     <ListItemText primary={`${boards[index].boardname}`} onClick={()=>changeBoard(boards[index].boardId)}/>
             
                 </ListItemButton>

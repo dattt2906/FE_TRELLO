@@ -10,36 +10,47 @@ export default function Search() {
 
   const [workspaces, setWorkspaces]=useState([])
   const [boards, setBoards]= useState([])
+ 
 
   const queryString = window.location.search;
     
   const params = new URLSearchParams(queryString);
   const workspaceId = params.get('workspaceId');
-  useEffect(() => {
+  const userId= params.get("userId")
+  
+//   useEffect(() => {
 
-    axios.get(`http://localhost:3001/workspace/find-workspace-by-id/${workspaceId}`).then(res => {
+//     axios.get(`http://localhost:3001/workspace/find-workspace-by-id/${workspaceId}`).then(res => {
 
-        if (res.data) {
-            // setWorkspacename(res.data.workspacename)
-            setBoards(res.data.boards)
+//         if (res.data) {
+//             // setWorkspacename(res.data.workspacename)
+//             setBoards(res.data.boards)
 
-        }
+//         }
 
-    })
+//     })
 
 
 
-}, [])
+// }, [])
+
+useEffect(()=>{
+axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res=>{
+
+      setWorkspaces(res.data.workspaces)
+})
+
+},[])
   return (
     <Stack spacing={2} sx={{ width: 300 }}>
       <Autocomplete
         freeSolo
         id="free-solo-2-demo"
         disableClearable
-        options={boards.map((option) => 
+        options={workspaces.map((workspace) => 
           
          
-         option.boardname
+         workspace.workspacename
         
           
         

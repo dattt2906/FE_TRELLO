@@ -101,7 +101,7 @@ const Workspace = (props) => {
             <Box>
                 <Box sx={{ marginLeft: "50px", display:"flex" , width:"350px", justifyContent:"space-between"}}>
                     {workspace.workspacename}
-                    <JoyButton sx={{width:"100px", marginLeft:"30px", backgroundColor:"#1976d2"}}> Xóa </JoyButton>
+                    {/* <JoyButton sx={{width:"100px", marginLeft:"30px", backgroundColor:"#1976d2"}}> Xóa </JoyButton> */}
                 </Box>
 
                 <Box sx={{ display: "flex", gap: 3, marginTop: "20px", flexWrap: "wrap" }}>
