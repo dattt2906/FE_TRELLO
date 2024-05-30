@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import axios from "axios";
 import { Link } from "react-router-dom"
@@ -13,6 +13,7 @@ import ImageAvatars from "./menus/avartar";
 import Create from "./menus/create";
 import Button from '@mui/material/Button';
 import Logo from "./menus/logo";
+import { useSocket } from "../../socket/socketProvider";
 
 
 import AppsIcon from '@mui/icons-material/Apps';
@@ -20,18 +21,31 @@ import Teamplates from "./menus/teamplate";
 const Header = () => {
     const [displayName, setDisplayName] = useState("");
     const [isShowModalNoti, setIsShowModalNoti]= useState(false)
+    const [socket, setSocket]= useState(null)
     const [countRead, setCountRead]= useState(0)
+ 
   
+    const newSocket= useSocket()
+    // console.log("socket in header:", newSocket)
+    useEffect(()=>{
 
+        
+        if(newSocket){
+        setSocket(newSocket) 
 
-    // axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res => {
-    //     if (res.data) {
-    //         setDisplayName(res.data.username)
+        }
 
-    //     }
+    },[])
 
+    useEffect(()=>{
+        
+        socket?.on("message-add-column", (data) => {
+            console.log("data header:", data)
+         setCountRead(countRead+1)
+        }
+        )
+    },[socket])
 
-    // })
     const clear = () => {
 
         localStorage.clear();

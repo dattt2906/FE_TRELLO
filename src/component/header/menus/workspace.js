@@ -31,7 +31,7 @@ export default function Workspaces() {
 
     const newUrl = `/WorkspaceArea/?userId=${userId}&workspaceId=${workspaceId}`;
     nav(newUrl)
-    window.location.reload()
+
     
 }
 

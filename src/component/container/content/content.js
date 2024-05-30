@@ -16,6 +16,8 @@ import io from 'socket.io-client';
 import Card from "./card";
 import AddIcon from '@mui/icons-material/Add';
 import Textarea from '@mui/joy/Textarea';
+import { useSocket } from "../../../socket/socketProvider";
+import { useLocation } from 'react-router-dom';
 
 
 
@@ -42,32 +44,46 @@ const Content = () => {
     const [boardId, setBoardId] = useState(null)
     const [boardbackground, setBoardBackground] = useState("")
     const [socket, setSocket] = useState(null)
+    const location = useLocation()
 
 
+
+    const newSocket = useSocket()
     useEffect(() => {
         const queryString = window.location.search;
-
         const params = new URLSearchParams(queryString);
-        setBoardId(params.get('boardId'));
-        getData()
-        const newSocket = io("http://localhost:8001");
-        console.log(boardId)
+        setBoardId(params.get("boardId"));
         setSocket(newSocket);
-        newSocket.emit("join-room", boardId)
+        getData()
+        // const newSocket = io("http://localhost:8001");
+        if (newSocket) {
+
+            newSocket.emit("join-room", boardId)
+
+            newSocket.on("message", (data) => {
+
+                console.log(data)
 
 
-        newSocket.on("message", (data) => {
+            })
+        }
 
-            console.log(data)
+    }, [])
 
-        })
+    // useEffect(()=>{
 
 
-        return () => {
-            newSocket.disconnect();
-        };
+    //     const queryString = window.location.search;
+    //     const params = new URLSearchParams(queryString);
+    //     console.log(params.get("boardId"))
+    //     setBoardId(params.get("boardId"))
+    //     getData()
 
-    }, [boardId])
+    // },[location])
+
+
+
+
     useEffect(() => {
 
 
@@ -114,15 +130,6 @@ const Content = () => {
 
         }
         )
-        // socket?.on("message-add-deadline", (data) => {
-
-        //     console.log(data)
-        //     getData()
-
-        // }
-        // )
-       
-
 
     }, [socket])
 
@@ -134,18 +141,15 @@ const Content = () => {
 
     const pointerSensor = useSensor(PointerSensor, { activationConstraint: { distance: 10 } })  //yeu cau di chuyen chuot 10px thi moi kich hoat event dndCOntext, fix trương hop click bi goi event lam mat chuc nang
     const mySensors = useSensors(pointerSensor)
-    // useEffect(() => {
-    //     getData()
-
-    // }, [])
 
     const getData = async () => {
+        console.log("1111")
         await axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`).then(res => {
             if (res.data) {
 
                 setColumns(res.data.cols)
                 setBoardBackground(res.data.boardbackground)
-                
+
             }
 
 
@@ -184,7 +188,7 @@ const Content = () => {
         let sort = columns.length
 
 
-
+        console.log("boardId:", boardId)
         socket.emit("add-column", boardId)
 
 
@@ -509,10 +513,10 @@ const Content = () => {
                                     column={column}
                                     columnDel={() => columnDel(column)}
                                     setColumnDataByColumnId={() => setColumnDataByColumnId(column)}
-                                    getData={getData} 
+                                    getData={getData}
                                     socket={socket}
                                     boardId={boardId}
-                                    />
+                                />
                             )
                         }
 
