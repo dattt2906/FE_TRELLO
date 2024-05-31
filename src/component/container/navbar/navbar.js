@@ -7,9 +7,17 @@ import BoardName from './boardname';
 import Button from '@mui/material/Button';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import ImageAvatars from './avatarNav';
+import StarIcon from '@mui/icons-material/Star';
+import { useState } from 'react';
 
 const Navbar=()=>{
+    const [isCheckedBoard, setIsCheckedBoard]= useState(false)
 
+    const handleCheckedBoard=()=>{
+
+        setIsCheckedBoard(!isCheckedBoard)
+
+    }
     return(
         <>
    
@@ -18,18 +26,14 @@ const Navbar=()=>{
 
             <Box sx={{display:"flex",marginLeft:"20px", gap:2, alignItems:"center"}}>
             <BoardName/>
-            <StarBorderIcon/>
-
+           
+            
+            <StarIcon onClick={handleCheckedBoard} sx={{color: isCheckedBoard ? "yellow": "gray", cursor:"pointer"}}/>
+            
             <PeopleOutlineIcon/>
             </Box>
             <Box sx={{marginRight:"40px", gap:2,display:"flex", alignItems:"center"}}>
-            {/* <Button sx={{backgroundColor:"#0d6efd", color:"white"}}>
-                
-            <PersonAddAltIcon sx={{fontSize:"18px", paddingRight:"5px"}}/>
-               <span style={{fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}}> Invite </span>
-                
-                
-                </Button> */}
+          
                 <ImageAvatars/>
                 
             <RocketLaunchIcon/>

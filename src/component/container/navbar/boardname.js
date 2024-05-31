@@ -5,6 +5,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import { useEffect ,useState} from 'react';
 import axios from 'axios';
 import Textarea from '@mui/joy/Textarea';
+import { useLocation } from 'react-router-dom';
 
 
 
@@ -25,10 +26,10 @@ import Textarea from '@mui/joy/Textarea';
 export default function BoardName() {
     // const boardId= Number(localStorage.getItem("boardId"))
     const queryString = window.location.search;
-
+    const location=useLocation()
+    const [boardName, setBoardName]= useState('')
     const params = new URLSearchParams(queryString);
-    const boardId = params.get('boardId');
-const[boardName, setBoardName]=useState("")
+    const [boardId, setBoardId] = useState(params.get("boardId"))
 useEffect(()=>{
  axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`).then(res=>{
 
@@ -39,7 +40,16 @@ useEffect(()=>{
 })
 
 
-},[])
+},[boardId])
+
+
+useEffect(()=>{
+  setBoardId(params.get("boardId"))
+
+},[location])
+
+
+
   return (
     <form noValidate autoComplete="off">
       <FormControl sx={{ width: '25ch' }}>

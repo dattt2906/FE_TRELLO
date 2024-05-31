@@ -41,23 +41,24 @@ const Content = () => {
     const [activeDragItemType, setActiveDragItemType] = useState(null);
     const [activeDragItemData, setActiveDragItemData] = useState(null);
     const [oldColumnWhenDraggingCard, setOldColumnWhenDraggingCard] = useState(null);
-    const [boardId, setBoardId] = useState(null)
+   
     const [boardbackground, setBoardBackground] = useState("")
     const [socket, setSocket] = useState(null)
-    const location = useLocation()
+    const location= useLocation()
+    
 
-
-
-    const newSocket = useSocket()
+   
+    
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const [boardId, setBoardId] = useState(params.get("boardId"))
+    // const newSocket = useSocket()
     useEffect(() => {
-        const queryString = window.location.search;
-        const params = new URLSearchParams(queryString);
-        setBoardId(params.get("boardId"));
-        setSocket(newSocket);
         getData()
-        // const newSocket = io("http://localhost:8001");
+    
+        const newSocket = io("http://localhost:8001");
         if (newSocket) {
-
+            setSocket(newSocket);
             newSocket.emit("join-room", boardId)
 
             newSocket.on("message", (data) => {
@@ -67,19 +68,18 @@ const Content = () => {
 
             })
         }
+        
+        return () => {
+            newSocket.disconnect();
+          };
+        
 
-    }, [])
+    }, [boardId])
 
-    // useEffect(()=>{
+    useEffect(()=>{
+            setBoardId(params.get("boardId"))
 
-
-    //     const queryString = window.location.search;
-    //     const params = new URLSearchParams(queryString);
-    //     console.log(params.get("boardId"))
-    //     setBoardId(params.get("boardId"))
-    //     getData()
-
-    // },[location])
+    },[location])
 
 
 
@@ -143,7 +143,7 @@ const Content = () => {
     const mySensors = useSensors(pointerSensor)
 
     const getData = async () => {
-        console.log("1111")
+        console.log("boardId:", boardId)
         await axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`).then(res => {
             if (res.data) {
 
@@ -188,22 +188,15 @@ const Content = () => {
         let sort = columns.length
 
 
-        console.log("boardId:", boardId)
-        socket.emit("add-column", boardId)
+        console.log("boardIdAdd:", boardId)
+        // socket.emit("add-column", boardId)
 
-
-
-
-
-        axios.post("http://localhost:3001/table/create-column", { columnName, boardId, sort }).then(res => {
+       await axios.post("http://localhost:3001/table/create-column", { columnName, boardId, sort }).then(res => {
             if (res.data) {
-
+                socket.emit("add-column", boardId)
                 axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`, { boardId }).then(res => {
                     if (res.data) {
-                        socket.emit("add-column", boardId)
-
                         setColumns(res.data.cols)
-
 
                     }
 
