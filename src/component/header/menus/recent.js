@@ -1,13 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Box from '@mui/material/Box';
+import axios from 'axios';
 
 export default function Recents() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const userId=params.get("userId")
+    const [recentboards, setRecentBoards]= useState([])
+
+    useEffect(()=>{
+        axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res=>{
+          if(res.data){
+            setRecentBoards(res.data.recentBoards)
+          }
+        })
+
+    },[])
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -16,6 +30,9 @@ export default function Recents() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleChangeBoardInRecent=()=>{
+    
+  }
 
   return (
     <Box>
@@ -39,9 +56,28 @@ export default function Recents() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+         {recentboards && recentboards.length > 0 && recentboards.map((recentboard,index) => (
+         <MenuItem sx={{width:"300px"}} onClick={()=>handleChangeBoardInRecent}>
+        
+            <Box sx={{display:"flex" ,gap:1}}>
+           
+            <Box>
+            <img style={{height:"40px", width:"60px"}} src={recentboard.recentBoardBackGround}></img>
+            
+            </Box>
+            <Box sx={{flex:1}}>
+              <Box sx={{display:"flex",flexDirection:"column"}}>
+              <span style={{fontWeight:"bold",fontSize:"17px"}}>{recentboard.recentBoardName}</span>
+              <span style={{fontSize:"11px"}}>{recentboard.workspaceName}</span>
+            
+            </Box>
+            </Box>
+            </Box>
+         
+         
+         </MenuItem>
+      ))}
+      
       </Menu>
       </Box>
   );

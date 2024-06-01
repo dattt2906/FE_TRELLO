@@ -104,7 +104,9 @@ const Sidebar = () => {
 
 
     }, [])
-    const changeBoard=(boardId)=>{
+    const changeBoard=async(boardId)=>{
+        await axios.post("http://localhost:3001/recentboard/create-recent-board",{userId, boardId})
+
 
         const newUrl = `/Page/?userId=${userId}&workspaceId=${workspaceId}&boardId=${boardId}`;
         nav(newUrl)

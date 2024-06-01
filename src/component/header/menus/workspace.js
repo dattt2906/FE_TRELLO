@@ -67,7 +67,7 @@ export default function Workspaces() {
           'aria-labelledby': 'basic-button',
         }}
       >
-         {workspaces && workspaces.length > 0 && workspaces.map((workspace,index) => (
+          {workspaces && workspaces.length > 0 && workspaces.map((workspace,index) => (
         <MenuItem onClick={()=>handleChangeWorkspace(workspace.workspaceId)}>{workspace.workspacename}</MenuItem>
       ))}
       </Menu>
