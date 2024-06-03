@@ -150,7 +150,7 @@ export default function Create() {
                 const newUrl =  `/Page/?userId=${userId}&workspaceId=${workspaceId}&boardId=${res.data.boardId}`;
                 
                 nav(newUrl)
-                window.location.reload()
+                
 
             }
         }).catch(error => {

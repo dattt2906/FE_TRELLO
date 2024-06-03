@@ -28,7 +28,7 @@ export default function Workspaces() {
   };
 
   const handleChangeWorkspace=(workspaceId)=>{
-
+    handleClose()
     const newUrl = `/WorkspaceArea/?userId=${userId}&workspaceId=${workspaceId}`;
     nav(newUrl)
 

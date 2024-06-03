@@ -486,17 +486,10 @@ const Content = () => {
 
             <div className="content" style={{ backgroundColor: "aliceblue", backgroundImage: `url(${boardbackground})`, backgroundSize: "cover" }}>
 
-                {/* props cua dragoverlays  */}
+               
                 <SortableContext items={columns?.map(c => c.columnId)} strategy={horizontalListSortingStrategy}>
                     <div className="list-column" >
-                        {/* <DragOverlay dropAnimation={customDropAnimation}> 
-                            
-                            {(!activeDragItemType) && null}
-                            {(activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) && <Column column={activeDragItemData}></Column>}
-                            {(activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) && <Card card={activeDragItemData}></Card>}
-
-
-                        </DragOverlay> */}
+                       
                         {columns && columns.length > 0 && columns.sort((a, b) => (a.sort - b.sort)).map((column, index) => {
 
 

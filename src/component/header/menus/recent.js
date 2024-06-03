@@ -5,6 +5,8 @@ import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Box from '@mui/material/Box';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Recents() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -13,6 +15,8 @@ export default function Recents() {
     const params = new URLSearchParams(queryString);
     const userId=params.get("userId")
     const [recentboards, setRecentBoards]= useState([])
+    const location=useLocation()
+    const nav= useNavigate()
 
     useEffect(()=>{
         axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res=>{
@@ -21,7 +25,7 @@ export default function Recents() {
           }
         })
 
-    },[])
+    },[location])
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -30,7 +34,10 @@ export default function Recents() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleChangeBoardInRecent=()=>{
+  const handleChangeBoardInRecent=(workspaceId, boardId)=>{
+    handleClose()
+    const newUrl = `/Page/?userId=${userId}&workspaceId=${workspaceId}&boardId=${boardId}`;
+    nav(newUrl)
     
   }
 
@@ -57,7 +64,7 @@ export default function Recents() {
         }}
       >
          {recentboards && recentboards.length > 0 && recentboards.map((recentboard,index) => (
-         <MenuItem sx={{width:"300px"}} onClick={()=>handleChangeBoardInRecent}>
+         <MenuItem sx={{width:"300px"}} onClick={()=>handleChangeBoardInRecent(recentboard.workspaceId, recentboard.boardId)}>
         
             <Box sx={{display:"flex" ,gap:1}}>
            

@@ -21,7 +21,8 @@ const Todo = (props) => {
     return <>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, marginBottom: "10px" }}>
-                <Checkbox checked={todo.isChecked} onChange={() => UpdateTodoCheck(todo.todoId, todo.isChecked)} />{todo.todoTitle}
+                <Checkbox checked={todo.isChecked} onChange={() => UpdateTodoCheck(todo.todoId, todo.isChecked)} />
+                <span style={{wordBreak:"break-all"}}>{todo.todoTitle}</span>
             </Box>
             <Box onClick={() => handleDelTodo(todo.todoId)}>
                 <ClearIcon sx={{ color: "gray" }} />

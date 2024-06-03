@@ -51,7 +51,8 @@ const style = {
   boxShadow: 24,
   p: 4,
   overflowY: 'auto',
-  overflowX: "hidden"
+  overflowX: "hidden",
+  backgroundColor:"#F9EAEA"
 
 };
 const monthNames = [
@@ -466,7 +467,7 @@ const Card = (props) => {
 
 
 
-                <Box sx={{ display: "flex", justifyContent: "center", marginLeft: "10px", marginBottom: "5px", backgroundColor: overdue ? "#ed3333" : (duesoon ? "#c9c727" : "gray"), width: "100px", color: "white", gap: 1, borderRadius: "5px", fontSize: "17px" }}>
+                <Box sx={{ display: "flex", justifyContent: "center", marginLeft: "10px", marginBottom: "5px", backgroundColor: overdue ? "#ed3333" : (duesoon ? "#c9c727" : "gray"), width: "100px", color: "white", gap:1, borderRadius: "5px", fontSize: "17px" }}>
                   <AccessTimeIcon sx={{ fontSize: "25px" }} />
                   <span style={{ height: "0px" }}>{timeCard}</span>
                 </Box>
@@ -527,7 +528,7 @@ const Card = (props) => {
                     null
                   }
                   {overdue ?
-                    <Box sx={{ backgroundColor: "red", color: "white", height: "30px", display: "flex", alignItems: "center", marginTop: "50px", marginLeft: "20px", gap: 0.5 }}>
+                    <Box sx={{ backgroundColor: "#D53A3A", color: "white", height: "30px", display: "flex", alignItems: "center", marginTop: "50px", marginLeft: "20px", gap: 0.5 }}>
                       <AccessTimeIcon />
                       <span style={{ fontSize: "15px" }}>Quá hạn</span>
 
@@ -538,7 +539,7 @@ const Card = (props) => {
                     :
                     null}
                   {duesoon ?
-                    <Box sx={{ backgroundColor: "#e8e514", color: "white", height: "30px", display: "flex", alignItems: "center", marginTop: "50px", marginLeft: "20px", gap: 1 }}>
+                    <Box sx={{ backgroundColor: "#D5D03A", color: "white", height: "30px", display: "flex", alignItems: "center", marginTop: "50px", marginLeft: "20px", gap: 1 }}>
                       <AccessTimeIcon />
                       <span style={{ fontSize: "15px" }}>Sắp hết hạn</span>
 
@@ -572,7 +573,10 @@ const Card = (props) => {
                         />
                       </DemoContainer>
                     </LocalizationProvider>
+                    <Box sx={{display:"flex", alignItems:"center", gap:"20px"}}>
                     <JoyButton onClick={confirmDateCard}>Lưu</JoyButton>
+                    <ClearIcon sx={{color:"gray"}} onClick={()=> setIsShowDatePicker(false)}/>
+                    </Box>
                   </Box>
                   :
                   null
@@ -585,11 +589,11 @@ const Card = (props) => {
 
                   </Box>
                   {showModalAddCheckList ?
-                    <Box sx={{ left: "690px", position: "absolute", marginTop: "50px", width: "240px", height: "200px", backgroundColor: "#b5b6f3", zIndex: 1 }}>
-                      <Box sx={{ marginTop: "10px", color: "white", display: "flex", alignItems: "center" }}>
+                    <Box sx={{ left: "690px", position: "absolute", marginTop: "60px", width: "260px", height: "200px", backgroundColor: "white", zIndex: 1, borderRadius:"10px" }}>
+                      <Box sx={{ marginTop: "10px", color: "black", display: "flex", alignItems: "center" }}>
 
-                        <span style={{ textAlign: "center", width: "200px", paddingLeft: "25px" }}> Thêm việc cần làm</span>
-                        <ClearIcon onClick={(e) => setShowModalAddCheckList(false)} sx={{ marginLeft: "10px" }} />
+                        <span style={{ textAlign: "center", width: "200px", paddingLeft: "35px" }}> Thêm việc cần làm</span>
+                        <ClearIcon onClick={(e) => setShowModalAddCheckList(false)} sx={{color:"gray", marginLeft: "30px" }} />
 
                       </Box>
                       <Box sx={{ display: "flex", marginLeft: "10px", width: "calc(100% - 20px)", marginRight: "10px" }}>
@@ -617,7 +621,7 @@ const Card = (props) => {
                   <FormControl>
                     <FormLabel>Mô tả</FormLabel>
                     {showAddImage === true ?
-                      <Box sx={{ display: "flex", position: "absolute", marginTop: "30px", zIndex: 1, marginLeft: "500px", marginTop: "20px" }}>
+                      <Box sx={{ display: "flex", position: "absolute", marginTop: "30px", zIndex: 1, marginLeft: "550px", marginTop: "20px" }}>
 
                         <input type='file' className="imageCard" onChange={(e) => { setImg(e.target.files[0]) }} style={{ display: "none" }} />
                         <Button onClick={() => { document.querySelector('input[type="file"].imageCard').click(); }}> <AddPhotoAlternateIcon /></Button>
