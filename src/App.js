@@ -11,10 +11,10 @@ import { SocketProvider } from './socket/socketProvider';
 function App() {
   return (
     <div className="trello">
-      <SocketProvider>
+      
     <Header></Header>
     <Container></Container>
-    </SocketProvider>
+   
     
     </div>
 
