@@ -50,13 +50,15 @@ const Sidebar = () => {
     const [workspacename, setWorkspacename] = useState()
     const [boards, setBoards] = useState([])
 
+
     const [openModal, setOpenModal] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [email, setEmail] = useState("")
     const userId = params.get('userId')
     const [recentboards, setRecentBoards] = useState([])
     const location = useLocation()
-    const[isShowSucessSendMail, setIsShowSucessSendMail]= useState(false)
+    const [isShowSucessSendMail, setIsShowSucessSendMail] = useState(false)
+    const [isShowSFailSendMail, setIsShowFailSendMail] = useState(false)
 
 
     const handleOpenModal = () => {
@@ -77,21 +79,23 @@ const Sidebar = () => {
         nav(newUrl)
 
     }
-    const handleCloseModal = () => { setOpenModal(false);setIsShowSucessSendMail(false) ;handleClose() }
+    const handleCloseModal = () => { setOpenModal(false);setIsShowFailSendMail(false); setIsShowSucessSendMail(false); handleClose() }
 
     const nav = useNavigate()
-    
+
 
     const handleInviteLink = () => {
-        setIsShowSucessSendMail(true)
-        
+
+
         axios.post("http://localhost:3001/auth/invite-member", { email, workspaceId }).then(res => {
             if (res.data) {
-               
+                setIsShowSucessSendMail(true)
+                setIsShowFailSendMail(false)
             }
         }).catch(error => {
 
-            <h1>{error}</h1>
+            setIsShowFailSendMail(true)
+            setIsShowSucessSendMail(false)
         })
 
 
@@ -100,7 +104,7 @@ const Sidebar = () => {
 
 
     useEffect(() => {
-        
+
 
         axios.get(`http://localhost:3001/workspace/find-workspace-by-id/${workspaceId}`).then(res => {
 
@@ -202,16 +206,31 @@ const Sidebar = () => {
                                         </Box>
                                     </Box>
                                     {isShowSucessSendMail ?
-                                    <Box sx={{marginTop:"20px"}}>
-                                    <Stack sx={{ width: '50%' }} spacing={2}>
-                                        <Alert variant="outlined" severity="success">
-                                            Đã gửi link mời thành công
-                                        </Alert>
-                                    </Stack>
-                                    </Box>
-                                    :
-                                    null
-}
+                                        <Box sx={{ marginTop: "20px" }}>
+                                            <Stack sx={{ width: '50%' }} spacing={2}>
+                                                <Alert variant="outlined" severity="success">
+                                                    Đã gửi link mời thành công
+                                                </Alert>
+                                            </Stack>
+                                        </Box>
+                                        :
+                                        null
+
+
+                                    }
+                                    {isShowSFailSendMail ?
+
+                                        <Box sx={{ marginTop: "20px" }}>
+                                            <Stack sx={{ width: '50%' }} spacing={2}>
+                                                <Alert variant="outlined" severity="error">
+                                                    Tài khoản người dùng không tồn tại
+                                                </Alert>
+                                            </Stack>
+                                        </Box>
+                                        :
+                                        null
+                                    }
+
                                 </Typography>
 
                             </Box>

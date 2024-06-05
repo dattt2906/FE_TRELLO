@@ -14,6 +14,9 @@ import reportWebVitals from './reportWebVitals';
 import UserWorkspace from './component/userworkspace/userWorkspace';
 import WorkspaceArea from './component/workspace-area/workspace-area';
 import Member from './component/Member/member';
+import { Provider } from 'react-redux';
+import store from './redux/store';
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -21,6 +24,7 @@ root.render(
   // <React.StrictMode>
     // <App />
   // </React.StrictMode>
+  <Provider store={store}>
   <BrowserRouter>
   <Routes>
 
@@ -38,6 +42,7 @@ root.render(
   </Routes>
   
   </BrowserRouter>
+  </Provider>
 
 );
 
