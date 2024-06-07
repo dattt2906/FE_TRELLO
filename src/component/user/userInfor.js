@@ -34,15 +34,19 @@ const UserInfor = () => {
         alert("Cap nhat thong tin user thanh cong")
     }
 
-    const handleUpload = () => {
+    const handleUpload = async () => {
 
-        const imageRef = ref(imageDb, `images/${v4()}`)
-        uploadBytes(imageRef, img).then((snapshot) => {
+        const formData= new FormData();
+        formData.append("file", img)
+       
+       console.log("formData:", formData)
+        
+            await axios.post('http://localhost:3001/files/upload', formData).then(res=>{
+                setAvartarImg("http://localhost:3001/api/images/"+ res.data.filename)
 
-            getDownloadURL(snapshot.ref).then((img) => {
-                setAvartarImg(img)
+
             })
-        })
+        
     }
     useEffect(() => {
 

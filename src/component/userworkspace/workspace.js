@@ -52,16 +52,18 @@ const Workspace = (props) => {
             handleUpload();
         }
     }, [imgBack]);
-    const handleUpload = () => {
+    const handleUpload = async() => {
 
-        const imageRef = ref(imageDb, `images/${v4()}`)
-        uploadBytes(imageRef, imgBack).then((snapshot) => {
+        const formData= new FormData();
+        formData.append("file", imgBack)
+       
+       console.log("formData:", formData)
+        
+            await axios.post('http://localhost:3001/files/upload', formData).then(res=>{
+                setBoardBackground("http://localhost:3001/api/images/"+ res.data.filename)
 
-            getDownloadURL(snapshot.ref).then((imgBack) => {
-                setBoardBackground(imgBack)
-                
+
             })
-        })
     }
     const handleChange = (event) => {
 

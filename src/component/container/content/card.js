@@ -33,6 +33,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import ClearIcon from '@mui/icons-material/Clear';
 import Slider from '@mui/material/Slider';
 import Todolist from "./todolist";
+import Attachment from "./attachment";
 
 
 
@@ -52,7 +53,7 @@ const style = {
   p: 4,
   overflowY: 'auto',
   overflowX: "hidden",
-  backgroundColor:"#F9EAEA"
+  backgroundColor: "#F9EAEA"
 
 };
 const monthNames = [
@@ -74,6 +75,7 @@ const Card = (props) => {
   const [description, setDescription] = useState("")
   const [activity, setActivity] = useState("")
   const [attachment, setAttachment] = useState("")
+  const [fileAttachments, setFileAttachments] = useState([])
   const [isShowDatePicker, setIsShowDatePicker] = useState(false)
 
   const [isShowDueDate, setIsShowDueDate] = useState(false)
@@ -136,49 +138,64 @@ const Card = (props) => {
     }
   }, [img]);
 
-  const handleUploadImageCard = () => {
+  const handleUploadImageCard = async () => {
 
-    const imageRef = ref(imageDb, `images/${v4()}`)
-    uploadBytes(imageRef, img).then((snapshot) => {
+    const formData = new FormData();
+    formData.append("file", img)
 
-      getDownloadURL(snapshot.ref).then((img) => {
-        setAttachment(img)
+    console.log("formData:", formData)
 
-      })
+    await axios.post('http://localhost:3001/files/upload', formData).then(res => {
+      if (res.data) {
+        const filename = res.data.originalname
+        const imageFile = ("http://localhost:3001/api/images/" + res.data.filename)
 
-    })
+        const rowId = card.rowId
 
-  }
+        if (filename && imageFile && rowId) {
+
+          axios.post("http://localhost:3001/files/create", { filename, imageFile, rowId }).then(res => {
 
 
-  const handleDelTodoList=async(todoListId)=>{
-
-  await  axios.delete(`http://localhost:3001/todolist/del-todolist-by-id/${todoListId}`)
-     
-      await  axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
-        if (res.data) {
-          setTodoLists(res.data.todoLists)
-          updateTodoLists()
+            if (res.data) {
+              console.log("add attachfile successfull")
+            }
+          })
         }
-  
-      
+
+      }
     })
   }
 
-  const handleDelTodo=async(todoId)=>{
 
-    await  axios.delete(`http://localhost:3001/todolist/del-todo-by-id/${todoId}`)
-       
-        await  axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
-          if (res.data) {
-            updateTodoLists()
-          }
-    
-        
-      })
-    }
+  const handleDelTodoList = async (todoListId) => {
 
-  
+    await axios.delete(`http://localhost:3001/todolist/del-todolist-by-id/${todoListId}`)
+
+    await axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
+      if (res.data) {
+        setTodoLists(res.data.todoLists)
+        updateTodoLists()
+      }
+
+
+    })
+  }
+
+  const handleDelTodo = async (todoId) => {
+
+    await axios.delete(`http://localhost:3001/todolist/del-todo-by-id/${todoId}`)
+
+    await axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
+      if (res.data) {
+        updateTodoLists()
+      }
+
+
+    })
+  }
+
+
 
   const handleAddTodoList = () => {
     setShowModalAddCheckList(false)
@@ -202,8 +219,8 @@ const Card = (props) => {
 
 
 
-  const updateComments = async() => {
-  await  axios.get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
+  const updateComments = async () => {
+    await axios.get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
       if (res.data.comments && res.data.comments.length > 0) {
         setComments(res.data.comments)
       }
@@ -228,33 +245,34 @@ const Card = (props) => {
     })
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
 
     socket?.on("message-add-deadline", (data) => {
-        console.log(data)
-        setDateSocket()
-  }
-  
-  )
-  socket?.on("message-add-comment", (data) => {
-    console.log(data)
-    updateComments()
-}
+      console.log(data)
+      setDateSocket()
+    }
 
-)
+    )
+    socket?.on("message-add-comment", (data) => {
+      console.log(data)
+      updateComments()
+    }
 
-  },[socket])
+    )
+
+  }, [socket])
 
 
-  const setDateSocket=async()=>{
+  const setDateSocket = async () => {
     await axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
       if (res.data.deadline) {
         setFormDate(res.data.deadline)
         setDateTimeCard(res.data.deadline)
         setShowTimeInCard(true)
         setIsShowDueDate(true)
-       
-      }}) 
+
+      }
+    })
 
   }
 
@@ -342,7 +360,7 @@ const Card = (props) => {
     setIsShowDueDate(true)
     setShowTimeInCard(true)
     const deadline = Deadline.$d
-    
+
 
     await axios.put(`http://localhost:3001/table/update-deadline-by-rowId/${card.rowId}`, { deadline }).then(res => {
       if (res.data) {
@@ -354,15 +372,15 @@ const Card = (props) => {
 
   }
 
-  useEffect(() => {
-    if (attachment) {
-      axios.put(`http://localhost:3001/table/update-rowDetail/${card.rowId}`, { description, attachment, activity }).then(res => {
-        if (res.data) {
-        }
-      })
-    }
+  // useEffect(() => {
+  //   if (attachment) {
+  //     axios.put(`http://localhost:3001/table/update-rowDetail/${card.rowId}`, { description, attachment, activity }).then(res => {
+  //       if (res.data) {
+  //       }
+  //     })
+  //   }
 
-  }, [attachment])
+  // }, [attachment])
 
 
   useEffect(() => {
@@ -371,7 +389,8 @@ const Card = (props) => {
         setContent(res.data.content)
         setDescription(res.data.description)
         setActivity(res.data.activity)
-        setAttachment(res.data.attachment)
+        setFileAttachments(res.data.files)
+        // setAttachment(res.data.attachment)
         if (res.data.deadline) {
           setShowTimeInCard(true)
           setIsShowDueDate(true)
@@ -467,7 +486,7 @@ const Card = (props) => {
 
 
 
-                <Box sx={{ display: "flex", justifyContent: "center", marginLeft: "10px", marginBottom: "5px", backgroundColor: overdue ? "#ed3333" : (duesoon ? "#c9c727" : "gray"), width: "100px", color: "white", gap:1, borderRadius: "5px", fontSize: "17px" }}>
+                <Box sx={{ display: "flex", justifyContent: "center", marginLeft: "10px", marginBottom: "5px", backgroundColor: overdue ? "#ed3333" : (duesoon ? "#c9c727" : "gray"), width: "100px", color: "white", gap: 1, borderRadius: "5px", fontSize: "17px" }}>
                   <AccessTimeIcon sx={{ fontSize: "25px" }} />
                   <span style={{ height: "0px" }}>{timeCard}</span>
                 </Box>
@@ -573,9 +592,9 @@ const Card = (props) => {
                         />
                       </DemoContainer>
                     </LocalizationProvider>
-                    <Box sx={{display:"flex", alignItems:"center", gap:"20px"}}>
-                    <JoyButton onClick={confirmDateCard}>Lưu</JoyButton>
-                    <ClearIcon sx={{color:"gray"}} onClick={()=> setIsShowDatePicker(false)}/>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: "20px" }}>
+                      <JoyButton onClick={confirmDateCard}>Lưu</JoyButton>
+                      <ClearIcon sx={{ color: "gray" }} onClick={() => setIsShowDatePicker(false)} />
                     </Box>
                   </Box>
                   :
@@ -589,11 +608,11 @@ const Card = (props) => {
 
                   </Box>
                   {showModalAddCheckList ?
-                    <Box sx={{ left: "690px", position: "absolute", marginTop: "60px", width: "260px", height: "200px", backgroundColor: "white", zIndex: 1, borderRadius:"10px" }}>
+                    <Box sx={{ left: "690px", position: "absolute", marginTop: "60px", width: "260px", height: "200px", backgroundColor: "white", zIndex: 1, borderRadius: "10px" }}>
                       <Box sx={{ marginTop: "10px", color: "black", display: "flex", alignItems: "center" }}>
 
                         <span style={{ textAlign: "center", width: "200px", paddingLeft: "35px" }}> Thêm việc cần làm</span>
-                        <ClearIcon onClick={(e) => setShowModalAddCheckList(false)} sx={{color:"gray", marginLeft: "30px" }} />
+                        <ClearIcon onClick={(e) => setShowModalAddCheckList(false)} sx={{ color: "gray", marginLeft: "30px" }} />
 
                       </Box>
                       <Box sx={{ display: "flex", marginLeft: "10px", width: "calc(100% - 20px)", marginRight: "10px" }}>
@@ -625,7 +644,7 @@ const Card = (props) => {
 
                         <input type='file' className="imageCard" onChange={(e) => { setImg(e.target.files[0]) }} style={{ display: "none" }} />
                         <Button onClick={() => { document.querySelector('input[type="file"].imageCard').click(); }}> <AddPhotoAlternateIcon /></Button>
-                        
+
 
                       </Box>
                       :
@@ -646,32 +665,44 @@ const Card = (props) => {
 
 
 
-                  {attachment ?
 
-                    <Box sx={{ display: "flex", flexDirection: "column" }}>
 
-                      <span>Đính kèm</span>
-                      <img style={{ width: "250px", height: "200px" }} src={attachment}></img>
-
+                  <Box sx={{ display: "flex", flexDirection: "column" }}>
+                    <Box sx={{ display: "flex", flexDirection: "row", gap: 2, alignItems: "center" }}>
+                      <AttachFileIcon sx={{ transform: "rotate(50deg)", fontSize: "20px" }} />
+                      <span style={{fontFamily:"-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Droid Sans, Helvetica Neue, sans-serif", color:"var(--ds-text, #172b4d)"}}> Các tệp tin đính kèm</span>
                     </Box>
-                    :
-                    null}
+                    <Box sx={{marginTop:"20px"}}>
+                    {fileAttachments && fileAttachments.length > 0 && fileAttachments.map((fileAttachment, index) => (
+
+                      <Attachment
+                        key={index}
+                        fileAttachment={fileAttachment}
+
+                      />
+
+
+                    ))}
+                    </Box>
+
+                  </Box>
+
 
                   {todoLists && todoLists.length > 0 && todoLists.map((todolist, index) =>
                   // countCheck(todolist)
 
-                  
-                  ( 
+
+                  (
 
                     <Todolist
-                    todolist={todolist}
-                    key={index}
-                    updateTodoLists ={updateTodoLists}
-                    handleDelTodoList={handleDelTodoList}
-                    handleDelTodo={handleDelTodo}
+                      todolist={todolist}
+                      key={index}
+                      updateTodoLists={updateTodoLists}
+                      handleDelTodoList={handleDelTodoList}
+                      handleDelTodo={handleDelTodo}
                     />
-                    
-                  ))} 
+
+                  ))}
                   <Box>
                     <FormControl>
                       <FormLabel>Hoạt động</FormLabel>
