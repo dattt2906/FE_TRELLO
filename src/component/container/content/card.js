@@ -158,11 +158,21 @@ const Card = (props) => {
 
 
             if (res.data) {
-              console.log("add attachfile successfull")
+             updateAttachment()
             }
           })
         }
 
+      }
+    })
+  }
+
+
+  const updateAttachment=async()=>{
+
+    await axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
+      if (res.data.files && res.data.files.length > 0) {
+        setFileAttachments(res.data.files)
       }
     })
   }
