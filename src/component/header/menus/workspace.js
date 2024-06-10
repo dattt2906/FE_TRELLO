@@ -7,6 +7,9 @@ import Box from '@mui/material/Box';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Api from '../../../api';
+import { useToken } from '../../../tokenContext';
+
 
 export default function Workspaces() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -18,6 +21,7 @@ export default function Workspaces() {
     
   const params = new URLSearchParams(queryString);
   const userId = params.get('userId');
+  const [token,setToken]= useState(useToken().token)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -36,7 +40,7 @@ export default function Workspaces() {
 }
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res => {
+    Api(token).get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res => {
 
         if (res.data) {
             setWorkspaces(res.data.workspaces)

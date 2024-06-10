@@ -18,6 +18,8 @@ import { v4 } from 'uuid';
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
 import { imageDb } from '../../../firebase';
 import Textarea from '@mui/joy/Textarea';
+import Api from '../../../api';
+import { useToken } from '../../../tokenContext';
 
 
 
@@ -25,6 +27,7 @@ import Box from '@mui/material/Box';
 import JoyButton from '@mui/joy/Button'; // Import Button từ mui/joy với biệt danh JoyButton
 import { flatMap } from 'lodash';
 import axios from 'axios';
+
 
 
 const style = {
@@ -61,6 +64,7 @@ export default function Create() {
     const [imgBack, setImgBack] = useState(null)
     const [boardbackground, setBoardBackground] = useState("")
     const [workspaceDetail, setWorkspaceDetail]= useState("")
+    const [token, setToken]= useState(useToken().token)
     const handleOpenModal = () => {
         
         
@@ -80,7 +84,7 @@ export default function Create() {
        
        console.log("formData:", formData)
         
-            await axios.post('http://localhost:3001/files/upload', formData).then(res=>{
+            await Api(token).post('http://localhost:3001/files/upload', formData).then(res=>{
                 setBoardBackground("http://localhost:3001/api/images/"+ res.data.filename)
 
 
@@ -93,7 +97,7 @@ export default function Create() {
 
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res => {
+        Api(token).get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res => {
 
             if (res.data) {
                 console.log("workspace:", res.data.workspaces)
@@ -125,7 +129,7 @@ export default function Create() {
 
     };
     const handelCreateWorkspace=()=>{
-        axios.post("http://localhost:3001/workspace/create-workspace", { workspacename, userId ,workspaceDetail}).then(res => {
+        Api(token).post("http://localhost:3001/workspace/create-workspace", { workspacename, userId ,workspaceDetail}).then(res => {
             if (res.data) {
                 // let newBoardId = res.data.boardId; // Đây là giá trị mới bạn muốn thay thế
                 const newUrl=`/Home/Users/?userId=${userId}`

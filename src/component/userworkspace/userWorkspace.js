@@ -3,6 +3,8 @@ import Header from "../header/header";
 import { Box } from "@mui/material";
 import axios from "axios";
 import Workspace from "./workspace";
+import Api from "../../api";
+import { useToken } from "../../tokenContext";
 
 const UserWorkspace = () => {
     const [workspaces, setWorkspaces] = useState([])
@@ -12,9 +14,12 @@ const UserWorkspace = () => {
 
     const params = new URLSearchParams(queryString);
     const userId = params.get('userId');
-
+    
+  
+    const [token, setToken]= useState(useToken().token)
+    
     useEffect(() => {
-        axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res => {
+        Api(token).get(`/users/find-user-by-id/${userId}`).then(res => {
 
             if (res.data) {
                 console.log("workspace:", res.data.workspaces)

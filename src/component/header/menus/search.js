@@ -5,11 +5,14 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Box } from '@mui/material';
+import Api from '../../../api';
+import { useToken } from '../../../tokenContext';
 
 export default function Search() {
 
   const [workspaces, setWorkspaces]=useState([])
   const [boards, setBoards]= useState([])
+  
  
 
   const queryString = window.location.search;
@@ -17,6 +20,7 @@ export default function Search() {
   const params = new URLSearchParams(queryString);
   const workspaceId = params.get('workspaceId');
   const userId= params.get("userId")
+  const [token,setToken]= useState(useToken().token)
   
 //   useEffect(() => {
 
@@ -35,7 +39,7 @@ export default function Search() {
 // }, [])
 
 useEffect(()=>{
-axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res=>{
+Api(token).get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res=>{
 
       setWorkspaces(res.data.workspaces)
 })

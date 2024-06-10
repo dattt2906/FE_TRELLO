@@ -15,6 +15,9 @@ import { useNavigate } from "react-router-dom";
 import { v4 } from 'uuid';
 import { imageDb } from "../../firebase";
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
+import Api from "../../api";
+import { useToken } from "../../tokenContext";
+import { useStore } from "react-redux";
 // import JoyButton from '@mui/joy/Button';
 
 const Workspace = (props) => {
@@ -32,9 +35,11 @@ const Workspace = (props) => {
     const [imgBack, setImgBack] = useState(null)
     const [anchorEl, setAnchorEl] = React.useState(null);
     const nav= useNavigate()
+    const[token, setToken]= useState(useToken().token)
+    
     
     const handleCreateBoard = () => {
-        axios.post("http://localhost:3001/board/create-board", { boardname, workspaceId ,boardbackground}).then(res => {
+        Api(token).post("/board/create-board", { boardname, workspaceId ,boardbackground}).then(res => {
             if (res.data) {
                 let newBoardId = res.data.boardId; // Đây là giá trị mới bạn muốn thay thế
                 const newUrl =  `/Page/?userId=${userId}&workspaceId=${workspaceId}&boardId=${res.data.boardId}`;
@@ -59,7 +64,7 @@ const Workspace = (props) => {
        
        console.log("formData:", formData)
         
-            await axios.post('http://localhost:3001/files/upload', formData).then(res=>{
+            await Api(token).post('/files/upload', formData).then(res=>{
                 setBoardBackground("http://localhost:3001/api/images/"+ res.data.filename)
 
 

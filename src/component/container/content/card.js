@@ -1,5 +1,5 @@
 import "./card.css"
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Typography from '@mui/material/Typography';
@@ -36,8 +36,7 @@ import Todolist from "./todolist";
 import Attachment from "./attachment";
 
 
-
-
+// import {Editor} from '@tinymce/tinymce-react'
 
 
 const style = {
@@ -100,6 +99,13 @@ const Card = (props) => {
 
   const params = new URLSearchParams(queryString);
   const userId = (params.get('userId'));
+
+  const editorRef= useRef()
+  const handleDelFileAttachment=async(fileAttachment)=>{
+     const fileId= fileAttachment.fileId
+    await axios.delete(`http://localhost:3001/files/del-file-by-id/${fileId}`)
+    updateAttachment()
+}
 
 
 
@@ -171,9 +177,9 @@ const Card = (props) => {
   const updateAttachment=async()=>{
 
     await axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
-      if (res.data.files && res.data.files.length > 0) {
+     
         setFileAttachments(res.data.files)
-      }
+      
     })
   }
 
@@ -447,6 +453,8 @@ const Card = (props) => {
   }
   const handleAddComment = async () => {
 
+    if(contentComment){
+
     const rowId = card.rowId
     axios.post("http://localhost:3001/comment/create-comment", { userId, contentComment, rowId }).then(res => {
       if (res.data) {
@@ -461,6 +469,11 @@ const Card = (props) => {
         })
       }
     })
+  }
+  else{
+
+    return null;
+  }
 
 
 
@@ -618,10 +631,10 @@ const Card = (props) => {
 
                   </Box>
                   {showModalAddCheckList ?
-                    <Box sx={{ left: "690px", position: "absolute", marginTop: "60px", width: "260px", height: "200px", backgroundColor: "white", zIndex: 1, borderRadius: "10px" }}>
+                    <Box sx={{ left: "690px", position: "absolute", marginTop: "60px", width: "250px", height: "200px", backgroundColor: "white", zIndex: 1, borderRadius: "10px" }}>
                       <Box sx={{ marginTop: "10px", color: "black", display: "flex", alignItems: "center" }}>
 
-                        <span style={{ textAlign: "center", width: "200px", paddingLeft: "35px" }}> Thêm việc cần làm</span>
+                        <span style={{ textAlign: "center",fontSize:"15px", width: "200px", paddingLeft: "40px" }}> Thêm việc cần làm</span>
                         <ClearIcon onClick={(e) => setShowModalAddCheckList(false)} sx={{ color: "gray", marginLeft: "30px" }} />
 
                       </Box>
@@ -660,6 +673,7 @@ const Card = (props) => {
                       :
                       <Box></Box>
                     }
+                  
 
                     <Textarea sx={{ border: "none", paddingTop: "30px", width: "100%", minHeight: "100px", height: "fit-content", wordBreak: "break-all" }} value={description} onClick={() => setShowAddImage(true)} onChange={(e) => setDescription(e.target.value)}></Textarea>
                     <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
@@ -688,6 +702,7 @@ const Card = (props) => {
                       <Attachment
                         key={index}
                         fileAttachment={fileAttachment}
+                        handleDelFileAttachment={handleDelFileAttachment}
 
                       />
 
@@ -734,15 +749,23 @@ const Card = (props) => {
                           </Box>
                           <Box sx={{ flex: 1 }}>
                             <Box sx={{ display: "flex", flexDirection: "column" }}>
-                              <span>{comment.user.userInfors.display_name}</span>
-                              <Box sx={{ border: "1px solid gray", borderRadius: "10px", padding: "10px", fontSize: "15px" }}>
-                                <span>{comment.contentComment}</span>
+                              <span style={{fontSize:"15px", fontWeight:"bold", fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}}>{comment.user.userInfors.display_name}</span>
+                              <Box sx={{  borderRadius: "10px" }}>
+                                <Textarea sx={{fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}} value={comment.contentComment}></Textarea>
+                              </Box>
+                              <Box>
+                                <Box sx={{display:"flex", gap:2, marginTop:"10px"}}>
+                              <span style={{fontSize:"13px", color:"var(--ds-text, #172b4d)", textDecoration:"underline",cursor:"pointer",fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}}> Xóa</span>
+                              <span style={{fontSize:"13px", color:"var(--ds-text, #172b4d)", textDecoration:"underline",cursor:"pointer",fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}}> Chỉnh sửa</span>
+                              </Box>
                               </Box>
                             </Box>
 
                           </Box>
+                        
 
                         </Box>
+                        
 
 
                       ))}

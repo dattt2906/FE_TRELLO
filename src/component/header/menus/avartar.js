@@ -14,6 +14,8 @@ import Logout from '@mui/icons-material/Logout';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import Api from '../../../api';
+import { useToken } from '../../../tokenContext';
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -24,6 +26,8 @@ export default function AccountMenu() {
     const params = new URLSearchParams(queryString);
     const userId = params.get('userId');
     const[userInfoId,setUserInfoId]= useState(null)
+    const [token, setToken]= useState(useToken().token)
+
     
   const [imgAvatar, setImgAvatar]=useState("")
   const nav=useNavigate()
@@ -45,7 +49,7 @@ export default function AccountMenu() {
 
   useEffect(()=>{
 
-    axios.get(`http://localhost:3001/users/find-userinfo-by-userId/${userId}`).then(res=>{
+    Api(token).get(`/users/find-userinfo-by-userId/${userId}`).then(res=>{
       setUserInfoId(res.data.userInforId)
       setImgAvatar(res.data.avatarImg)
     })

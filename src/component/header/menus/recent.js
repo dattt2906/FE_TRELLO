@@ -7,6 +7,8 @@ import Box from '@mui/material/Box';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import Api from '../../../api';
+import { useToken } from '../../../tokenContext';
 
 export default function Recents() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -17,9 +19,10 @@ export default function Recents() {
     const [recentboards, setRecentBoards]= useState([])
     const location=useLocation()
     const nav= useNavigate()
+    const [token,setToken]= useState(useToken().token)
 
     useEffect(()=>{
-        axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res=>{
+        Api(token).get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res=>{
           if(res.data){
             setRecentBoards(res.data.recentBoards)
           }

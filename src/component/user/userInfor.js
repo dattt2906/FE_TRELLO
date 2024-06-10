@@ -12,6 +12,8 @@ import { Link } from 'react-router-dom';
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
 import { settings } from 'firebase/analytics';
 import { data } from '../data';
+import { useToken } from '../../tokenContext';
+import Api from '../../api';
 const UserInfor = () => {
 
     const [userInfor, setUserInfor] = useState(null)
@@ -24,13 +26,14 @@ const UserInfor = () => {
     const userId= Number(userIdUrl.replace("?",""))
     const [img, setImg] = useState(null)
     const [avatarImg, setAvartarImg] = useState("")
+    const [token, setToken]= useState(useToken().token)
 
 
 
     const changeInfor = () => {
         const userinfo = { display_name, age, sex, address, avatarImg }
 
-        axios.put(`http://localhost:3001/users/update-userinfo/${userId}`, userinfo)
+        Api(token).put(`/users/update-userinfo/${userId}`, userinfo)
         alert("Cap nhat thong tin user thanh cong")
     }
 
@@ -41,7 +44,7 @@ const UserInfor = () => {
        
        console.log("formData:", formData)
         
-            await axios.post('http://localhost:3001/files/upload', formData).then(res=>{
+            await Api(token).post('/files/upload', formData).then(res=>{
                 setAvartarImg("http://localhost:3001/api/images/"+ res.data.filename)
 
 
@@ -50,7 +53,7 @@ const UserInfor = () => {
     }
     useEffect(() => {
 
-        axios.get(`http://localhost:3001/users/find-userinfo-by-userId/${userId}`).then(res => {
+        Api(token).get(`http://localhost:3001/users/find-userinfo-by-userId/${userId}`).then(res => {
 
             if (res.data) {
                 setUserInfor(res.data)

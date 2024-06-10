@@ -15,12 +15,14 @@ import { useSelector } from "react-redux";
 import { fetchBoardData } from "../../../redux/action";
 
 
+
 import Card from "./card";
 import AddIcon from '@mui/icons-material/Add';
 import Textarea from '@mui/joy/Textarea';
 import { useSocket } from "../../../socket/socketProvider";
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from "react-redux";
+
 
 
 
@@ -49,18 +51,19 @@ const Content = () => {
     const [boardbackground, setBoardBackground] = useState("")
     const [socket, setSocket] = useState(null)
     const location= useLocation()
+   
 
-    const boards= useSelector((state)=>state.boards)
-    const dispatch= useDispatch()
+    // const boards= useSelector((state)=>state.boards)
+    // const dispatch= useDispatch()
     
-    console.log("boards Redux:", boards)
-
-    useEffect(()=>{
-        dispatch(fetchBoardData(boardId))
 
 
+    // useEffect(()=>{
+    //     dispatch(fetchBoardData(boardId))
 
-    },[dispatch])
+
+
+    // },[dispatch])
     
 
    
