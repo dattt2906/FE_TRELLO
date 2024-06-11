@@ -17,6 +17,7 @@ const UserWorkspace = () => {
     
   
     const [token, setToken]= useState(useToken().token)
+    console.log(Api(token))
     
     useEffect(() => {
         Api(token).get(`/users/find-user-by-id/${userId}`).then(res => {

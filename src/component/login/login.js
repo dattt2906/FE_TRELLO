@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import * as React from 'react';
 
 import axios from "axios"
@@ -20,6 +20,16 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
+
+useEffect(()=>{
+const token = localStorage.getItem("Token_User")
+if(token){
+
+    localStorage.clear()
+}
+
+
+},[])
 
     const handelLogin = () => {
         axios.post("http://localhost:3001/auth/login", { email, password }).then(res => {

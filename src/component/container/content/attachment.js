@@ -4,7 +4,7 @@ import { Await } from "react-router-dom";
 
 
 const Attachment = (props) => {
-    const { fileAttachment ,handleDelFileAttachment} = props
+    const { fileAttachment ,handleDelFileAttachment, TimeDisplay} = props
   
     
    return (
@@ -27,7 +27,7 @@ const Attachment = (props) => {
                         
                     </Box>
                     <Box sx={{display:"flex" ,gap:2, fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}}>
-                    <span style={{fontSize:"15px", color:"var(--ds-text, #172b4d)"}}>Đã thêm 2 giờ trước</span>
+                    <span style={{fontSize:"15px", color:"var(--ds-text, #172b4d)", fontWeight:"400"}}>{TimeDisplay(fileAttachment.createdAt)}</span>
                     <span onClick={()=>handleDelFileAttachment(fileAttachment)}style={{fontSize:"15px", color:"var(--ds-text, #172b4d)", textDecoration:"underline",cursor:"pointer"}}> Xóa</span>
                     </Box>
 

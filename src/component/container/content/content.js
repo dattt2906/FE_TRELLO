@@ -13,6 +13,8 @@ import Box from '@mui/material/Box';
 import io from 'socket.io-client';
 import { useSelector } from "react-redux";
 import { fetchBoardData } from "../../../redux/action";
+import Api from "../../../api";
+import { useToken } from "../../../tokenContext";
 
 
 
@@ -51,6 +53,7 @@ const Content = () => {
     const [boardbackground, setBoardBackground] = useState("")
     const [socket, setSocket] = useState(null)
     const location= useLocation()
+    const [token, setToken]= useState(useToken().token)
    
 
     // const boards= useSelector((state)=>state.boards)
@@ -163,7 +166,7 @@ const Content = () => {
 
     const getData = async () => {
         console.log("boardId:", boardId)
-        await axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`).then(res => {
+        await Api(token).get(`http://localhost:3001/board/find-board-by-id/${boardId}`).then(res => {
             if (res.data) {
 
                 setColumns(res.data.cols)
@@ -177,7 +180,7 @@ const Content = () => {
 
     const setDataColumn = async (column) => {
 
-        await axios.put(`http://localhost:3001/table/update-column-by-id/${column.columnId}`, column).then(res => {
+        await Api(token).put(`http://localhost:3001/table/update-column-by-id/${column.columnId}`, column).then(res => {
             if (res.data) {
 
             }
@@ -210,10 +213,10 @@ const Content = () => {
         console.log("boardIdAdd:", boardId)
         // socket.emit("add-column", boardId)
 
-       await axios.post("http://localhost:3001/table/create-column", { columnName, boardId, sort }).then(res => {
+       await Api(token).post("http://localhost:3001/table/create-column", { columnName, boardId, sort }).then(res => {
             if (res.data) {
                 socket.emit("add-column", boardId)
-                axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`, { boardId }).then(res => {
+                Api(token).get(`http://localhost:3001/board/find-board-by-id/${boardId}`, { boardId }).then(res => {
                     if (res.data) {
                         setColumns(res.data.cols)
 
@@ -233,11 +236,11 @@ const Content = () => {
     const columnDel = async (column) => {
         const columnId = column.columnId
         if (columnId) {
-            await axios.delete(`http://localhost:3001/table/del-column/${columnId}`, { columnId })
+            await Api(token).delete(`http://localhost:3001/table/del-column/${columnId}`, { columnId })
 
             socket.emit("del-column", boardId)
 
-            await axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`, { boardId }).then(res => {
+            await Api(token).get(`http://localhost:3001/board/find-board-by-id/${boardId}`, { boardId }).then(res => {
                 if (res.data) {
                     setColumns(res.data.cols)
 
@@ -435,7 +438,7 @@ const Content = () => {
                         card.sort = index
                     })
 
-                    await axios.put("http://localhost:3001/table/update-row", orderCard).then(res => {
+                    await Api(token).put("http://localhost:3001/table/update-row", orderCard).then(res => {
                         socket.emit("drag-card", boardId)
 
                         if (res.data) {
@@ -470,7 +473,7 @@ const Content = () => {
 
 
                 setColumns(moveColumn)
-                await axios.put("http://localhost:3001/table/update-column", moveColumn).then(res => {
+                await Api(token).put("http://localhost:3001/table/update-column", moveColumn).then(res => {
                     socket.emit("drag-column", boardId)
 
 

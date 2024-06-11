@@ -5,6 +5,8 @@ import Box from '@mui/material/Box';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Board from "../userworkspace/board";
+import { useToken } from "../../tokenContext";
+import Api from "../../api";
 
 
 const Member = () => {
@@ -15,10 +17,11 @@ const Member = () => {
     const params = new URLSearchParams(queryString);
     const workspaceId = params.get('workspaceId');
     const userId= params.get("userId")
+    const [token, setToken]= useState(useToken().token)
     
     useEffect(() => {
 
-        axios.get(`http://localhost:3001/workspace/find-workspace-by-id/${workspaceId}`).then(res => {
+        Api(token).get(`http://localhost:3001/workspace/find-workspace-by-id/${workspaceId}`).then(res => {
 
             if (res.data) {
                 setWorkspacename(res.data.workspacename)

@@ -16,17 +16,26 @@ import { useToken } from '../../tokenContext';
 import Api from '../../api';
 const UserInfor = () => {
 
+
     const [userInfor, setUserInfor] = useState(null)
     const [display_name, setDisplayName] = useState("")
     const [age, setAge] = useState("")
     const [sex, setSex] = useState("")
     const [address, setAddress] = useState("")
     // const userId = Number(localStorage.getItem("UserId"))
-    const userIdUrl=window.location.search
-    const userId= Number(userIdUrl.replace("?",""))
+    const userIdUrl = window.location.search
+    const userId = Number(userIdUrl.replace("?", ""))
     const [img, setImg] = useState(null)
     const [avatarImg, setAvartarImg] = useState("")
-    const [token, setToken]= useState(useToken().token)
+    const [token, setToken] = useState(useToken().token)
+
+    console.log("Api:", Api(token))
+
+    const headers = {
+        'Authorization': `${token}`,  // Ví dụ: Token xác thực
+        'Content-Type': 'application/json',          // Ví dụ: Định dạng dữ liệu gửi đi là JSON
+        'Custom-Header': 'Custom-Value'              // Tiêu đề tùy chỉnh khác nếu cần
+    };
 
 
 
@@ -39,17 +48,17 @@ const UserInfor = () => {
 
     const handleUpload = async () => {
 
-        const formData= new FormData();
+        const formData = new FormData();
         formData.append("file", img)
-       
-       console.log("formData:", formData)
-        
-            await Api(token).post('/files/upload', formData).then(res=>{
-                setAvartarImg("http://localhost:3001/api/images/"+ res.data.filename)
+
+        console.log("formData:", formData)
+
+        await Api(token).post('/files/upload', formData).then(res => {
+            setAvartarImg("http://localhost:3001/api/images/" + res.data.filename)
 
 
-            })
-        
+        })
+
     }
     useEffect(() => {
 
@@ -77,14 +86,14 @@ const UserInfor = () => {
         <>
 
 
-            <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column", gap: 3, marginTop: "70px"}}>
+            <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column", gap: 3, marginTop: "70px" }}>
 
                 <Box sx={{ width: '480px' }}>
 
                     <img style={{ width: "150px", height: "150px", borderRadius: "50%", border: "1px solid black" }} src={avatarImg}></img>
 
                 </Box>
-                
+
                 <Box sx={{ width: '480px' }}>
                     {/* <input type='file' onChange={(e)=>{setImg(e.target.files[0])}}></input>
                     <button onClick={handleUpload}>Upload</button> */}
@@ -92,9 +101,9 @@ const UserInfor = () => {
                     {/* <button onClick={() => { document.querySelector('input[type="file"]').click(); }}>Upload</button> */}
                     <Button variant="contained" onClick={() => { document.querySelector('input[type="file"]').click(); }}>Tải ảnh lên</Button>
                 </Box>
-                <Box sx={{ width: '480px', marginTop:"50px"}}>
+                <Box sx={{ width: '480px', marginTop: "50px" }}>
 
-                  <span style={{fontSize:"20px", fontWeight:"bold", fontStyle:"inherit"}}>Về bạn</span>
+                    <span style={{ fontSize: "20px", fontWeight: "bold", fontStyle: "inherit" }}>Về bạn</span>
 
                 </Box>
 

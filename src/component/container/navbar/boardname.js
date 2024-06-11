@@ -6,6 +6,8 @@ import { useEffect ,useState} from 'react';
 import axios from 'axios';
 import Textarea from '@mui/joy/Textarea';
 import { useLocation } from 'react-router-dom';
+import Api from '../../../api';
+import { useToken } from '../../../tokenContext';
 
 
 
@@ -29,9 +31,10 @@ export default function BoardName() {
     const location=useLocation()
     const [boardName, setBoardName]= useState('')
     const params = new URLSearchParams(queryString);
+    const[token,setToken]=useState(useToken().token)
     const [boardId, setBoardId] = useState(params.get("boardId"))
 useEffect(()=>{
- axios.get(`http://localhost:3001/board/find-board-by-id/${boardId}`).then(res=>{
+ Api(token).get(`http://localhost:3001/board/find-board-by-id/${boardId}`).then(res=>{
 
     if(res.data){
        setBoardName(res.data.boardname)

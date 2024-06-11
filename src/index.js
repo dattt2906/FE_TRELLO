@@ -17,6 +17,7 @@ import Member from './component/Member/member';
 // import { Provider } from 'react-redux';
 
 import { TokenProvider } from './tokenContext';
+import PrivateRoute from './privateRouter';
 
 
 
@@ -31,15 +32,21 @@ root.render(
   <Routes>
 
     <Route path='/' element={<Login />}></Route>
-    <Route path='Page' element={<App />}></Route>
+   
     <Route path='Register' element={<Register />}></Route>
-    <Route path='Retype-password' element={<ForgotPass/>}></Route>
+    
     <Route path='Input-email' element={<EmailForgot/>}></Route>
+    <Route path='Retype-password' element={<ForgotPass/>}></Route>
+
+    <Route element={<PrivateRoute />}>
+    
     <Route path='User-Info/' element={<UserInfor/>}></Route>
+    <Route path='Page' element={<App />}></Route>
     <Route path='Change-password/User/' element={<ChangePassWord/>}></Route>
     <Route path='Home/Users' element={<UserWorkspace/>}></Route>
     <Route path='WorkspaceArea' element={<WorkspaceArea />}></Route>
     <Route path='Member' element={<Member />}></Route>
+    </Route>
 
   </Routes>
   

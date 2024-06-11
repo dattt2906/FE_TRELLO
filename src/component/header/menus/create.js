@@ -150,7 +150,7 @@ export default function Create() {
         handleClose()
     }
     const handleCreateBoard = () => {
-        axios.post("http://localhost:3001/board/create-board", { boardname, workspaceId ,boardbackground}).then(res => {
+        Api(token).post("http://localhost:3001/board/create-board", { boardname, workspaceId ,boardbackground}).then(res => {
             if (res.data) {
                 let newBoardId = res.data.boardId; // Đây là giá trị mới bạn muốn thay thế
                 const newUrl =  `/Page/?userId=${userId}&workspaceId=${workspaceId}&boardId=${res.data.boardId}`;

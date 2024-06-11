@@ -2,14 +2,18 @@ import { Box } from "@mui/material"
 import Checkbox from '@mui/joy/Checkbox';
 import axios from "axios";
 import ClearIcon from '@mui/icons-material/Clear';
+import Api from "../../../api";
+import { useToken } from "../../../tokenContext";
+import { useState } from "react";
 
 const Todo = (props) => {
     const {todo,updateTodoLists,handleDelTodo}=props
     const todoId=todo.todoId
+    const [token,setToken]= useState(useToken().token)
     const  UpdateTodoCheck=async (todoId, Checked)=>{
    
         const isChecked = !Checked
-       await axios.put(`http://localhost:3001/todolist/update-isChecked-by-todoId/${todoId}`, {isChecked}).then(res=>{
+       await Api(token).put(`http://localhost:3001/todolist/update-isChecked-by-todoId/${todoId}`, {isChecked}).then(res=>{
           updateTodoLists()
         })
      

@@ -26,6 +26,8 @@ import AddIcon from '@mui/icons-material/Add';
 import JoyButton from '@mui/joy/Button';
 import InfoIcon from '@mui/icons-material/Info';
 import { useLocation } from "react-router-dom";
+import Api from "../../../api";
+import { useToken } from "../../../tokenContext";
 const style = {
     position: 'absolute',
     top: '50%',
@@ -59,6 +61,7 @@ const Sidebar = () => {
     const location = useLocation()
     const [isShowSucessSendMail, setIsShowSucessSendMail] = useState(false)
     const [isShowSFailSendMail, setIsShowFailSendMail] = useState(false)
+    const[token,setToken]= useState(useToken().token)
 
 
     const handleOpenModal = () => {
@@ -87,7 +90,7 @@ const Sidebar = () => {
     const handleInviteLink = () => {
 
 
-        axios.post("http://localhost:3001/auth/invite-member", { email, workspaceId }).then(res => {
+        Api(token).post("http://localhost:3001/auth/invite-member", { email, workspaceId }).then(res => {
             if (res.data) {
                 setIsShowSucessSendMail(true)
                 setIsShowFailSendMail(false)
@@ -106,7 +109,7 @@ const Sidebar = () => {
     useEffect(() => {
 
 
-        axios.get(`http://localhost:3001/workspace/find-workspace-by-id/${workspaceId}`).then(res => {
+        Api(token).get(`http://localhost:3001/workspace/find-workspace-by-id/${workspaceId}`).then(res => {
 
             if (res.data) {
                 setWorkspacename(res.data.workspacename)
@@ -121,14 +124,14 @@ const Sidebar = () => {
     }, [location])
 
     const changeBoard = async (boardId) => {
-        await axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res => {
+        await Api(token).get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res => {
             if (res.data) {
                 setRecentBoards(res.data.recentBoards)
 
                 const recentboardExits = res.data.recentBoards.some(recentboard => recentboard.boardId === boardId)
                 if (!recentboardExits) {
 
-                    axios.post("http://localhost:3001/recentboard/create-recent-board", { userId, boardId })
+                    Api(token).post("http://localhost:3001/recentboard/create-recent-board", { userId, boardId })
                 }
 
             }

@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Board from "../userworkspace/board";
 import { useLocation } from "react-router-dom";
-
+import { useToken } from "../../tokenContext";
+import Api from "../../api";
 
 const WorkspaceArea = () => {
     const [workspacename, setWorkspacename] = useState()
@@ -17,11 +18,12 @@ const WorkspaceArea = () => {
     const params = new URLSearchParams(queryString);
     const workspaceId = params.get('workspaceId');
     const userId= params.get("userId")
+    const [token, setToken]= useState(useToken().token)
     const location= useLocation()
     
     useEffect(() => {
 
-        axios.get(`http://localhost:3001/workspace/find-workspace-by-id/${workspaceId}`).then(res => {
+        Api(token).get(`http://localhost:3001/workspace/find-workspace-by-id/${workspaceId}`).then(res => {
 
             if (res.data) {
                 setWorkspacename(res.data.workspacename)
@@ -32,7 +34,7 @@ const WorkspaceArea = () => {
 
                 if (!userExists) {
                     // Nếu userId không tồn tại, thêm user vào workspace
-                    axios.post("http://localhost:3001/workspace/add-user-in-workspace", { workspaceId, userId })
+                    Api(token).post("http://localhost:3001/workspace/add-user-in-workspace", { workspaceId, userId })
                         .then(res => {
                             console.log("User added:", res.data);
                         })
@@ -50,7 +52,7 @@ const WorkspaceArea = () => {
 
     useEffect(()=>{
 
-        axios.get(`http://localhost:3001/workspace/find-workspace-by-id/${workspaceId}`).then(res => {
+        Api(token).get(`http://localhost:3001/workspace/find-workspace-by-id/${workspaceId}`).then(res => {
 
         if (res.data) {
             setWorkspacename(res.data.workspacename)

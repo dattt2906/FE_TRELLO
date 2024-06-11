@@ -34,7 +34,9 @@ import ClearIcon from '@mui/icons-material/Clear';
 import Slider from '@mui/material/Slider';
 import Todolist from "./todolist";
 import Attachment from "./attachment";
-
+import Api from "../../../api";
+import { useToken } from "../../../tokenContext";
+import moment from "moment"
 
 // import {Editor} from '@tinymce/tinymce-react'
 
@@ -91,9 +93,34 @@ const Card = (props) => {
   const [showModalAddCheckList, setShowModalAddCheckList] = useState(false)
   const [todoLists, setTodoLists] = useState([])
   const [todoListTitle, setTodoListTitle] = useState("")
+  const [token, setToken]= useState(useToken().token)
 
-
-
+  const TimeDisplay = ( date ) => {
+    // Thời gian tạo của tập tin (sử dụng định dạng ISO 8601)
+    const createdTime = moment(date);
+  
+    // Thời gian hiện tại
+    const currentTime = moment();
+  
+    // Kiểm tra sự chênh lệch ngày
+    const daysDifference = currentTime.diff(createdTime, 'days');
+  
+    // Trả về chuỗi thời gian trôi qua
+    let timeElapsedString;
+    if (daysDifference === 0) {
+      timeElapsedString = createdTime.format('[Hôm nay lúc] HH:mm');
+    } else if (daysDifference === 1) {
+      timeElapsedString = createdTime.format('[Hôm qua lúc] HH:mm');
+    } else {
+      timeElapsedString = createdTime.format('DD [tháng] MM [năm] YYYY [lúc] HH:mm');
+    }
+  
+    return (
+      <span className="date past" title={createdTime.format('DD [tháng] MM [năm] YYYY [lúc] HH:mm')}>
+        {timeElapsedString}
+      </span>
+    );
+  };
 
   const queryString = window.location.search;
 
@@ -103,7 +130,7 @@ const Card = (props) => {
   const editorRef= useRef()
   const handleDelFileAttachment=async(fileAttachment)=>{
      const fileId= fileAttachment.fileId
-    await axios.delete(`http://localhost:3001/files/del-file-by-id/${fileId}`)
+    await Api(token).delete(`http://localhost:3001/files/del-file-by-id/${fileId}`)
     updateAttachment()
 }
 
@@ -151,7 +178,7 @@ const Card = (props) => {
 
     console.log("formData:", formData)
 
-    await axios.post('http://localhost:3001/files/upload', formData).then(res => {
+    await Api(token).post('http://localhost:3001/files/upload', formData).then(res => {
       if (res.data) {
         const filename = res.data.originalname
         const imageFile = ("http://localhost:3001/api/images/" + res.data.filename)
@@ -160,7 +187,7 @@ const Card = (props) => {
 
         if (filename && imageFile && rowId) {
 
-          axios.post("http://localhost:3001/files/create", { filename, imageFile, rowId }).then(res => {
+          Api(token).post("http://localhost:3001/files/create", { filename, imageFile, rowId }).then(res => {
 
 
             if (res.data) {
@@ -176,7 +203,7 @@ const Card = (props) => {
 
   const updateAttachment=async()=>{
 
-    await axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
+    await Api(token).get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
      
         setFileAttachments(res.data.files)
       
@@ -186,9 +213,9 @@ const Card = (props) => {
 
   const handleDelTodoList = async (todoListId) => {
 
-    await axios.delete(`http://localhost:3001/todolist/del-todolist-by-id/${todoListId}`)
+    await Api(token).delete(`http://localhost:3001/todolist/del-todolist-by-id/${todoListId}`)
 
-    await axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
+    await Api(token).get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
       if (res.data) {
         setTodoLists(res.data.todoLists)
         updateTodoLists()
@@ -197,12 +224,20 @@ const Card = (props) => {
 
     })
   }
+  const handelDelComment=async(commentId)=>{
+    await Api(token).delete(`http://localhost:3001/comment/delete-comment/${commentId}`)
+
+    updateComments()
+
+
+  }
+
 
   const handleDelTodo = async (todoId) => {
 
-    await axios.delete(`http://localhost:3001/todolist/del-todo-by-id/${todoId}`)
+    await Api(token).delete(`http://localhost:3001/todolist/del-todo-by-id/${todoId}`)
 
-    await axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
+    await Api(token).get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
       if (res.data) {
         updateTodoLists()
       }
@@ -217,11 +252,11 @@ const Card = (props) => {
     setShowModalAddCheckList(false)
     const rowId = card.rowId
 
-    axios.post("http://localhost:3001/todolist/create-todolist", { todoListTitle, rowId }).then(res => {
+    Api(token).post("http://localhost:3001/todolist/create-todolist", { todoListTitle, rowId }).then(res => {
 
       if (res.data) {
 
-        axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
+        Api(token).get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
 
           if (res.data) {
             setTodoLists(res.data.todoLists)
@@ -236,16 +271,16 @@ const Card = (props) => {
 
 
   const updateComments = async () => {
-    await axios.get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
-      if (res.data.comments && res.data.comments.length > 0) {
+    await Api(token).get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
+     
         setComments(res.data.comments)
-      }
+      
     })
   }
 
 
   const updateTodoLists = () => {
-    axios.get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
+    Api(token).get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
       if (res.data.todoLists && res.data.todoLists.length > 0) {
         setTodoLists(res.data.todoLists)
       }
@@ -254,7 +289,7 @@ const Card = (props) => {
 
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
+    Api(token).get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
       if (res.data.comments && res.data.comments.length > 0) {
         setComments(res.data.comments)
       }
@@ -280,7 +315,7 @@ const Card = (props) => {
 
 
   const setDateSocket = async () => {
-    await axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
+    await Api(token).get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
       if (res.data.deadline) {
         setFormDate(res.data.deadline)
         setDateTimeCard(res.data.deadline)
@@ -295,7 +330,7 @@ const Card = (props) => {
 
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
+    Api(token).get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
       if (res.data.todoLists && res.data.todoLists.length > 0) {
         setTodoLists(res.data.todoLists)
       }
@@ -378,7 +413,7 @@ const Card = (props) => {
     const deadline = Deadline.$d
 
 
-    await axios.put(`http://localhost:3001/table/update-deadline-by-rowId/${card.rowId}`, { deadline }).then(res => {
+    await Api(token).put(`http://localhost:3001/table/update-deadline-by-rowId/${card.rowId}`, { deadline }).then(res => {
       if (res.data) {
         socket.emit("add-deadline", boardId)
       }
@@ -400,7 +435,7 @@ const Card = (props) => {
 
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
+    Api(token).get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
       if (res.data) {
         setContent(res.data.content)
         setDescription(res.data.description)
@@ -444,7 +479,7 @@ const Card = (props) => {
 
   const changeRowDetail = () => {
 
-    axios.put(`http://localhost:3001/table/update-rowDetail/${card.rowId}`, { description, attachment, activity }).then(res => {
+    Api(token).put(`http://localhost:3001/table/update-rowDetail/${card.rowId}`, { description, attachment, activity }).then(res => {
       if (res.data) {
         alert("Cap nhat thong tin card thanh cong")
       }
@@ -456,10 +491,10 @@ const Card = (props) => {
     if(contentComment){
 
     const rowId = card.rowId
-    axios.post("http://localhost:3001/comment/create-comment", { userId, contentComment, rowId }).then(res => {
+    Api(token).post("http://localhost:3001/comment/create-comment", { userId, contentComment, rowId }).then(res => {
       if (res.data) {
         socket.emit("add-comment", boardId)
-        axios.get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
+        Api(token).get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
 
           if (res.data) {
             setComments(res.data.comments)
@@ -703,6 +738,7 @@ const Card = (props) => {
                         key={index}
                         fileAttachment={fileAttachment}
                         handleDelFileAttachment={handleDelFileAttachment}
+                        TimeDisplay={TimeDisplay}
 
                       />
 
@@ -749,13 +785,16 @@ const Card = (props) => {
                           </Box>
                           <Box sx={{ flex: 1 }}>
                             <Box sx={{ display: "flex", flexDirection: "column" }}>
+                              <Box sx={{ display: "flex", flexDirection: "row" ,alignItems:"center", gap:2, marginBottom:"10px"}}>
                               <span style={{fontSize:"15px", fontWeight:"bold", fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}}>{comment.user.userInfors.display_name}</span>
+                              <span style={{fontSize:"15px",fontWeight:"400", fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}}>{TimeDisplay(comment.createdAt)}</span>
+                              </Box>
                               <Box sx={{  borderRadius: "10px" }}>
                                 <Textarea sx={{fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}} value={comment.contentComment}></Textarea>
                               </Box>
                               <Box>
                                 <Box sx={{display:"flex", gap:2, marginTop:"10px"}}>
-                              <span style={{fontSize:"13px", color:"var(--ds-text, #172b4d)", textDecoration:"underline",cursor:"pointer",fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}}> Xóa</span>
+                              <span style={{fontSize:"13px", color:"var(--ds-text, #172b4d)", textDecoration:"underline",cursor:"pointer",fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}} onClick={()=>handelDelComment(comment.commentId)}> Xóa</span>
                               <span style={{fontSize:"13px", color:"var(--ds-text, #172b4d)", textDecoration:"underline",cursor:"pointer",fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}}> Chỉnh sửa</span>
                               </Box>
                               </Box>

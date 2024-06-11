@@ -12,6 +12,8 @@ import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import Textarea from '@mui/joy/Textarea';
 import io from 'socket.io-client';
+import Api from "../../../api";
+import { useToken } from "../../../tokenContext";
 
 
 
@@ -46,14 +48,15 @@ const Column = (props) => {
   };
   const [isShowAddCard, setIsShowAddCard] = useState(false);
   const [content, setContent] = useState("");
+  const [token, setToken]= useState(useToken().token)
 
 
   const handleAddCard = async () => {
     let sort= Cards.length
-    await axios.post("http://localhost:3001/table/create-row", { content, columnId,sort }).then(res => {
+    await Api(token).post("http://localhost:3001/table/create-row", { content, columnId,sort }).then(res => {
       if (res.data) {
         socket.emit("add-card", boardId)
-        axios.get(`http://localhost:3001/table/find-column-by-id/${columnId}`).then(res => {
+        Api(token).get(`http://localhost:3001/table/find-column-by-id/${columnId}`).then(res => {
           if (res.data) {
             setCards(res.data.rows)
             getData()
@@ -76,11 +79,11 @@ const Column = (props) => {
     const rowId= card.rowId
     if(rowId){
      
-     await axios.delete(`http://localhost:3001/table/del-row/${rowId}`, {rowId})
+     await Api(token).delete(`http://localhost:3001/table/del-row/${rowId}`, {rowId})
 
      socket.emit("del-card", boardId)
 
-    await axios.get(`http://localhost:3001/table/find-column-by-id/${columnId}`,{columnId}).then(res=>{
+    await Api(token).get(`http://localhost:3001/table/find-column-by-id/${columnId}`,{columnId}).then(res=>{
                 if(res.data){
                     setCards(res.data.rows)
                     

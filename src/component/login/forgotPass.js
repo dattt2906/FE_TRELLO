@@ -88,7 +88,7 @@ const ForgotPass = () => {
                     <div style={{ marginTop: "15px" }}><a href="">Forgot password?</a></div>
                 </Link> */}
                 <Box sx={{ marginTop: "50px", display: "flex", alignItems: "center", gap: 2 }}>
-                    <img src="trelloicon.png" style={{ width: "50px", height: "50px" }}></img>
+                    <img src="https://firebasestorage.googleapis.com/v0/b/uploadimage-b250d.appspot.com/o/images%2Ftrelloicon.png?alt=media&token=232e7e9f-005a-41f9-8f37-65341e296fbb" style={{ width: "50px", height: "50px" }}></img>
                     <span style={{ fontSize: "25px", fontFamily: "var(--font-family-text,'Charlie Text',sans-serif)" }}>Trello</span>
                 </Box>
                 <Box sx={{ marginTop: "40px" }}>

@@ -8,6 +8,8 @@ import React, { useState, useEffect } from 'react';
 import Checkbox from '@mui/joy/Checkbox';
 import axios from "axios";
 import Todo from "./todo";
+import Api from "../../../api";
+import { useToken } from "../../../tokenContext";
 
 
 
@@ -16,6 +18,7 @@ const Todolist = (props) => {
   const todoListId = todolist.todoListId
   const [countChecked, setCountChecked] = useState(0)
   const [todoTitle, setTodoTitle] = useState("")
+  const [token,setToken]=useState(useToken().token)
   const countCheck = (todolist) => {
 
     if (todolist && todolist.todos) {
@@ -25,7 +28,7 @@ const Todolist = (props) => {
   }
   const handleAddTodo = async (todoListId) => {
 
-    await axios.post("http://localhost:3001/todolist/create-todo", { todoTitle, todoListId }).then(res => {
+    await Api(token).post("http://localhost:3001/todolist/create-todo", { todoTitle, todoListId }).then(res => {
       if (res.data) {
 
         updateTodoLists()

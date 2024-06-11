@@ -8,13 +8,15 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import { useToken } from '../../tokenContext';
+import Api from '../../api';
 const ChangePassWord = () => {
     const [password, setPassword] = useState("")
     const [oldPassword, setOldPassword] = useState("")
     const [newPassword, setNewPassword] = useState("")
     const [retypePassword, setRetypePassword] = useState("")
     const [error, setError] = useState("")
+    const [token, setToken]= useState(useToken().token)
     // const userId = Number(localStorage.getItem("UserId"))
     const userIdUrl=window.location.search
     const userId= Number(userIdUrl.replace("?",""))
@@ -22,7 +24,7 @@ const ChangePassWord = () => {
     const nav= useNavigate()
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res => {
+        Api(token).get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res => {
 
             if (res.data) {
               setPassword(res.data.password)
@@ -34,7 +36,7 @@ const ChangePassWord = () => {
 
     useEffect(() => {
 
-        axios.get(`http://localhost:3001/users/find-userinfo-by-userId/${userId}`).then(res => {
+        Api(token).get(`http://localhost:3001/users/find-userinfo-by-userId/${userId}`).then(res => {
 
             if (res.data) {
                 setAvatarImg(res.data.avatarImg)
@@ -67,7 +69,7 @@ const ChangePassWord = () => {
 
             else {
               
-                axios.put(`http://localhost:3001/auth/update-user-password/${userId}`, { password:newPassword }).then(res => {
+                Api(token).put(`http://localhost:3001/auth/update-user-password/${userId}`, { password:newPassword }).then(res => {
 
                     if (res.data) {
                         setError("")

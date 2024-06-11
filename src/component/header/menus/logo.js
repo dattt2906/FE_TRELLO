@@ -26,19 +26,19 @@ export default function Logo() {
 
   return (
     <Box>
-      <Button
+      <Box
         
         id="basic-button"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
-        sx={{color:"black", fontFamily:"-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif", display:"flex", alignItems:"center", flexDirection:"row", height:"70px",gap:2,marginLeft:"5px"}}
+        sx={{color:"black", fontFamily:"-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif", display:"flex",alignItems:"center", flexDirection:"row", height:"70px",gap:2,marginLeft:"5px",cursor:"pointer"}}
       >
-         <img style={{width:"30px", height:"30px"}} src="https://firebasestorage.googleapis.com/v0/b/uploadimage-b250d.appspot.com/o/images%2Ftrelloicon.png?alt=media&token=232e7e9f-005a-41f9-8f37-65341e296fbb"></img>
-        <span style={{ fontSize:"20px", fontWeight:'bold', fontFamily:""}}>Trello</span>
-     
-      </Button>
+         <img style={{width:"25px", height:"25px"}} src="https://firebasestorage.googleapis.com/v0/b/uploadimage-b250d.appspot.com/o/images%2Ftrelloicon.png?alt=media&token=232e7e9f-005a-41f9-8f37-65341e296fbb"></img>
+        <span style={{ fontSize:"18px", color:"var(--ds-text, #172b4d)", fontWeight:'bold', fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif'}}>Trello</span>
+      
+      </Box>
       
       </Box>
   );

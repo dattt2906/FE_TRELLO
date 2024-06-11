@@ -4,12 +4,13 @@ import React,{ useEffect, useState } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 import io, { Socket } from 'socket.io-client';
 import CancelIcon from '@mui/icons-material/Cancel';
-
-
+import { useToken } from "../../tokenContext";
+import Api from "../../api";
 
 const Board = (props) => {
     const { board } = props
     const nav = useNavigate()
+    const [token ,setToken]= useState(useToken().token)
     const queryString = window.location.search;
     // const [socket, setSocket]= useState(null)
 
@@ -31,7 +32,7 @@ const Board = (props) => {
     const handleClick = async () => {
         // connectSocket()
 
-        await axios.get(`http://localhost:3001/board/find-board-by-id/${board.boardId}`).then(res => {
+        await Api(token).get(`http://localhost:3001/board/find-board-by-id/${board.boardId}`).then(res => {
 
             if (res.data) {
                 const url = `/Page/?userId=${userId}&workspaceId=${res.data.workspace.workspaceId}&boardId=${board.boardId}`;
