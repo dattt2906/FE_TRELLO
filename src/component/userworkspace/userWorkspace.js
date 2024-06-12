@@ -20,6 +20,7 @@ const UserWorkspace = () => {
     console.log(Api(token))
     
     useEffect(() => {
+       
         Api(token).get(`/users/find-user-by-id/${userId}`).then(res => {
 
             if (res.data) {
@@ -27,6 +28,7 @@ const UserWorkspace = () => {
                 setWorkspaces(res.data.workspaces)
             }
         })
+    
 
     }, [])
 

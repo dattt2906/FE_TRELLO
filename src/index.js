@@ -18,6 +18,7 @@ import Member from './component/Member/member';
 
 import { TokenProvider } from './tokenContext';
 import PrivateRoute from './privateRouter';
+import InviteMember from './invite_member/inviteMember';
 
 
 
@@ -47,6 +48,10 @@ root.render(
     <Route path='WorkspaceArea' element={<WorkspaceArea />}></Route>
     <Route path='Member' element={<Member />}></Route>
     </Route>
+    <Route path='Accept_invite' element={<InviteMember/>}></Route>
+    
+
+
 
   </Routes>
   

@@ -95,6 +95,7 @@ const Card = (props) => {
   const [todoListTitle, setTodoListTitle] = useState("")
   const [token, setToken]= useState(useToken().token)
 
+
   const TimeDisplay = ( date ) => {
     // Thời gian tạo của tập tin (sử dụng định dạng ISO 8601)
     const createdTime = moment(date);
@@ -102,8 +103,13 @@ const Card = (props) => {
     // Thời gian hiện tại
     const currentTime = moment();
   
+    // Đặt thời gian về đầu ngày để so sánh chính xác theo ngày
+    const createdTimeStartOfDay = createdTime.clone().startOf('day');
+    const currentTimeStartOfDay = currentTime.clone().startOf('day');
+  
     // Kiểm tra sự chênh lệch ngày
-    const daysDifference = currentTime.diff(createdTime, 'days');
+    const daysDifference = currentTimeStartOfDay.diff(createdTimeStartOfDay, 'days');
+    console.log("day diff", daysDifference);
   
     // Trả về chuỗi thời gian trôi qua
     let timeElapsedString;
@@ -121,6 +127,9 @@ const Card = (props) => {
       </span>
     );
   };
+  
+
+  
 
   const queryString = window.location.search;
 

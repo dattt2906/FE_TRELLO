@@ -97,6 +97,7 @@ export default function Create() {
 
 
     useEffect(() => {
+        
         Api(token).get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res => {
 
             if (res.data) {
@@ -104,6 +105,8 @@ export default function Create() {
                 setWorkspace(res.data.workspaces)
             }
         })
+    
+    
 
     }, [])
 

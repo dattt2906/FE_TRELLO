@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Api from '../../../api';
 import { useToken } from '../../../tokenContext';
+import { isBuffer } from 'lodash';
 
 
 export default function Workspaces() {
@@ -39,13 +40,17 @@ export default function Workspaces() {
     
 }
 
+
   useEffect(() => {
+    
     Api(token).get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res => {
 
         if (res.data) {
             setWorkspaces(res.data.workspaces)
         }
     })
+  
+  
 
 }, [])
 

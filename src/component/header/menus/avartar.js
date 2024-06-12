@@ -48,11 +48,14 @@ export default function AccountMenu() {
   };
 
   useEffect(()=>{
+    
 
     Api(token).get(`/users/find-userinfo-by-userId/${userId}`).then(res=>{
       setUserInfoId(res.data.userInforId)
       setImgAvatar(res.data.avatarImg)
     })
+  
+  
 
   },[])
 

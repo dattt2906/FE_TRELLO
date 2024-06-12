@@ -22,11 +22,15 @@ export default function Recents() {
     const [token,setToken]= useState(useToken().token)
 
     useEffect(()=>{
+ 
+    
         Api(token).get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res=>{
           if(res.data){
             setRecentBoards(res.data.recentBoards)
           }
         })
+      
+      
 
     },[location])
 
