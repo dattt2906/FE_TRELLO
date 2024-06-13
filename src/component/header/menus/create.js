@@ -65,6 +65,7 @@ export default function Create() {
     const [boardbackground, setBoardBackground] = useState("")
     const [workspaceDetail, setWorkspaceDetail]= useState("")
     const [token, setToken]= useState(useToken().token)
+    const [filename, setFileName]= useState("")
     const handleOpenModal = () => {
         
         
@@ -72,12 +73,21 @@ export default function Create() {
        
        
     }
+    useEffect(()=>{
+        if(boardbackground){
+        const file = boardbackground.replace("http://localhost:3001/api/images/", "");
+        setFileName(file)
+        }
+    },[boardbackground])
     useEffect(() => {
         if (imgBack) {
             handleUpload();
         }
     }, [imgBack]);
     const handleUpload =async () => {
+        if(filename){
+        await Api(token).delete(`http://localhost:3001/files/delete/${filename}`)
+        }
 
         const formData= new FormData();
         formData.append("file", imgBack)

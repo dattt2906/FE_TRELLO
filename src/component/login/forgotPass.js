@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Api from "../../api";
 
 
 
@@ -23,7 +24,7 @@ const ForgotPass = () => {
     const [userId, setUserId] = useState(null)
     useEffect(() => {
 
-        axios.post("http://localhost:3001/auth/decodeToken", { token }).then(res => {
+        Api(token).post("http://localhost:3001/auth/decodeToken", { token }).then(res => {
             if (res.data) {
                 setUserId(res.data.sub)
             }
@@ -35,7 +36,7 @@ const ForgotPass = () => {
 
     const handleResetPass = async () => {
         if (password && retypePassword && password === retypePassword) {
-            axios.put(`http://localhost:3001/auth/update-user-password/${userId}`, { password }).then(res => {
+            Api(token).put(`http://localhost:3001/auth/update-user-password/${userId}`, { password }).then(res => {
                 if (res.data) {
                     setUpdateSucess("Cap nhat thanh cong. Vui long quay lai trang chu de dang nhap voi mat khau moi")
                     setError("")
@@ -103,7 +104,7 @@ const ForgotPass = () => {
                     noValidate
                     autoComplete="off"
                 >
-                    <TextField type="text" id="outlined-basic" label="Mật khẩu mới" variant="outlined"onChange={(e) => setNewPassword(e.target.value)} />
+                    <TextField type="password" id="outlined-basic" label="Mật khẩu mới" variant="outlined"onChange={(e) => setNewPassword(e.target.value)} />
                     <TextField type="password"id="outlined-basic" label="Nhập lại mật khẩu mới" variant="outlined" onChange={(e) => setRetypePassword(e.target.value)}/>
                 </Box>
 

@@ -6,11 +6,11 @@ export const useToken = () => useContext(TokenContext);
 
 export const TokenProvider = ({ children }) => {
  
-  const [token, setToken] = useState(JSON.parse(localStorage.getItem('Token_User')));
+  const [token, setToken] = useState(JSON.parse(sessionStorage.getItem('Token_User')));
 
   useEffect(() => {
     const handleStorageChange = () => {
-      const newToken = JSON.parse(localStorage.getItem('Token_User'));
+      const newToken = JSON.parse(sessionStorage.getItem('Token_User'));
       setToken(newToken);
     };
 

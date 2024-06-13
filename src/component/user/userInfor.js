@@ -28,16 +28,11 @@ const UserInfor = () => {
     const [img, setImg] = useState(null)
     const [avatarImg, setAvartarImg] = useState("")
     const [token, setToken] = useState(useToken().token)
+    const [filename, setFileName]= useState("")
 
     console.log("Api:", Api(token))
 
-    const headers = {
-        'Authorization': `${token}`,  // Ví dụ: Token xác thực
-        'Content-Type': 'application/json',          // Ví dụ: Định dạng dữ liệu gửi đi là JSON
-        'Custom-Header': 'Custom-Value'              // Tiêu đề tùy chỉnh khác nếu cần
-    };
-
-
+ 
 
     const changeInfor = () => {
         const userinfo = { display_name, age, sex, address, avatarImg }
@@ -46,20 +41,7 @@ const UserInfor = () => {
         alert("Cap nhat thong tin user thanh cong")
     }
 
-    const handleUpload = async () => {
-
-        const formData = new FormData();
-        formData.append("file", img)
-
-        console.log("formData:", formData)
-
-        await Api(token).post('/files/upload', formData).then(res => {
-            setAvartarImg("http://localhost:3001/api/images/" + res.data.filename)
-
-
-        })
-
-    }
+    
     useEffect(() => {
 
         Api(token).get(`http://localhost:3001/users/find-userinfo-by-userId/${userId}`).then(res => {
@@ -71,6 +53,12 @@ const UserInfor = () => {
                 setSex(res.data.sex)
                 setAddress(res.data.address)
                 setAvartarImg(res.data.avatarImg)
+
+                if(res.data.avatarImg){
+                    const file = res.data.avatarImg.replace("http://localhost:3001/api/images/", "");
+
+                    setFileName(file)
+                }
             }
         })
 
@@ -81,6 +69,24 @@ const UserInfor = () => {
             handleUpload();
         }
     }, [img]);
+    const handleUpload = async () => {
+        if(filename){
+        await Api(token).delete(`http://localhost:3001/files/delete/${filename}`)
+        }
+
+        const formData = new FormData();
+        formData.append("file", img)
+
+        console.log("formData:", formData)
+
+        await Api(token).post('/files/upload', formData).then(res => {
+            setAvartarImg("http://localhost:3001/api/images/" + res.data.filename)
+            setFileName(res.data.filename)
+
+
+        })
+
+    }
 
     return (
         <>

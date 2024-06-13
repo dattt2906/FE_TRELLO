@@ -16,6 +16,7 @@ const ChangePassWord = () => {
     const [newPassword, setNewPassword] = useState("")
     const [retypePassword, setRetypePassword] = useState("")
     const [error, setError] = useState("")
+    const [notiSuccess, setNotiSuccess]= useState("")
     const [token, setToken]= useState(useToken().token)
     // const userId = Number(localStorage.getItem("UserId"))
     const userIdUrl=window.location.search
@@ -73,7 +74,8 @@ const ChangePassWord = () => {
 
                     if (res.data) {
                         setError("")
-                        nav("/")
+                        // nav("/")
+                        setNotiSuccess("Cập nhật mật khẩu người dùng thành công")
                        
 
                        
@@ -117,15 +119,15 @@ const ChangePassWord = () => {
                     autoComplete="off"
                 >
                     <Box sx={{ display: "flex", flexDirection: "column", gap: 5 }}>
-                        <TextField id="outlined-basic" label="Password" type='password' variant="outlined" onChange={(e)=>setOldPassword(e.target.value)} />
-                        <TextField id="outlined-basic" label="New password" type='password' variant="outlined" onChange={(e)=>setNewPassword(e.target.value)} />
-                        <TextField id="outlined-basic" label="Retype new password" type='password' variant="outlined" onChange={(e)=>setRetypePassword(e.target.value)} />
+                        <TextField id="outlined-basic" label="Mật khẩu " type='password' variant="outlined" onChange={(e)=>setOldPassword(e.target.value)} />
+                        <TextField id="outlined-basic" label="Mật khẩu mới" type='password' variant="outlined" onChange={(e)=>setNewPassword(e.target.value)} />
+                        <TextField id="outlined-basic" label="Nhập lại mật khẩu mới" type='password' variant="outlined" onChange={(e)=>setRetypePassword(e.target.value)} />
                     </Box>
                     <Box sx={{ display: "flex", justifyContent: "space-between", width: "400px", paddingTop: "50px" }}>
 
-                        <Button sx={{ width: "fit-content" }} variant="contained" onClick={changePassword}>Confirm</Button>
+                        <Button sx={{ width: "fit-content" }} variant="contained" onClick={changePassword}>Xác nhận</Button>
                         <Link to={`/User-Info/?${userId}`}>
-                            <Button sx={{ width: "fit-content" }} variant="contained">Back to user proflie</Button>
+                            <Button sx={{ width: "fit-content" }} variant="contained">Quay về trang hồ sơ</Button>
                         </Link>
 
 
@@ -141,7 +143,10 @@ const ChangePassWord = () => {
             {error ?
                 <Box sx={{color:"red", textAlign:"center", fontSize:"20px", marginTop:"20px"}}>
                     {error}
-                </Box> : null
+                </Box> : 
+                <Box sx={{color:"red", textAlign:"center", fontSize:"20px", marginTop:"20px"}}>
+                {notiSuccess}
+            </Box> 
 
             }
 

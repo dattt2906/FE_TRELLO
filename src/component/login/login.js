@@ -25,10 +25,10 @@ const Login = () => {
     const {setToken}= useToken()
 
 useEffect(()=>{
-const token = localStorage.getItem("Token_User")
+const token = sessionStorage.getItem("Token_User")
 if(token){
 
-    localStorage.clear()
+    sessionStorage.clear()
 }
 
 
@@ -38,8 +38,9 @@ if(token){
       await axios.post("http://localhost:3001/auth/login", { email, password }).then(res => {
             if (res.data && res.data.Active == 1) {
                
-                localStorage.setItem("Token_User", JSON.stringify(res.data.access_token));
+                // localStorage.setItem("Token_User", JSON.stringify(res.data.access_token));
                 // localStorage.setItem("UserId", JSON.stringify(res.data.id));
+                sessionStorage.setItem("Token_User", JSON.stringify(res.data.access_token));
                 setToken(res.data.access_token)
                 navigate(`Home/Users/?userId=${res.data.id}`)
             }

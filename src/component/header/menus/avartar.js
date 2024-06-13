@@ -40,7 +40,7 @@ export default function AccountMenu() {
     nav(`/User-Info/?${userInfoId}`)
   }
   const handleLogout=()=>{
-    localStorage.clear()
+    sessionStorage.clear()
   }
 
   const handleClose = () => {

@@ -14,7 +14,7 @@ const InviteMember=()=>{
     const {setToken}= useToken()
 
     useEffect(() => {
-       localStorage.setItem("Token_User", JSON.stringify(token))
+       sessionStorage.setItem("Token_User", JSON.stringify(token))
        setToken(token)
        
 

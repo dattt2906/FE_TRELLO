@@ -36,6 +36,7 @@ const Workspace = (props) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const nav= useNavigate()
     const[token, setToken]= useState(useToken().token)
+    const [filename, setFileName]= useState("")
     
     
     const handleCreateBoard = () => {
@@ -57,7 +58,17 @@ const Workspace = (props) => {
             handleUpload();
         }
     }, [imgBack]);
+
+    useEffect(()=>{
+        if(boardbackground){
+        const file = boardbackground.replace("http://localhost:3001/api/images/", "");
+        setFileName(file)
+        }
+    },[boardbackground])
     const handleUpload = async() => {
+        if(filename){
+            await Api(token).delete(`http://localhost:3001/files/delete/${filename}`)
+            }
 
         const formData= new FormData();
         formData.append("file", imgBack)

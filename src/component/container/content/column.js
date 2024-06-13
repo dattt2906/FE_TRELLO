@@ -19,10 +19,10 @@ import { useToken } from "../../../tokenContext";
 
 
 const Column = (props) => {
-  const { column, columnDel, setColumnDataByColumnId, getData ,socket, boardId} = props;
+  const { column, columnDel, setColumnDataByColumnId, getData, socket, boardId } = props;
   const cards = column.rows;
- 
-  
+
+
   const [Cards, setCards] = useState(cards);
   // console.log("Cards", Cards)
   const columnId = column.columnId
@@ -48,23 +48,26 @@ const Column = (props) => {
   };
   const [isShowAddCard, setIsShowAddCard] = useState(false);
   const [content, setContent] = useState("");
-  const [token, setToken]= useState(useToken().token)
+  const [token, setToken] = useState(useToken().token)
 
 
   const handleAddCard = async () => {
-    let sort= Cards.length
-    await Api(token).post("http://localhost:3001/table/create-row", { content, columnId,sort }).then(res => {
-      if (res.data) {
-        socket.emit("add-card", boardId)
-        Api(token).get(`http://localhost:3001/table/find-column-by-id/${columnId}`).then(res => {
-          if (res.data) {
-            setCards(res.data.rows)
-            getData()
-          }
-        })
-      }
+    let sort = Cards.length
+    if (content) {
+      await Api(token).post("http://localhost:3001/table/create-row", { content, columnId, sort }).then(res => {
+        if (res.data) {
+          setContent("")
+          socket.emit("add-card", boardId)
+          Api(token).get(`http://localhost:3001/table/find-column-by-id/${columnId}`).then(res => {
+            if (res.data) {
+              setCards(res.data.rows)
+              getData()
+            }
+          })
+        }
 
-    })
+      })
+    }
 
     // setCards(addcard)
     setIsShowAddCard(false)
@@ -76,22 +79,22 @@ const Column = (props) => {
 
   const cardDel = async (card) => {
 
-    const rowId= card.rowId
-    if(rowId){
-     
-     await Api(token).delete(`http://localhost:3001/table/del-row/${rowId}`, {rowId})
+    const rowId = card.rowId
+    if (rowId) {
 
-     socket.emit("del-card", boardId)
+      await Api(token).delete(`http://localhost:3001/table/del-row/${rowId}`, { rowId })
 
-    await Api(token).get(`http://localhost:3001/table/find-column-by-id/${columnId}`,{columnId}).then(res=>{
-                if(res.data){
-                    setCards(res.data.rows)
-                    
-                }
-        
-        
-                })
-              
+      socket.emit("del-card", boardId)
+
+      await Api(token).get(`http://localhost:3001/table/find-column-by-id/${columnId}`, { columnId }).then(res => {
+        if (res.data) {
+          setCards(res.data.rows)
+
+        }
+
+
+      })
+
 
     }
 
@@ -117,16 +120,16 @@ const Column = (props) => {
         style={dndKitColumnStyles}
         {...attributes}
         {...listeners}
-        
+
       >
         <div className="column-name">
-          <input style={{cursor:"pointer"}} className="change-title" type="text" spellCheck="false"value={changeColumnTitle} onChange={(e) => setChangeColumnTitle(e.target.value)}>
+          <input style={{ cursor: "pointer" }} className="change-title" type="text" spellCheck="false" value={changeColumnTitle} onChange={(e) => setChangeColumnTitle(e.target.value)}>
           </input>
           <i class="fa fa-trash icon-del-column" onClick={() => columnDel(column)}></i>
         </div>
         <SortableContext items={Cards?.map(c => c.rowId)} strategy={verticalListSortingStrategy}>
           <div className="list-card">
-            {Cards && Cards.length > 0 && Cards.sort((a,b)=>(a.sort-b.sort)).map((card, index) => {
+            {Cards && Cards.length > 0 && Cards.sort((a, b) => (a.sort - b.sort)).map((card, index) => {
               // console.log("card:",card)
               return (
                 <Card
@@ -151,16 +154,16 @@ const Column = (props) => {
               // <footer onClick={() => setIsShowAddCard(true)}>
               //   <i className="fa fa-plus icon-plus-card"></i>
               //   Add another card</footer>
-              <Box sx={{display:"flex", alignItems:"center", gap:1, cursor:"pointer", marginBottom:"15px", marginTop:"15px", marginLeft:"5px"}}onClick={() => setIsShowAddCard(true)}>
-                                    <AddIcon sx={{}}/>
-                                    Thêm một thẻ
-                                    </Box>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer", marginBottom: "15px", marginTop: "15px", marginLeft: "5px" }} onClick={() => setIsShowAddCard(true)}>
+                <AddIcon sx={{}} />
+                Thêm một thẻ
+              </Box>
               :
               <div className="content-add-card">
                 <div className="text-area-add-card">
                   {/* <textarea className="input-value-card" placeholder="Enter the content card" onChange={(e) => setContent(e.target.value)}>
                   </textarea> */}
-                   <Textarea placeholder="Nhập vào nội dung thẻ" sx={{width:"280px",height:"50px", marginLeft:"0px", marginTop:"10px", borderRadius:"10px"}}onChange={(e) => setContent(e.target.value)}></Textarea>
+                  <Textarea placeholder="Nhập vào nội dung thẻ" sx={{ width: "280px", height: "50px", marginLeft: "0px", marginTop: "10px", borderRadius: "10px" }} onChange={(e) => setContent(e.target.value)}></Textarea>
                 </div>
                 <div className="button-add">
                   <button className="btn-add" onClick={handleAddCard}>Thêm thẻ</button>

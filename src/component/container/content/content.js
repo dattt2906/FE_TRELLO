@@ -49,35 +49,20 @@ const Content = () => {
     const [activeDragItemData, setActiveDragItemData] = useState(null);
     const [oldColumnWhenDraggingCard, setOldColumnWhenDraggingCard] = useState(null);
 
-   
+
     const [boardbackground, setBoardBackground] = useState("")
     const [socket, setSocket] = useState(null)
-    const location= useLocation()
-    const [token, setToken]= useState(useToken().token)
-   
-
-    // const boards= useSelector((state)=>state.boards)
-    // const dispatch= useDispatch()
-    
+    const location = useLocation()
+    const [token, setToken] = useState(useToken().token)
 
 
-    // useEffect(()=>{
-    //     dispatch(fetchBoardData(boardId))
-
-
-
-    // },[dispatch])
-    
-
-   
-    
     const queryString = window.location.search;
     const params = new URLSearchParams(queryString);
     const [boardId, setBoardId] = useState(params.get("boardId"))
     // const newSocket = useSocket()
     useEffect(() => {
         getData()
-    
+
         const newSocket = io("http://localhost:8001");
         if (newSocket) {
             setSocket(newSocket);
@@ -90,18 +75,18 @@ const Content = () => {
 
             })
         }
-        
+
         return () => {
             newSocket.disconnect();
-          };
-        
+        };
+
 
     }, [boardId])
 
-    useEffect(()=>{
-            setBoardId(params.get("boardId"))
+    useEffect(() => {
+        setBoardId(params.get("boardId"))
 
-    },[location])
+    }, [location])
 
 
 
@@ -212,21 +197,24 @@ const Content = () => {
 
         console.log("boardIdAdd:", boardId)
         // socket.emit("add-column", boardId)
+        if (columnName) {
 
-       await Api(token).post("http://localhost:3001/table/create-column", { columnName, boardId, sort }).then(res => {
-            if (res.data) {
-                socket.emit("add-column", boardId)
-                Api(token).get(`http://localhost:3001/board/find-board-by-id/${boardId}`, { boardId }).then(res => {
-                    if (res.data) {
-                        setColumns(res.data.cols)
+            await Api(token).post("http://localhost:3001/table/create-column", { columnName, boardId, sort }).then(res => {
+                if (res.data) {
+                    socket.emit("add-column", boardId)
+                    Api(token).get(`http://localhost:3001/board/find-board-by-id/${boardId}`, { boardId }).then(res => {
+                        if (res.data) {
+                            setColumns(res.data.cols)
+                            setColumnName("")
 
-                    }
+                        }
 
 
-                })
-            }
+                    })
+                }
 
-        })
+            })
+        }
 
 
 
@@ -508,10 +496,10 @@ const Content = () => {
 
             <div className="content" style={{ backgroundColor: "aliceblue", backgroundImage: `url(${boardbackground})`, backgroundSize: "cover" }}>
 
-               
+
                 <SortableContext items={columns?.map(c => c.columnId)} strategy={horizontalListSortingStrategy}>
                     <div className="list-column" >
-                       
+
                         {columns && columns.length > 0 && columns.sort((a, b) => (a.sort - b.sort)).map((column, index) => {
 
 

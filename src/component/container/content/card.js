@@ -1,5 +1,5 @@
 import "./card.css"
-import React, { useState, useEffect,useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Typography from '@mui/material/Typography';
@@ -93,24 +93,24 @@ const Card = (props) => {
   const [showModalAddCheckList, setShowModalAddCheckList] = useState(false)
   const [todoLists, setTodoLists] = useState([])
   const [todoListTitle, setTodoListTitle] = useState("")
-  const [token, setToken]= useState(useToken().token)
+  const [token, setToken] = useState(useToken().token)
 
 
-  const TimeDisplay = ( date ) => {
+  const TimeDisplay = (date) => {
     // Thời gian tạo của tập tin (sử dụng định dạng ISO 8601)
     const createdTime = moment(date);
-  
+
     // Thời gian hiện tại
     const currentTime = moment();
-  
+
     // Đặt thời gian về đầu ngày để so sánh chính xác theo ngày
     const createdTimeStartOfDay = createdTime.clone().startOf('day');
     const currentTimeStartOfDay = currentTime.clone().startOf('day');
-  
+
     // Kiểm tra sự chênh lệch ngày
     const daysDifference = currentTimeStartOfDay.diff(createdTimeStartOfDay, 'days');
     console.log("day diff", daysDifference);
-  
+
     // Trả về chuỗi thời gian trôi qua
     let timeElapsedString;
     if (daysDifference === 0) {
@@ -120,28 +120,30 @@ const Card = (props) => {
     } else {
       timeElapsedString = createdTime.format('DD [tháng] MM [năm] YYYY [lúc] HH:mm');
     }
-  
+
     return (
       <span className="date past" title={createdTime.format('DD [tháng] MM [năm] YYYY [lúc] HH:mm')}>
         {timeElapsedString}
       </span>
     );
   };
-  
 
-  
+
+
 
   const queryString = window.location.search;
 
   const params = new URLSearchParams(queryString);
   const userId = (params.get('userId'));
 
-  const editorRef= useRef()
-  const handleDelFileAttachment=async(fileAttachment)=>{
-     const fileId= fileAttachment.fileId
+  const editorRef = useRef()
+  const handleDelFileAttachment = async (fileAttachment) => {
+    const fileId = fileAttachment.fileId
+    const filename = fileAttachment.filename
+    await Api(token).delete(`http://localhost:3001/files/delete/${filename}`)
     await Api(token).delete(`http://localhost:3001/files/del-file-by-id/${fileId}`)
     updateAttachment()
-}
+  }
 
 
 
@@ -182,6 +184,8 @@ const Card = (props) => {
 
   const handleUploadImageCard = async () => {
 
+
+
     const formData = new FormData();
     formData.append("file", img)
 
@@ -189,7 +193,7 @@ const Card = (props) => {
 
     await Api(token).post('http://localhost:3001/files/upload', formData).then(res => {
       if (res.data) {
-        const filename = res.data.originalname
+        const filename = res.data.filename
         const imageFile = ("http://localhost:3001/api/images/" + res.data.filename)
 
         const rowId = card.rowId
@@ -200,7 +204,7 @@ const Card = (props) => {
 
 
             if (res.data) {
-             updateAttachment()
+              updateAttachment()
             }
           })
         }
@@ -210,12 +214,12 @@ const Card = (props) => {
   }
 
 
-  const updateAttachment=async()=>{
+  const updateAttachment = async () => {
 
     await Api(token).get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
-     
-        setFileAttachments(res.data.files)
-      
+
+      setFileAttachments(res.data.files)
+
     })
   }
 
@@ -233,7 +237,7 @@ const Card = (props) => {
 
     })
   }
-  const handelDelComment=async(commentId)=>{
+  const handelDelComment = async (commentId) => {
     await Api(token).delete(`http://localhost:3001/comment/delete-comment/${commentId}`)
 
     updateComments()
@@ -281,9 +285,9 @@ const Card = (props) => {
 
   const updateComments = async () => {
     await Api(token).get(`http://localhost:3001/table/find-row-by-id/${card.rowId}`).then(res => {
-     
-        setComments(res.data.comments)
-      
+
+      setComments(res.data.comments)
+
     })
   }
 
@@ -497,27 +501,27 @@ const Card = (props) => {
   }
   const handleAddComment = async () => {
 
-    if(contentComment){
+    if (contentComment) {
 
-    const rowId = card.rowId
-    Api(token).post("http://localhost:3001/comment/create-comment", { userId, contentComment, rowId }).then(res => {
-      if (res.data) {
-        socket.emit("add-comment", boardId)
-        Api(token).get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
+      const rowId = card.rowId
+      Api(token).post("http://localhost:3001/comment/create-comment", { userId, contentComment, rowId }).then(res => {
+        if (res.data) {
+          socket.emit("add-comment", boardId)
+          Api(token).get(`http://localhost:3001/table/find-rowDetail-by-rowId/${card.rowId}`).then(res => {
 
-          if (res.data) {
-            setComments(res.data.comments)
-            updateComments()
-            setContentComment("")
-          }
-        })
-      }
-    })
-  }
-  else{
+            if (res.data) {
+              setComments(res.data.comments)
+              updateComments()
+              setContentComment("")
+            }
+          })
+        }
+      })
+    }
+    else {
 
-    return null;
-  }
+      return null;
+    }
 
 
 
@@ -678,7 +682,7 @@ const Card = (props) => {
                     <Box sx={{ left: "690px", position: "absolute", marginTop: "60px", width: "250px", height: "200px", backgroundColor: "white", zIndex: 1, borderRadius: "10px" }}>
                       <Box sx={{ marginTop: "10px", color: "black", display: "flex", alignItems: "center" }}>
 
-                        <span style={{ textAlign: "center",fontSize:"15px", width: "200px", paddingLeft: "40px" }}> Thêm việc cần làm</span>
+                        <span style={{ textAlign: "center", fontSize: "15px", width: "200px", paddingLeft: "40px" }}> Thêm việc cần làm</span>
                         <ClearIcon onClick={(e) => setShowModalAddCheckList(false)} sx={{ color: "gray", marginLeft: "30px" }} />
 
                       </Box>
@@ -717,7 +721,7 @@ const Card = (props) => {
                       :
                       <Box></Box>
                     }
-                  
+
 
                     <Textarea sx={{ border: "none", paddingTop: "30px", width: "100%", minHeight: "100px", height: "fit-content", wordBreak: "break-all" }} value={description} onClick={() => setShowAddImage(true)} onChange={(e) => setDescription(e.target.value)}></Textarea>
                     <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
@@ -738,21 +742,21 @@ const Card = (props) => {
                   <Box sx={{ display: "flex", flexDirection: "column" }}>
                     <Box sx={{ display: "flex", flexDirection: "row", gap: 2, alignItems: "center" }}>
                       <AttachFileIcon sx={{ transform: "rotate(50deg)", fontSize: "20px" }} />
-                      <span style={{fontFamily:"-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Droid Sans, Helvetica Neue, sans-serif", color:"var(--ds-text, #172b4d)"}}> Các tệp tin đính kèm</span>
+                      <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Droid Sans, Helvetica Neue, sans-serif", color: "var(--ds-text, #172b4d)" }}> Các tệp tin đính kèm</span>
                     </Box>
-                    <Box sx={{marginTop:"20px"}}>
-                    {fileAttachments && fileAttachments.length > 0 && fileAttachments.map((fileAttachment, index) => (
+                    <Box sx={{ marginTop: "20px" }}>
+                      {fileAttachments && fileAttachments.length > 0 && fileAttachments.map((fileAttachment, index) => (
 
-                      <Attachment
-                        key={index}
-                        fileAttachment={fileAttachment}
-                        handleDelFileAttachment={handleDelFileAttachment}
-                        TimeDisplay={TimeDisplay}
+                        <Attachment
+                          key={index}
+                          fileAttachment={fileAttachment}
+                          handleDelFileAttachment={handleDelFileAttachment}
+                          TimeDisplay={TimeDisplay}
 
-                      />
+                        />
 
 
-                    ))}
+                      ))}
                     </Box>
 
                   </Box>
@@ -794,26 +798,26 @@ const Card = (props) => {
                           </Box>
                           <Box sx={{ flex: 1 }}>
                             <Box sx={{ display: "flex", flexDirection: "column" }}>
-                              <Box sx={{ display: "flex", flexDirection: "row" ,alignItems:"center", gap:2, marginBottom:"10px"}}>
-                              <span style={{fontSize:"15px", fontWeight:"bold", fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}}>{comment.user.userInfors.display_name}</span>
-                              <span style={{fontSize:"15px",fontWeight:"400", fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}}>{TimeDisplay(comment.createdAt)}</span>
+                              <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 2, marginBottom: "10px" }}>
+                                <span style={{ fontSize: "15px", fontWeight: "bold", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }}>{comment.user.userInfors.display_name}</span>
+                                <span style={{ fontSize: "15px", fontWeight: "400", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }}>{TimeDisplay(comment.createdAt)}</span>
                               </Box>
-                              <Box sx={{  borderRadius: "10px" }}>
-                                <Textarea sx={{fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}} value={comment.contentComment}></Textarea>
+                              <Box sx={{ borderRadius: "10px" }}>
+                                <Textarea sx={{ fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }} value={comment.contentComment}></Textarea>
                               </Box>
                               <Box>
-                                <Box sx={{display:"flex", gap:2, marginTop:"10px"}}>
-                              <span style={{fontSize:"13px", color:"var(--ds-text, #172b4d)", textDecoration:"underline",cursor:"pointer",fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}} onClick={()=>handelDelComment(comment.commentId)}> Xóa</span>
-                              <span style={{fontSize:"13px", color:"var(--ds-text, #172b4d)", textDecoration:"underline",cursor:"pointer",fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif"}}> Chỉnh sửa</span>
-                              </Box>
+                                <Box sx={{ display: "flex", gap: 2, marginTop: "10px" }}>
+                                  <span style={{ fontSize: "13px", color: "var(--ds-text, #172b4d)", textDecoration: "underline", cursor: "pointer", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }} onClick={() => handelDelComment(comment.commentId)}> Xóa</span>
+                                  <span style={{ fontSize: "13px", color: "var(--ds-text, #172b4d)", textDecoration: "underline", cursor: "pointer", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }}> Chỉnh sửa</span>
+                                </Box>
                               </Box>
                             </Box>
 
                           </Box>
-                        
+
 
                         </Box>
-                        
+
 
 
                       ))}
