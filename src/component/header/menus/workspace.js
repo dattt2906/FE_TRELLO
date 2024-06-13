@@ -15,14 +15,16 @@ import { isBuffer } from 'lodash';
 export default function Workspaces() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const[workspaces, setWorkspaces] = useState([])
-  const nav= useNavigate()
+  const [workspaces, setWorkspaces] = useState([])
+  const nav = useNavigate()
   // const userId= Number(localStorage.getItem("UserId"))
   const queryString = window.location.search;
-    
+
   const params = new URLSearchParams(queryString);
   const userId = params.get('userId');
-  const [token,setToken]= useState(useToken().token)
+  
+  const token= useToken().token
+  console.log("userToken", useToken())
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -32,27 +34,34 @@ export default function Workspaces() {
     setAnchorEl(null);
   };
 
-  const handleChangeWorkspace=(workspaceId)=>{
+  const handleChangeWorkspace = (workspaceId) => {
     handleClose()
     const newUrl = `/WorkspaceArea/?userId=${userId}&workspaceId=${workspaceId}`;
     nav(newUrl)
 
-    
-}
+
+  }
+
+  useEffect(()=>{
+    console.log("token",token)
+
+
+  },[])
 
 
   useEffect(() => {
-    
+    console.log("token:", token)
+
     Api(token).get(`http://localhost:3001/users/find-user-by-id/${userId}`).then(res => {
 
-        if (res.data) {
-            setWorkspaces(res.data.workspaces)
-        }
+      if (res.data) {
+        setWorkspaces(res.data.workspaces)
+      }
     })
-  
-  
 
-}, [])
+
+
+  }, [token])
 
   return (
     <Box>
@@ -62,10 +71,10 @@ export default function Workspaces() {
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
-        sx={{color:"black", fontFamily:"-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif", fontSize:"17px"}}
+        sx={{ color: "black", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif", fontSize: "17px" }}
       >
         Dự án
-        <KeyboardArrowDownIcon/>
+        <KeyboardArrowDownIcon />
       </Button>
       <Menu
         id="basic-menu"
@@ -76,10 +85,10 @@ export default function Workspaces() {
           'aria-labelledby': 'basic-button',
         }}
       >
-          {workspaces && workspaces.length > 0 && workspaces.map((workspace,index) => (
-        <MenuItem onClick={()=>handleChangeWorkspace(workspace.workspaceId)}>{workspace.workspacename}</MenuItem>
-      ))}
+        {workspaces && workspaces.length > 0 && workspaces.map((workspace, index) => (
+          <MenuItem onClick={() => handleChangeWorkspace(workspace.workspaceId)}>{workspace.workspacename}</MenuItem>
+        ))}
       </Menu>
-      </Box>
+    </Box>
   );
 }

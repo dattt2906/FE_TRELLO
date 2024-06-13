@@ -9,6 +9,8 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { Link } from "react-router-dom";
+import { useToken } from "../../tokenContext";
+
 
 
 
@@ -20,6 +22,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const {setToken}= useToken()
 
 useEffect(()=>{
 const token = localStorage.getItem("Token_User")
@@ -31,12 +34,13 @@ if(token){
 
 },[])
 
-    const handelLogin = () => {
-        axios.post("http://localhost:3001/auth/login", { email, password }).then(res => {
+    const handelLogin = async() => {
+      await axios.post("http://localhost:3001/auth/login", { email, password }).then(res => {
             if (res.data && res.data.Active == 1) {
                
                 localStorage.setItem("Token_User", JSON.stringify(res.data.access_token));
                 // localStorage.setItem("UserId", JSON.stringify(res.data.id));
+                setToken(res.data.access_token)
                 navigate(`Home/Users/?userId=${res.data.id}`)
             }
 
@@ -47,6 +51,7 @@ if(token){
 
         }
         )
+     
     }
 
 

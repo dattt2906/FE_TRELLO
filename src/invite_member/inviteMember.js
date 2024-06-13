@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import Api from "../api";
 import { useEffect, useState } from "react";
+import { useToken } from "../tokenContext";
 
 const InviteMember=()=>{
 
@@ -10,9 +11,11 @@ const InviteMember=()=>{
     const [workspaceId, setWorkspaceId]= useState(null)
     const inviteMember_token = window.location.search;
     const token = inviteMember_token.replace("?", "");
+    const {setToken}= useToken()
 
     useEffect(() => {
        localStorage.setItem("Token_User", JSON.stringify(token))
+       setToken(token)
        
 
     }, [token])
