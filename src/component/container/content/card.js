@@ -37,6 +37,7 @@ import Attachment from "./attachment";
 import Api from "../../../api";
 import { useToken } from "../../../tokenContext";
 import moment from "moment"
+import Comment from "./comment";
 
 // import {Editor} from '@tinymce/tinymce-react'
 
@@ -94,6 +95,8 @@ const Card = (props) => {
   const [todoLists, setTodoLists] = useState([])
   const [todoListTitle, setTodoListTitle] = useState("")
   const [token, setToken] = useState(useToken().token)
+  const [isChangeDescription, setIsChangeDescription] = useState(false)
+  const [isChangeComment, setIsChangeComment]= useState(false)
 
 
   const TimeDisplay = (date) => {
@@ -128,6 +131,8 @@ const Card = (props) => {
     );
   };
 
+
+  
 
 
 
@@ -164,6 +169,48 @@ const Card = (props) => {
 
 
   };
+
+
+  const handleChangeDescription = (e) => {
+
+    setDescription(e.target.value)
+  }
+
+  useEffect(() => {
+   
+    if ( description && description.trim().length == 0) {
+
+      setIsChangeDescription(false)
+    }
+    else if(description &&description.trim().length > 0 ){
+
+    setIsChangeDescription(true)
+    }
+    else{
+      setIsChangeDescription(false)
+    }
+
+
+  }, [description])
+
+
+  useEffect(() => {
+    
+    if (contentComment && contentComment.trim().length ==0 ) {
+
+      setIsChangeComment(false)
+    }
+    else if(contentComment && contentComment.trim().length > 0){
+
+      setIsChangeComment(true)
+    }
+    else{
+      setIsChangeComment(false)
+    }
+
+
+  }, [contentComment])
+
 
 
   const handleCloseModal = () => { setOpenModal(false); handleClose() }
@@ -262,6 +309,7 @@ const Card = (props) => {
 
 
   const handleAddTodoList = () => {
+    if(todoListTitle && todoListTitle.trim().length > 0){
     setShowModalAddCheckList(false)
     const rowId = card.rowId
 
@@ -274,10 +322,15 @@ const Card = (props) => {
           if (res.data) {
             setTodoLists(res.data.todoLists)
             updateTodoLists()
+            setTodoListTitle("")
           }
         })
       }
     })
+  }
+  else{
+    return null
+  }
 
   }
 
@@ -501,7 +554,7 @@ const Card = (props) => {
   }
   const handleAddComment = async () => {
 
-    if (contentComment) {
+    if (contentComment && contentComment.trim().length > 0) {
 
       const rowId = card.rowId
       Api(token).post("http://localhost:3001/comment/create-comment", { userId, contentComment, rowId }).then(res => {
@@ -545,7 +598,7 @@ const Card = (props) => {
             null
           }
           <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Box sx={{ marginBottom: "5px", marginLeft: "10px" }}>
+            <Box sx={{ marginBottom: "5px", marginLeft: "10px", fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif"' }}>
 
               {card.content}
 
@@ -682,7 +735,7 @@ const Card = (props) => {
                     <Box sx={{ left: "690px", position: "absolute", marginTop: "60px", width: "250px", height: "200px", backgroundColor: "white", zIndex: 1, borderRadius: "10px" }}>
                       <Box sx={{ marginTop: "10px", color: "black", display: "flex", alignItems: "center" }}>
 
-                        <span style={{ textAlign: "center", fontSize: "15px", width: "200px", paddingLeft: "40px" }}> Thêm việc cần làm</span>
+                        <span style={{ textAlign: "center", fontSize: "15px", width: "200px", paddingLeft: "40px" , fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif', fontWeight:"500"}}> Thêm việc cần làm</span>
                         <ClearIcon onClick={(e) => setShowModalAddCheckList(false)} sx={{ color: "gray", marginLeft: "30px" }} />
 
                       </Box>
@@ -694,7 +747,7 @@ const Card = (props) => {
 
                           </FormControl>
                           <Box sx={{ marginTop: "20px" }}>
-                            <JoyButton type='submit' sx={{ width: "70px" }} onClick={handleAddTodoList}>Thêm</JoyButton>
+                            <JoyButton type='submit' sx={{ width: "70px", fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif', fontWeight:"500" , fontSize:"15px"}} onClick={handleAddTodoList}>Thêm</JoyButton>
 
                           </Box>
                         </Box>
@@ -723,9 +776,9 @@ const Card = (props) => {
                     }
 
 
-                    <Textarea sx={{ border: "none", paddingTop: "30px", width: "100%", minHeight: "100px", height: "fit-content", wordBreak: "break-all" }} value={description} onClick={() => setShowAddImage(true)} onChange={(e) => setDescription(e.target.value)}></Textarea>
+                    <Textarea sx={{ border: "none", paddingTop: "30px", width: "100%", minHeight: "100px", height: "fit-content", wordBreak: "break-all" }} value={description} onClick={() => setShowAddImage(true)} onChange={handleChangeDescription}></Textarea>
                     <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
-                      <Button sx={{ width: "20px", marginTop: "10px" }} variant="contained" disableElevation onClick={changeRowDetail}>
+                      <Button className="button-1" sx={{ width: "20px", marginTop: "10px", backgroundColor: isChangeDescription ? "#1976d2" : "gray", cursor:isChangeDescription?"pointer":"not-allowed", ":hover": { backgroundColor: isChangeDescription ? '#1976d2' : 'gray' } }} variant="contained" disableElevation onClick={changeRowDetail}>
                         Lưu
                       </Button>
                       <Button onClick={cancelInput} sx={{ width: "20px", marginTop: "10px", backgroundColor: "gray" }} variant="contained" disableElevation>
@@ -784,39 +837,20 @@ const Card = (props) => {
                         {/* <img style={{height:"40px", width:"40px", borderRadius:"50%"}} src={card.comments.user.}></img> */}
                         <Textarea placeholder="Viết một bình luận..." value={contentComment} sx={{ border: "none", width: "100%", minHeight: "30px", height: "fit-content", wordBreak: "break-all" }} onChange={(e) => setContentComment(e.target.value)} ></Textarea>
                       </Box>
-                      <Button sx={{ width: "20px", marginTop: "10px", marginBottom: "10px" }} onClick={handleAddComment} variant="contained" disableElevation>
+                      <Button sx={{ width: "20px", marginTop: "10px", marginBottom: "10px",backgroundColor: isChangeComment?"#1976d2" : "gray", cursor:isChangeComment?"pointer":"not-allowed", ":hover": { backgroundColor: isChangeComment ? '#1976d2' : 'gray'  } }} onClick={handleAddComment} variant="contained" disableElevation>
                         Lưu
                       </Button>
                       {comments && comments.length > 0 && comments.map((comment) => (
 
 
 
-                        <Box sx={{ marginTop: "15px", marginBottom: "25px", display: "flex", gap: 2 }}>
-                          <Box>
+                       <Comment
+                       comment={comment}
+                       TimeDisplay={TimeDisplay}
+                       handelDelComment={handelDelComment}
 
-                            <img style={{ height: "40px", width: "40px", borderRadius: "50%" }} src={comment.user.userInfors.avatarImg}></img>
-                          </Box>
-                          <Box sx={{ flex: 1 }}>
-                            <Box sx={{ display: "flex", flexDirection: "column" }}>
-                              <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 2, marginBottom: "10px" }}>
-                                <span style={{ fontSize: "15px", fontWeight: "bold", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }}>{comment.user.userInfors.display_name}</span>
-                                <span style={{ fontSize: "15px", fontWeight: "400", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }}>{TimeDisplay(comment.createdAt)}</span>
-                              </Box>
-                              <Box sx={{ borderRadius: "10px" }}>
-                                <Textarea sx={{ fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }} value={comment.contentComment}></Textarea>
-                              </Box>
-                              <Box>
-                                <Box sx={{ display: "flex", gap: 2, marginTop: "10px" }}>
-                                  <span style={{ fontSize: "13px", color: "var(--ds-text, #172b4d)", textDecoration: "underline", cursor: "pointer", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }} onClick={() => handelDelComment(comment.commentId)}> Xóa</span>
-                                  <span style={{ fontSize: "13px", color: "var(--ds-text, #172b4d)", textDecoration: "underline", cursor: "pointer", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }}> Chỉnh sửa</span>
-                                </Box>
-                              </Box>
-                            </Box>
-
-                          </Box>
-
-
-                        </Box>
+                       
+                       />
 
 
 
@@ -839,8 +873,8 @@ const Card = (props) => {
 
       {!isShowEditCard === false ?
         <div className="conntent-edit-card">
-          <button className="icon-delete" onClick={() => cardDel(card)}> Delete</button>
-          <button className="icon-save" onClick={(e) => setChangeContentCard(e.target.value)}>Save</button>
+          <button className="icon-delete" onClick={() => cardDel(card)} style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif', fontWeight: "500" }}> Delete</button>
+          <button className="icon-save" onClick={(e) => setChangeContentCard(e.target.value)} style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif', fontWeight: "500" }}>Save</button>
           <i className="fa fa-times icon-cancel-edit" onClick={() => setIsShowEditCard(false)}></i>
 
         </div>

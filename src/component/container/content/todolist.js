@@ -13,6 +13,10 @@ import { useToken } from "../../../tokenContext";
 
 
 
+
+
+
+
 const Todolist = (props) => {
   const { todolist, updateTodoLists, handleDelTodoList, handleDelTodo } = props
   const todoListId = todolist.todoListId
@@ -26,9 +30,12 @@ const Todolist = (props) => {
       setCountChecked(checkedCount);
     }
   }
-  const handleAddTodo = async (todoListId) => {
+  const handleAddTodo = (todoListId) => {
 
-    await Api(token).post("http://localhost:3001/todolist/create-todo", { todoTitle, todoListId }).then(res => {
+    if(todoTitle && todoTitle.trim().length > 0){
+
+
+    Api(token).post("http://localhost:3001/todolist/create-todo", { todoTitle, todoListId }).then(res => {
       if (res.data) {
 
         updateTodoLists()
@@ -36,6 +43,10 @@ const Todolist = (props) => {
 
       }
     })
+  }
+  else{
+    return null;
+  }
 
 
   }
@@ -65,14 +76,14 @@ const Todolist = (props) => {
         </Box>
         {todolist.todos.length !== 0 ?
 
-          <Box>
+          <Box sx={{display:"flex", alignItems:"center", gap:2}}>
 
-            <span style={{ fontSize: "15px" }}>{Math.floor((countChecked / todolist.todos.length) * 100)}%</span>
+            <span style={{ fontSize: "15px" , fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif', fontWeight:"500", fontSize:"15px"}}>{Math.floor((countChecked / todolist.todos.length) * 100)}%</span>
             <Slider defaultValue={50} aria-label="Default" valueLabelDisplay="auto" value={(countChecked / todolist.todos.length) * 100} sx={{ marginLeft: "0px" }} />
           </Box>
           :
 
-          <Box>
+          <Box sx={{display:"flex", alignItems:"center", gap:2}}>
 
             <span style={{ fontSize: "15px" }}>0%</span>
             <Slider defaultValue={50} aria-label="Default" valueLabelDisplay="auto" value={0} sx={{ marginLeft: "0px" }} />

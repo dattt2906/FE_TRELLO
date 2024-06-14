@@ -53,7 +53,7 @@ const Column = (props) => {
 
   const handleAddCard = async () => {
     let sort = Cards.length
-    if (content) {
+    if (content.trim().length > 0) {
       await Api(token).post("http://localhost:3001/table/create-row", { content, columnId, sort }).then(res => {
         if (res.data) {
           setContent("")
@@ -123,7 +123,7 @@ const Column = (props) => {
 
       >
         <div className="column-name">
-          <input style={{ cursor: "pointer" }} className="change-title" type="text" spellCheck="false" value={changeColumnTitle} onChange={(e) => setChangeColumnTitle(e.target.value)}>
+          <input style={{ cursor: "pointer", fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif', fontWeight:"500" }} className="change-title" type="text" spellCheck="false" value={changeColumnTitle} onChange={(e) => setChangeColumnTitle(e.target.value)}>
           </input>
           <i class="fa fa-trash icon-del-column" onClick={() => columnDel(column)}></i>
         </div>
@@ -154,8 +154,8 @@ const Column = (props) => {
               // <footer onClick={() => setIsShowAddCard(true)}>
               //   <i className="fa fa-plus icon-plus-card"></i>
               //   Add another card</footer>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer", marginBottom: "15px", marginTop: "15px", marginLeft: "5px" }} onClick={() => setIsShowAddCard(true)}>
-                <AddIcon sx={{}} />
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer", marginBottom: "15px", marginTop: "15px", marginLeft: "5px" , fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif', fontWeight:"500", opacity:"0.8"}} onClick={() => setIsShowAddCard(true)}>
+                <AddIcon sx={{opacity:"0.8"}} />
                 Thêm một thẻ
               </Box>
               :
@@ -166,7 +166,7 @@ const Column = (props) => {
                   <Textarea placeholder="Nhập vào nội dung thẻ" sx={{ width: "280px", height: "50px", marginLeft: "0px", marginTop: "10px", borderRadius: "10px" }} onChange={(e) => setContent(e.target.value)}></Textarea>
                 </div>
                 <div className="button-add">
-                  <button className="btn-add" onClick={handleAddCard}>Thêm thẻ</button>
+                  <button className="btn-add" onClick={handleAddCard} style={{fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif', fontSize:"15px", fontWeight:"500"}}>Thêm thẻ</button>
                   <i className="fa fa-times icon-cancel-card" onClick={() => setIsShowAddCard(false)}></i>
 
                 </div>

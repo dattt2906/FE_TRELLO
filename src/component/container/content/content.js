@@ -197,7 +197,7 @@ const Content = () => {
 
         console.log("boardIdAdd:", boardId)
         // socket.emit("add-column", boardId)
-        if (columnName) {
+        if (columnName.trim().length > 0) {
 
             await Api(token).post("http://localhost:3001/table/create-column", { columnName, boardId, sort }).then(res => {
                 if (res.data) {
@@ -488,7 +488,7 @@ const Content = () => {
     return (
         <DndContext
             sensors={mySensors}
-            // collisionDetection={closestCorners}
+            collisionDetection={closestCorners}
             onDragStart={handleDragStart}
             onDragOver={handleDragOver}
             onDragEnd={handleOnDragEnd}
@@ -526,8 +526,8 @@ const Content = () => {
 
                                 <div className="add-new-column" onClick={() => setIsAddColumn(true)}>
                                     {/* <i className="fa fa-plus icon-add-list"></i> */}
-                                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer" }}>
-                                        <AddIcon sx={{}} />
+                                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer", fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif', fontWeight:"500", fontSize:"20px", opacity:"0.8" }}>
+                                        <AddIcon sx={{opacity:"0.8"}} />
                                         Thêm một danh sách
                                     </Box>
                                 </div>
@@ -540,7 +540,7 @@ const Content = () => {
                                         <Textarea placeholder="Nhập vào tiêu đề" sx={{ width: "280px", marginLeft: "10px", marginTop: "10px" }} onChange={(e) => setColumnName(e.target.value)}></Textarea>
                                     </div>
                                     <div className="button-add-column">
-                                        <button className="btn-add" onClick={handelAddList}>Thêm</button>
+                                        <button className="btn-add" onClick={handelAddList} style={{fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif', fontSize:"15px",fontWeight:"500"}}>Thêm</button>
                                         <i className="fa fa-times icon-cancel" onClick={() => setIsAddColumn(false)}></i>
 
                                     </div>
