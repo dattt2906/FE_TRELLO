@@ -132,7 +132,7 @@ const UserInfor = () => {
                     autoComplete="off">
 
 
-                    <TextField id="outlined-basic" label="Tuổi" variant="outlined" value={age} onChange={(e) => setAge(e.target.value)} />
+                    <TextField  id="outlined-basic" label="Tuổi" variant="outlined" value={age} onChange={(e) => setAge(e.target.value)} />
 
                 </Box >
                 <Box component="form"

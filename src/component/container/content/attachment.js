@@ -11,6 +11,11 @@ import Button from '@mui/material/Button';
 
 const Attachment = (props) => {
     const { fileAttachment ,handleDelFileAttachment, TimeDisplay} = props
+    const delAttachment=()=>{
+
+        handleDelFileAttachment(fileAttachment)
+        setIsShowModalDeleteConfirmAttachment(false)
+    }
 
     const [isShowModalDeleteConfirmAttachment, setIsShowModalDeleteConfirmAttachment] = useState(false)
     const showModalCofirmDelete=(title)=>{
@@ -18,16 +23,16 @@ const Attachment = (props) => {
         return(
       
           <>
-          <Box sx={{height:"150px", width:"350px",display:"flex",position:"absolute", flexDirection:"column", backgroundColor:"white",fontSize:"15px", marginLeft:"80px", marginTop:"30px", zIndex:1,fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif', borderRadius:"10px", zIndex:1}}>
+          <Box sx={{height:"fit-content", width:"fit-content",display:"flex",position:"absolute", flexDirection:"column", backgroundColor:"white",fontSize:"15px", marginLeft:"80px", marginTop:"30px", zIndex:1,fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif', borderRadius:"10px", zIndex:1}}>
             <Box sx={{display:"flex", justifyContent:"space-between"}}>
-            <span style={{paddingLeft:"90px"}}>Bạn muốn xóa {title}?</span>
+            <span style={{paddingLeft:"20%"}}>Bạn muốn xóa {title}?</span>
             <ClearIcon sx={{marginRight:"10px"}} onClick={(e)=>setIsShowModalDeleteConfirmAttachment(false)}/>
 
             </Box>
       
             <span style={{marginTop:"20px", fontSize:"13px", marginLeft:"5px"}}>{title} sẽ bị xóa vĩnh viễn và bạn không thể hoàn tác</span>
             <Box sx={{display:"flex", justifyContent:"center"}}>
-            <Button sx={{ ":hover":{backgroundColor:"var(--ds-background-danger-bold-hovered,#ae2a19)"},backgroundColor:"var(--ds-background-danger-bold,#ca3521)", color:"white", fontSize:"13px", fontWeight:"500",fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif',width:"300px", marginTop:"20px"}} onClick={(e)=> handleDelFileAttachment(fileAttachment.fileId)}>Xóa {title}</Button>
+            <Button sx={{ ":hover":{backgroundColor:"var(--ds-background-danger-bold-hovered,#ae2a19)"},backgroundColor:"var(--ds-background-danger-bold,#ca3521)", color:"white", fontSize:"13px", fontWeight:"500",fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif',width:"300px", marginTop:"20px", marginBottom:"20px"}} onClick={ delAttachment}>Xóa {title}</Button>
       
             </Box>
       

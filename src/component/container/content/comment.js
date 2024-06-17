@@ -8,13 +8,19 @@ import Button from '@mui/material/Button';
 const Comment=(props)=>{
     const {comment, TimeDisplay,handelDelComment}= props
     const [isShowModalConfirmDeleteComment, setIsShowModalConfirmDeleteComment]= useState(false)
+    const DelComent=()=>{
+        setIsShowModalConfirmDeleteComment(false)
+        handelDelComment(comment.commentId)
+
+
+    }
     
     const showModalCofirmDelete=(title)=>{
    
         return(
       
           <>
-          <Box sx={{height:"130px", width:"350px",display:"flex",position:"absolute", flexDirection:"column", backgroundColor:"white",fontSize:"15px", marginLeft:"80px", marginTop:"30px", zIndex:1,fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif', borderRadius:"10px"}}>
+          <Box sx={{height:"fit-content", width:"fit-content",display:"flex",position:"absolute", flexDirection:"column", backgroundColor:"white",fontSize:"15px", marginLeft:"80px", marginTop:"30px", zIndex:1,fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif', borderRadius:"10px"}}>
             <Box sx={{display:"flex", justifyContent:"space-between"}}>
             <span style={{paddingLeft:"90px"}}>Bạn muốn xóa {title}?</span>
             <ClearIcon sx={{marginRight:"10px"}} onClick={(e)=>setIsShowModalConfirmDeleteComment(false)}/>
@@ -23,7 +29,7 @@ const Comment=(props)=>{
       
             <span style={{marginTop:"20px", fontSize:"13px", marginLeft:"5px"}}>{title} sẽ bị xóa vĩnh viễn và bạn không thể hoàn tác</span>
             <Box sx={{display:"flex", justifyContent:"center"}}>
-            <Button sx={{ ":hover":{backgroundColor:"var(--ds-background-danger-bold-hovered,#ae2a19)"},backgroundColor:"var(--ds-background-danger-bold,#ca3521)", color:"white", fontSize:"13px", fontWeight:"500",fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif',width:"300px", marginTop:"20px"}} onClick={(e)=> handelDelComment(comment.commentId)}>Xóa {title}</Button>
+            <Button sx={{ ":hover":{backgroundColor:"var(--ds-background-danger-bold-hovered,#ae2a19)"},backgroundColor:"var(--ds-background-danger-bold,#ca3521)", color:"white", fontSize:"13px", fontWeight:"500",fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif',width:"300px", marginTop:"20px", marginBottom:"20px"}} onClick={ DelComent}>Xóa {title}</Button>
       
             </Box>
       
@@ -50,7 +56,7 @@ const Comment=(props)=>{
                                 <span style={{ fontSize: "15px", fontWeight: "400", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }}>{TimeDisplay(comment.createdAt)}</span>
                               </Box>
                               <Box sx={{ borderRadius: "10px" }}>
-                                <Textarea sx={{ fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }} value={comment.contentComment}></Textarea>
+                                <Textarea disabled="onChange" sx={{ fontWeight:"bold",fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif" }} value={comment.contentComment}></Textarea>
                               </Box>
                               <Box>
                                 <Box sx={{ display: "flex", gap: 2, marginTop: "10px" }}>

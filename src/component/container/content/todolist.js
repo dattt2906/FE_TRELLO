@@ -23,6 +23,7 @@ const Todolist = (props) => {
   const [countChecked, setCountChecked] = useState(0)
   const [todoTitle, setTodoTitle] = useState("")
   const [token,setToken]=useState(useToken().token)
+  const[isShowModalConfirmDeleteList, setIsShowModalConfirmDeleteList]=useState(false)
   const countCheck = (todolist) => {
 
     if (todolist && todolist.todos) {
@@ -55,6 +56,39 @@ const Todolist = (props) => {
 
   }, [todolist])
 
+  const delTodoList=()=>{
+
+    setIsShowModalConfirmDeleteList(false)
+    handleDelTodoList(todolist.todoListId)
+  }
+
+
+  const showModalCofirmDelete=(title)=>{
+   
+    return(
+  
+      <>
+      <Box sx={{height:"fit-content", width:"fit-content",display:"flex",position:"absolute", flexDirection:"column", backgroundColor:"white",fontSize:"15px", marginLeft:"0px", marginTop:"0px", zIndex:1,fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif', borderRadius:"10px"}}>
+        <Box sx={{display:"flex", justifyContent:"space-between"}}>
+        <span style={{paddingLeft:"90px"}}>Bạn muốn xóa {title}?</span>
+        <ClearIcon sx={{marginRight:"10px"}} onClick={(e)=>setIsShowModalConfirmDeleteList(false)}/>
+
+        </Box>
+  
+        <span style={{marginTop:"20px", fontSize:"13px", marginLeft:"5px"}}>{title} sẽ bị xóa vĩnh viễn và bạn không thể hoàn tác</span>
+        <Box sx={{display:"flex", justifyContent:"center"}}>
+        <Button sx={{ ":hover":{backgroundColor:"var(--ds-background-danger-bold-hovered,#ae2a19)"},backgroundColor:"var(--ds-background-danger-bold,#ca3521)", color:"white", fontSize:"13px", fontWeight:"500",fontFamily:'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif',width:"300px", marginTop:"20px", marginBottom:"20px"}} onClick={ delTodoList}>Xóa {title}</Button>
+  
+        </Box>
+  
+  
+      </Box>
+      
+      </>
+    )
+  
+    }
+
 
   return (
     <>
@@ -67,9 +101,14 @@ const Todolist = (props) => {
 
           <Box>
 
-            <Button onClick={() => handleDelTodoList(todolist.todoListId)} sx={{ width: "20px", marginTop: "10px", marginBottom: "10px", backgroundColor: "gray" }} variant="contained" disableElevation>
+            <Button onClick={ (e)=> setIsShowModalConfirmDeleteList(true)} sx={{ position:"relative",width: "20px", marginTop: "10px", marginBottom: "10px", backgroundColor: "gray" }} variant="contained" disableElevation>
               Xóa
             </Button>
+            {isShowModalConfirmDeleteList ?
+            showModalCofirmDelete("List công việc")
+            :
+            null  
+          }
 
           </Box>
 
